@@ -12,3 +12,6 @@ test-results/
 **/.astro/
 packages/flutter/pubspec.lock
 packages/flutter/example/pubspec.lock
+.env
+.env.*
+!.env.example

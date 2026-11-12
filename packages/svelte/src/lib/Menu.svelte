@@ -33,13 +33,27 @@
     );
   $effect(() => {
     if (!open || !panel) return;
-    trigger = document.activeElement as HTMLElement;
+    trigger =
+      document.activeElement instanceof HTMLElement &&
+      document.activeElement !== document.body
+        ? document.activeElement
+        : null;
+    search = '';
+    searchTime = 0;
     items()[0]?.focus();
     function outside(event: PointerEvent) {
-      if (!panel.contains(event.target as Node)) close(false);
+      if (
+        !panel.contains(event.target as Node) &&
+        !trigger?.contains(event.target as Node)
+      )
+        close(false);
     }
     function focusout(event: FocusEvent) {
-      if (!panel.contains(event.target as Node)) close(false);
+      if (
+        !panel.contains(event.target as Node) &&
+        !trigger?.contains(event.target as Node)
+      )
+        close(false);
     }
     document.addEventListener('pointerdown', outside);
     document.addEventListener('focusin', focusout);

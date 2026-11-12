@@ -84,7 +84,7 @@ export function generate(source) {
       white: c.onBackground,
       'gray-1': c.onBackground,
       'gray-2': c.muted,
-      'gray-3': c.outline,
+      'gray-3': c.placeholder,
       'gray-4': c.outline,
       'gray-5': c.secondary,
       'gray-6': c.surface,

@@ -26,13 +26,601 @@
       "$ref": "#/$defs/colors"
     },
     "themes": {
-      "$ref": "#/$defs/modes"
+      "type": "object",
+      "required": ["light", "dark"],
+      "additionalProperties": false,
+      "properties": {
+        "light": {
+          "type": "object",
+          "properties": {
+            "background": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "danger": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "dangerHover": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "disabledSurface": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "disabledText": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "errorText": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "focus": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "muted": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onBackground": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onDanger": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onPrimary": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onSecondary": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "outline": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "placeholder": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "primary": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "primaryDisabled": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "primaryHover": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "secondary": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "secondaryDisabled": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "secondaryHover": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "surface": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            }
+          },
+          "required": [
+            "background",
+            "danger",
+            "dangerHover",
+            "disabledSurface",
+            "disabledText",
+            "errorText",
+            "focus",
+            "muted",
+            "onBackground",
+            "onDanger",
+            "onPrimary",
+            "onSecondary",
+            "outline",
+            "placeholder",
+            "primary",
+            "primaryDisabled",
+            "primaryHover",
+            "secondary",
+            "secondaryDisabled",
+            "secondaryHover",
+            "surface"
+          ],
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+          }
+        },
+        "dark": {
+          "type": "object",
+          "properties": {
+            "background": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "danger": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "dangerHover": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "disabledSurface": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "disabledText": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "errorText": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "focus": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "muted": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onBackground": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onDanger": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onPrimary": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onSecondary": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "outline": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "placeholder": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "primary": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "primaryDisabled": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "primaryHover": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "secondary": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "secondaryDisabled": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "secondaryHover": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "surface": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            }
+          },
+          "required": [
+            "background",
+            "danger",
+            "dangerHover",
+            "disabledSurface",
+            "disabledText",
+            "errorText",
+            "focus",
+            "muted",
+            "onBackground",
+            "onDanger",
+            "onPrimary",
+            "onSecondary",
+            "outline",
+            "placeholder",
+            "primary",
+            "primaryDisabled",
+            "primaryHover",
+            "secondary",
+            "secondaryDisabled",
+            "secondaryHover",
+            "surface"
+          ],
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+          }
+        }
+      }
     },
     "material": {
-      "$ref": "#/$defs/modes"
+      "type": "object",
+      "required": ["light", "dark"],
+      "additionalProperties": false,
+      "properties": {
+        "light": {
+          "type": "object",
+          "properties": {
+            "error": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "errorContainer": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "inversePrimary": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "inverseSurface": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onError": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onErrorContainer": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onInverseSurface": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onPrimary": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onPrimaryContainer": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onSecondary": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onSecondaryContainer": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onSurface": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onSurfaceVariant": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onTertiary": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onTertiaryContainer": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "outline": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "primary": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "primaryContainer": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "secondary": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "secondaryContainer": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "shadow": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "surface": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "surfaceContainerHighest": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "surfaceTint": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "tertiary": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "tertiaryContainer": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            }
+          },
+          "required": [
+            "error",
+            "errorContainer",
+            "inversePrimary",
+            "inverseSurface",
+            "onError",
+            "onErrorContainer",
+            "onInverseSurface",
+            "onPrimary",
+            "onPrimaryContainer",
+            "onSecondary",
+            "onSecondaryContainer",
+            "onSurface",
+            "onSurfaceVariant",
+            "onTertiary",
+            "onTertiaryContainer",
+            "outline",
+            "primary",
+            "primaryContainer",
+            "secondary",
+            "secondaryContainer",
+            "shadow",
+            "surface",
+            "surfaceContainerHighest",
+            "surfaceTint",
+            "tertiary",
+            "tertiaryContainer"
+          ],
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+          }
+        },
+        "dark": {
+          "type": "object",
+          "properties": {
+            "error": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "errorContainer": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "inversePrimary": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "inverseSurface": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onError": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onErrorContainer": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onInverseSurface": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onPrimary": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onPrimaryContainer": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onSecondary": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onSecondaryContainer": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onSurface": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onSurfaceVariant": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onTertiary": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onTertiaryContainer": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "outline": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "primary": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "primaryContainer": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "secondary": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "secondaryContainer": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "shadow": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "surface": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "surfaceContainerHighest": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "surfaceTint": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "tertiary": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "tertiaryContainer": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            }
+          },
+          "required": [
+            "error",
+            "errorContainer",
+            "inversePrimary",
+            "inverseSurface",
+            "onError",
+            "onErrorContainer",
+            "onInverseSurface",
+            "onPrimary",
+            "onPrimaryContainer",
+            "onSecondary",
+            "onSecondaryContainer",
+            "onSurface",
+            "onSurfaceVariant",
+            "onTertiary",
+            "onTertiaryContainer",
+            "outline",
+            "primary",
+            "primaryContainer",
+            "secondary",
+            "secondaryContainer",
+            "shadow",
+            "surface",
+            "surfaceContainerHighest",
+            "surfaceTint",
+            "tertiary",
+            "tertiaryContainer"
+          ],
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+          }
+        }
+      }
     },
     "frc": {
-      "$ref": "#/$defs/modes"
+      "type": "object",
+      "required": ["light", "dark"],
+      "additionalProperties": false,
+      "properties": {
+        "light": {
+          "type": "object",
+          "properties": {
+            "blueAlliance": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onBlueAlliance": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onRedAlliance": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "redAlliance": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            }
+          },
+          "required": [
+            "blueAlliance",
+            "onBlueAlliance",
+            "onRedAlliance",
+            "redAlliance"
+          ],
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+          }
+        },
+        "dark": {
+          "type": "object",
+          "properties": {
+            "blueAlliance": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onBlueAlliance": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onRedAlliance": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "redAlliance": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            }
+          },
+          "required": [
+            "blueAlliance",
+            "onBlueAlliance",
+            "onRedAlliance",
+            "redAlliance"
+          ],
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+          }
+        }
+      }
     },
     "spacing": {
       "type": "object",

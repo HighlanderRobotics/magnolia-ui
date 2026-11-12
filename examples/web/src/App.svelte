@@ -28,7 +28,7 @@
   let menu = $state(false);
   let checked = $state(false);
   let value = $state('');
- let alliance = $state<string | null>(null);
+  let alliance = $state<string | null>(null);
   let selected = $state<string | null>(null);
   let action = $state('No action yet');
   const options = [
@@ -118,11 +118,12 @@
             bind:value={checked}
           /><Switch label="Disabled switch" disabled /><Checkbox
             label="I am ready"
-          /><Radio bind:group={alliance} label="Red alliance" name="alliance" value="red" /><Radio
-            label="Blue alliance"
+          /><Radio
+            bind:group={alliance}
+            label="Red alliance"
             name="alliance"
-            value="blue"
-          />
+            value="red"
+          /><Radio label="Blue alliance" name="alliance" value="blue" />
         </div>
         <Button type="submit">Submit form</Button>
       </form>

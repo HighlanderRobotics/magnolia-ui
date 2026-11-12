@@ -68,3 +68,18 @@ test('focus, input boundaries and minimum touch targets remain visible', () => {
   for (const d of Object.values(resolved.density)) assert.ok(d.target >= 44);
   assert.equal(resolved.motion.reduced, 0);
 });
+
+test('schema rejects missing semantic roles and invalid numeric density', async () => {
+  const { default: Ajv } = await import('ajv/dist/2020.js');
+  const schema = JSON.parse(
+    readFileSync(new URL('../packages/tokens/schema.json', import.meta.url)),
+  );
+  const validate = new Ajv({ strict: true }).compile(schema);
+  assert.ok(validate(source));
+  const missing = structuredClone(source);
+  delete missing.themes.dark.onPrimary;
+  assert.equal(validate(missing), false);
+  const invalid = structuredClone(source);
+  invalid.density.compact.target = -1;
+  assert.equal(validate(invalid), false);
+});
