@@ -1,0 +1,14 @@
+node_modules/
+**/dist/
+**/.svelte-kit/
+coverage/
+playwright-report/
+test-results/
+*.tgz
+.DS_Store
+.dart_tool/
+.pub-cache/
+**/build/
+**/.astro/
+packages/flutter/pubspec.lock
+packages/flutter/example/pubspec.lock

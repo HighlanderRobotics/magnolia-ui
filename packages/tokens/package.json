@@ -1,0 +1,34 @@
+{
+  "name": "@highlanderrobotics/magnolia-tokens",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Magnolia UI tokens design system",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HighlanderRobotics/magnolia-ui.git",
+    "directory": "packages/tokens"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "tokens.css",
+    "tokens.json",
+    "schema.json"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./css": "./tokens.css",
+    "./tokens.json": "./tokens.json"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  }
+}

@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Magnolia token schema v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "palette",
+    "themes",
+    "material",
+    "frc",
+    "spacing",
+    "radius",
+    "typography",
+    "motion",
+    "density"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "version": {
+      "const": 1
+    },
+    "palette": {
+      "$ref": "#/$defs/colors"
+    },
+    "themes": {
+      "$ref": "#/$defs/modes"
+    },
+    "material": {
+      "$ref": "#/$defs/modes"
+    },
+    "frc": {
+      "$ref": "#/$defs/modes"
+    },
+    "spacing": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number",
+        "minimum": 0
+      }
+    },
+    "radius": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number",
+        "minimum": 0
+      }
+    },
+    "motion": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number",
+        "minimum": 0
+      }
+    },
+    "typography": {
+      "type": "object",
+      "required": ["family", "body", "small", "title", "lineHeight"],
+      "properties": {
+        "family": {
+          "type": "string"
+        },
+        "body": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "small": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "title": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "lineHeight": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "density": {
+      "type": "object",
+      "required": ["comfortable", "compact"],
+      "properties": {
+        "comfortable": {
+          "type": "object",
+          "required": ["paddingY", "paddingX", "fontSize", "radius", "target"],
+          "additionalProperties": false,
+          "properties": {
+            "paddingY": {
+              "type": "number",
+              "minimum": 0
+            },
+            "paddingX": {
+              "type": "number",
+              "minimum": 0
+            },
+            "fontSize": {
+              "type": "number",
+              "minimum": 0
+            },
+            "radius": {
+              "type": "number",
+              "minimum": 0
+            },
+            "target": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "compact": {
+          "type": "object",
+          "required": ["paddingY", "paddingX", "fontSize", "radius", "target"],
+          "additionalProperties": false,
+          "properties": {
+            "paddingY": {
+              "type": "number",
+              "minimum": 0
+            },
+            "paddingX": {
+              "type": "number",
+              "minimum": 0
+            },
+            "fontSize": {
+              "type": "number",
+              "minimum": 0
+            },
+            "radius": {
+              "type": "number",
+              "minimum": 0
+            },
+            "target": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "colors": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+      }
+    },
+    "modes": {
+      "type": "object",
+      "required": ["light", "dark"],
+      "additionalProperties": false,
+      "properties": {
+        "light": {
+          "$ref": "#/$defs/colors"
+        },
+        "dark": {
+          "$ref": "#/$defs/colors"
+        }
+      }
+    }
+  }
+}
