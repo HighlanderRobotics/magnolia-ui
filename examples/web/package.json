@@ -1,0 +1,9 @@
+{
+  "name": "magnolia-gallery",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@highlanderrobotics/magnolia-svelte": "0.1.0",
+    "svelte": "^5.39.0"
+  }
+}

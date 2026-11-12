@@ -1,0 +1,42 @@
+{
+  "name": "@highlanderrobotics/magnolia-svelte",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Magnolia UI svelte design system",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HighlanderRobotics/magnolia-ui.git",
+    "directory": "packages/svelte"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "svelte": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./fonts.css": "./dist/fonts.css"
+  },
+  "svelte": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "peerDependencies": {
+    "svelte": "^5.20.0"
+  },
+  "dependencies": {
+    "@highlanderrobotics/magnolia-tokens": "0.1.0"
+  },
+  "scripts": {
+    "build": "svelte-package -i src/lib -o dist --tsconfig tsconfig.json && publint",
+    "check": "svelte-check --tsconfig tsconfig.json"
+  }
+}

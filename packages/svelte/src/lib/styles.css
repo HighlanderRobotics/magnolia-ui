@@ -1,0 +1,233 @@
+.mg-root {
+  color: var(--mg-on-background);
+  background: var(--mg-background);
+  font-family: var(--mg-font-family);
+  line-height: var(--mg-line-height);
+}
+.mg-root[data-magnolia-theme='system'] {
+  color-scheme: light dark;
+}
+.mg-root *,
+.mg-root *::before,
+.mg-root *::after {
+  box-sizing: border-box;
+}
+.mg-button,
+.mg-field input,
+.mg-field select {
+  font: inherit;
+  font-size: var(--mg-control-font-size);
+  border-radius: var(--mg-control-radius);
+  transition: border-color var(--mg-motion-normal);
+}
+.mg-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mg-spacing-sm);
+  border: 0;
+  min-height: var(--mg-control-target);
+  padding: var(--mg-control-padding-y) var(--mg-control-padding-x);
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+}
+.mg-button.primary {
+  background: var(--mg-primary);
+  color: var(--mg-on-primary);
+}
+.mg-button.primary:hover {
+  background: var(--mg-primary-hover);
+}
+.mg-button.secondary {
+  background: var(--mg-secondary);
+  color: var(--mg-on-secondary);
+}
+.mg-button.secondary:hover {
+  background: var(--mg-secondary-hover);
+}
+.mg-button.danger {
+  background: var(--mg-danger);
+  color: var(--mg-on-danger);
+}
+.mg-button.danger:hover {
+  background: var(--mg-danger-hover);
+}
+.mg-button.text-only {
+  background: transparent;
+  color: var(--mg-primary);
+}
+.mg-button.text-only-secondary {
+  background: transparent;
+  color: var(--mg-on-background);
+}
+.mg-button[aria-disabled='true'],
+.mg-button[aria-disabled='true']:hover {
+  background: var(--mg-disabled-surface);
+  color: var(--mg-disabled-text);
+  cursor: not-allowed;
+}
+.mg-button:focus-visible,
+.mg-field input:focus-visible,
+.mg-field select:focus-visible,
+.mg-check input:focus-visible {
+  outline: 3px solid var(--mg-focus);
+  outline-offset: 3px;
+}
+.mg-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mg-spacing-xs);
+}
+.mg-field input,
+.mg-field select {
+  min-width: 0;
+  min-height: var(--mg-control-target);
+  padding: var(--mg-control-padding-y) var(--mg-spacing-md);
+  color: var(--mg-on-background);
+  background: var(--mg-surface);
+  border: 2px solid var(--mg-outline);
+}
+.mg-field input::placeholder {
+  color: var(--mg-placeholder);
+}
+.mg-field [aria-invalid='true'] {
+  border-color: var(--mg-error-text);
+}
+.mg-field :disabled {
+  background: var(--mg-disabled-surface);
+  color: var(--mg-disabled-text);
+  cursor: not-allowed;
+}
+.mg-error {
+  color: var(--mg-error-text);
+  font-size: 0.875rem;
+}
+.mg-check {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mg-spacing-sm);
+  min-height: var(--mg-control-target);
+  cursor: pointer;
+}
+.mg-check input {
+  width: 24px;
+  height: 24px;
+  accent-color: var(--mg-primary);
+}
+.mg-check input[role='switch'] {
+  width: 48px;
+  height: 28px;
+}
+.mg-dialog {
+  background: var(--mg-surface);
+  color: var(--mg-on-background);
+  border: 1px solid var(--mg-outline);
+  border-radius: var(--mg-radius-dialog);
+  padding: var(--mg-spacing-xl);
+  width: min(600px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  font: inherit;
+}
+.mg-dialog::backdrop {
+  background: #0008;
+}
+.mg-menu-wrapper {
+  position: relative;
+  width: fit-content;
+}
+.mg-menu {
+  position: absolute;
+  top: 100%;
+  z-index: 50;
+  width: 222px;
+  max-height: min(320px, 60vh);
+  overflow: auto;
+  border: 1px solid var(--mg-outline);
+  border-radius: var(--mg-radius-control);
+  background: var(--mg-surface);
+  color: var(--mg-on-background);
+  box-shadow: 0 2px 6px #0003;
+}
+.mg-menu.left {
+  left: 0;
+}
+.mg-menu.right {
+  right: 0;
+}
+.mg-menu-button {
+  width: 100%;
+  text-align: start;
+  justify-content: start;
+}
+.mg-menu-item {
+  padding: var(--mg-spacing-sm) var(--mg-spacing-md);
+}
+.mg-icon {
+  display: inline-block;
+  font-family: 'Material Symbols Rounded', sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  line-height: 1;
+  white-space: nowrap;
+  user-select: none;
+  font-feature-settings: 'liga';
+}
+.mg-alert {
+  padding: var(--mg-spacing-md);
+  border: 1px solid var(--mg-outline);
+  border-radius: var(--mg-radius-control);
+}
+@media (prefers-reduced-motion: reduce) {
+  .mg-root *,
+  .mg-root *::before,
+  .mg-root *::after {
+    transition-duration: 0ms !important;
+    animation-duration: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+/* Keep switch form/keyboard behavior native while preserving Magnolia's track. */
+.mg-check input[role='switch'] {
+  appearance: none;
+  position: relative;
+  margin: 0;
+  border: 2px solid var(--mg-outline);
+  border-radius: 999px;
+  background: var(--mg-secondary);
+  cursor: pointer;
+}
+.mg-check input[role='switch']::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 2px;
+  inset-inline-start: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--mg-on-secondary);
+  transition: transform var(--mg-motion-normal);
+}
+.mg-check input[role='switch']:checked {
+  background: var(--mg-primary);
+}
+.mg-check input[role='switch']:checked::before {
+  transform: translateX(20px);
+  background: var(--mg-on-primary);
+}
+.mg-check input[role='switch']:disabled {
+  background: var(--mg-disabled-surface);
+  cursor: not-allowed;
+}
+.mg-check input[role='switch']:disabled::before {
+  background: var(--mg-disabled-text);
+}
+@media (forced-colors: active) {
+  .mg-check input[role='switch'] {
+    appearance: auto;
+  }
+  .mg-check input[role='switch']::before {
+    display: none;
+  }
+}
