@@ -1,0 +1,30 @@
+---
+title: Theme guide
+description: Magnolia Starlight light and dark theme validation.
+---
+
+Magnolia maps semantic colors to native Starlight styling. The **navigation**, search and content rendering belong to Starlight.
+
+## Readable content
+
+[Follow a documentation link](#code-and-callouts) or inspect this table:
+
+| Control        | Contract            |
+| -------------- | ------------------- |
+| Primary action | Readable foreground |
+| Form field     | Visible boundary    |
+
+## Code and callouts
+
+```ts
+import { tokens } from '@highlanderrobotics/magnolia-tokens';
+console.log(tokens.themes.dark.primary);
+```
+
+:::note
+Light mode has its own palette. Dark mode preserves Highlander purple.
+:::
+
+:::caution
+Do not migrate a consuming application until its release is verified.
+:::

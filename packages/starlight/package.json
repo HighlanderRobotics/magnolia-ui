@@ -1,0 +1,32 @@
+{
+  "name": "@highlanderrobotics/magnolia-starlight",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Magnolia UI starlight design system",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HighlanderRobotics/magnolia-ui.git",
+    "directory": "packages/starlight"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "theme.css",
+    "README.md"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    "./theme.css": "./theme.css"
+  },
+  "peerDependencies": {
+    "@astrojs/starlight": ">=0.35 <1"
+  },
+  "peerDependenciesMeta": {
+    "@astrojs/starlight": {
+      "optional": true
+    }
+  }
+}

@@ -1,0 +1,11 @@
+name: magnolia_example
+publish_to: none
+environment:
+  sdk: '>=3.8.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  magnolia_ui:
+    path: ..
+dev_dependencies:
+  flutter_lints: ^6.0.0

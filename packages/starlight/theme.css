@@ -1,0 +1,49 @@
+/* Generated from packages/tokens/tokens.json. Do not edit. */
+:root, :root[data-theme="dark"] {
+  --sl-color-accent-low: #282334;
+  --sl-color-accent: #b59aff;
+  --sl-color-accent-high: #b59aff;
+  --sl-color-white: #e0e0e0;
+  --sl-color-gray-1: #e0e0e0;
+  --sl-color-gray-2: #b8b8b8;
+  --sl-color-gray-3: #a3a3a3;
+  --sl-color-gray-4: #929292;
+  --sl-color-gray-5: #424242;
+  --sl-color-gray-6: #292929;
+  --sl-color-gray-7: #1f1f1f;
+  --sl-color-black: #1f1f1f;
+  --sl-color-bg: #1f1f1f;
+  --sl-color-bg-nav: #1f1f1f;
+  --sl-color-bg-sidebar: #1f1f1f;
+  --sl-color-text: #e0e0e0;
+  --sl-color-text-accent: #b59aff;
+  --sl-color-hairline: #929292;
+  --sl-color-hairline-light: #424242;
+  --sl-color-bg-inline-code: #292929;
+  --sl-font: 'Heebo', system-ui, sans-serif;
+  --sl-line-height: 1.5;
+}
+:root[data-theme="light"] {
+  --sl-color-accent-low: #f3e9ff;
+  --sl-color-accent: #350868;
+  --sl-color-accent-high: #350868;
+  --sl-color-white: #000000;
+  --sl-color-gray-1: #000000;
+  --sl-color-gray-2: #454545;
+  --sl-color-gray-3: #666666;
+  --sl-color-gray-4: #828282;
+  --sl-color-gray-5: #dbdbdb;
+  --sl-color-gray-6: #ffffff;
+  --sl-color-gray-7: #f5f5f5;
+  --sl-color-black: #f5f5f5;
+  --sl-color-bg: #f5f5f5;
+  --sl-color-bg-nav: #f5f5f5;
+  --sl-color-bg-sidebar: #f5f5f5;
+  --sl-color-text: #000000;
+  --sl-color-text-accent: #350868;
+  --sl-color-hairline: #828282;
+  --sl-color-hairline-light: #dbdbdb;
+  --sl-color-bg-inline-code: #ffffff;
+  --sl-font: 'Heebo', system-ui, sans-serif;
+  --sl-line-height: 1.5;
+}
