@@ -77,9 +77,15 @@ const command =
 if (manager === 'yarn')
   writeFileSync(
     join(directory, '.yarnrc.yml'),
-    'nodeLinker: node-modules\nenableScripts: false\n',
+    'nodeLinker: node-modules\nenableScripts: false\nenableImmutableInstalls: false\n',
   );
 execFileSync(command[0], command[1], { cwd: directory, stdio: 'inherit' });
+// A fresh fixture must create its lock first; the second install verifies immutability.
+if (manager === 'yarn')
+  execFileSync(command[0], [...command[1], '--immutable'], {
+    cwd: directory,
+    stdio: 'inherit',
+  });
 const inspect = `import {tokens} from '@highlanderrobotics/magnolia-tokens'; import {readFileSync} from 'node:fs'; if(tokens.themes.dark.primary!=='#b59aff')throw Error('Bad tokens'); for(const path of ['@highlanderrobotics/magnolia-tokens/css','@highlanderrobotics/magnolia-starlight/theme.css']) if(!readFileSync(import.meta.resolve(path).replace('file://',''),'utf8')) throw Error('Missing CSS'); console.log('Packed token imports and CSS exports passed.');`;
 writeFileSync(join(directory, 'smoke.mjs'), inspect);
 execFileSync('node', ['smoke.mjs'], { cwd: directory, stdio: 'inherit' });
