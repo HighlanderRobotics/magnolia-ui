@@ -14,9 +14,10 @@ This is the new repository for [LVT-362](https://linear.app/highlander-robotics/
 
 ## Develop
 
-Use Node 22.23.4 or newer and npm. Run from the repository root:
+Use Node 22.23.4 or newer and npm 11.6.2 (the pinned repository package manager). Run from the repository root:
 
 ```sh
+npm install --global npm@11.6.2
 npm ci
 npm run build
 npm run check

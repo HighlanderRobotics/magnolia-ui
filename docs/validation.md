@@ -31,6 +31,6 @@ Playwright writes captures to test-results; CI uploads them as browser-evidence.
 
 ## Remaining gates
 
-Consumer migrations and application workflow verification are deferred by request. This includes Website/tooling-web integration, Collection offline scouting/iOS/Android/VoiceOver/TalkBack, Dashboard picklists/charts and Learn integration. React Native controls have interaction tests, not a device accessibility sign-off. Flutter's minimum supported 3.35.7 version is covered by the CI matrix; only 3.50.0 was executed locally.
+Consumer migrations and application workflow verification are deferred by request. This includes Website/tooling-web integration, Collection offline scouting/iOS/Android/VoiceOver/TalkBack, Dashboard picklists/charts and Learn integration. React Native controls have interaction tests, not a device accessibility sign-off. Flutter 3.35.7 and 3.50.0 both passed the remote analysis/format/test/web-build matrix; 3.50.0 was also executed locally.
 
-GitHub CI covers Node 22/24, four package managers, Chromium and Flutter 3.35.7/3.50.0. Remote execution results are recorded in Linear after pushing. npm scope/bootstrap/OIDC and repository visibility remain owner configuration; registry packages are unpublished. Legacy archival remains gated by LVT-369.
+GitHub CI covers Node 22/24, four package managers, Chromium and Flutter 3.35.7/3.50.0. The first remote run passed both Flutter jobs but exposed npm 10 lock resolution differences. Repository npm is now pinned to 11.6.2; a fresh checkout clean install passes with that version. Updated remote results are recorded in Linear. npm scope/bootstrap/OIDC and repository visibility remain owner configuration; registry packages are unpublished. Legacy archival remains gated by LVT-369.
