@@ -1,0 +1,76 @@
+name: Validate Magnolia
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  javascript:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [22, 24]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm run lint
+      - run: npm run check
+      - run: npm test
+      - run: npm run test:ssr
+      - run: npm run test:native
+      - run: npm run check:packages
+      - run: npm run docs:build
+      - run: npm run gallery:build
+      - run: npx playwright install --with-deps chromium
+        if: matrix.node == 22
+      - run: npm run test:browser
+        if: matrix.node == 22
+      - uses: actions/upload-artifact@v4
+        if: always() && matrix.node == 22
+        with:
+          name: browser-evidence
+          path: test-results
+  consumers:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        manager: [npm, pnpm, yarn, bun]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.3
+      - run: npm ci
+      - run: npm run build
+      - run: node scripts/package-smoke.mjs ${{ matrix.manager }}
+  flutter:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: ['3.35.7', '3.50.0']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ matrix.version }}
+          channel: stable
+          cache: true
+      - run: flutter pub get
+        working-directory: packages/flutter
+      - run: flutter analyze
+        working-directory: packages/flutter
+      - run: dart format --output=none --set-exit-if-changed lib/magnolia_ui.dart test example/lib
+        working-directory: packages/flutter
+      - run: flutter test
+        working-directory: packages/flutter
+      - run: flutter build web
+        working-directory: packages/flutter/example
