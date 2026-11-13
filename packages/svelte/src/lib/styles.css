@@ -492,3 +492,188 @@
 .mg-menu-button:focus-visible {
   outline-offset: -3px;
 }
+
+/* Composed controls use the existing Figma field/menu/Pill foundations. */
+.mg-overlay-anchor {
+  display: inline-block;
+}
+.mg-tooltip,
+.mg-popover {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  max-width: calc(100vw - 2 * var(--mg-spacing-sm));
+  max-height: calc(100dvh - 2 * var(--mg-spacing-sm));
+  overflow: auto;
+  border: 1px solid var(--mg-outline);
+  border-radius: var(--mg-control-radius);
+  background: var(--mg-surface);
+  color: var(--mg-on-background);
+  font: inherit;
+  box-shadow: 0 2px 6px #0003;
+}
+.mg-tooltip {
+  padding: var(--mg-spacing-sm) var(--mg-spacing-md);
+  font-size: var(--mg-controls-selection-font-size);
+  pointer-events: auto;
+}
+.mg-popover {
+  padding: var(--mg-spacing-md);
+  width: min(22rem, calc(100vw - 2 * var(--mg-spacing-sm)));
+}
+.mg-tab-list {
+  display: flex;
+  align-items: center;
+  gap: var(--mg-controls-tab-gap);
+  padding-block: var(--mg-spacing-sm);
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.mg-tab-list .mg-pill {
+  flex: 1;
+  white-space: nowrap;
+}
+.mg-tab-list [aria-selected='true'] {
+  background: var(--mg-pill-primary-active);
+  color: var(--mg-pill-on-primary-active);
+}
+.mg-tabs [role='tabpanel'] {
+  padding-block: var(--mg-spacing-md);
+}
+.mg-tabs [role='tabpanel'][hidden] {
+  display: none;
+}
+.mg-toast {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--mg-spacing-md);
+}
+.mg-toast-region:empty {
+  display: none;
+}
+.mg-accordion {
+  border-bottom: 1px solid var(--mg-outline);
+}
+.mg-accordion summary {
+  padding: var(--mg-control-padding-y) var(--mg-control-field-padding-x);
+  min-height: var(--mg-control-target);
+  cursor: pointer;
+  font-weight: 500;
+}
+.mg-accordion-content {
+  padding: var(--mg-spacing-md);
+}
+.mg-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--mg-spacing-sm);
+  align-items: center;
+}
+.mg-page-status {
+  color: var(--mg-muted);
+  font-size: var(--mg-controls-selection-font-size);
+}
+.mg-table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+}
+.mg-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: var(--mg-control-font-size);
+}
+.mg-table caption {
+  text-align: start;
+  font-weight: 500;
+  padding-block: var(--mg-spacing-sm);
+}
+.mg-table th,
+.mg-table td {
+  text-align: start;
+  padding: var(--mg-control-menu-padding-y) var(--mg-control-menu-padding-x);
+  border-bottom: 1px solid var(--mg-outline);
+}
+.mg-table th {
+  background: var(--mg-surface);
+}
+.mg-table th button {
+  color: inherit;
+  font: inherit;
+  font-weight: 500;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  min-height: var(--mg-control-target);
+  cursor: pointer;
+}
+.mg-table-scroll:focus-visible,
+.mg-table th button:focus-visible,
+.mg-accordion summary:focus-visible,
+.mg-tabs [role='tabpanel']:focus-visible {
+  outline: 3px solid var(--mg-focus);
+  outline-offset: -3px;
+}
+.mg-multi-field::after {
+  display: none;
+}
+.mg-multi-field select {
+  height: auto;
+  min-height: var(--mg-controls-menu-max-height);
+  padding: 0;
+}
+.mg-multi-field option {
+  padding: var(--mg-control-menu-padding-y) var(--mg-control-menu-padding-x);
+}
+.mg-multi-field option:checked {
+  background: var(--mg-primary);
+  color: var(--mg-on-primary);
+}
+.mg-combobox {
+  position: relative;
+}
+.mg-options {
+  position: absolute;
+  z-index: 60;
+  inset-inline: 0;
+  top: 100%;
+  background: var(--mg-surface);
+  color: var(--mg-menu-text);
+  max-height: var(--mg-controls-menu-max-height);
+  overflow-y: auto;
+  border-radius: var(--mg-control-radius);
+  box-shadow: 0 2px 6px #0003;
+}
+.mg-options [role='option'] {
+  display: block;
+  border: 0;
+  width: 100%;
+  text-align: start;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: var(--mg-control-font-size);
+  padding: var(--mg-control-menu-padding-y) var(--mg-control-menu-padding-x);
+  cursor: pointer;
+}
+.mg-options [role='option']:hover:not(:disabled),
+.mg-options .mg-option-active,
+.mg-options [aria-selected='true'] {
+  background: var(--mg-primary);
+  color: var(--mg-on-primary);
+}
+.mg-options [role='option']:disabled {
+  color: var(--mg-on-secondary-disabled);
+  cursor: not-allowed;
+}
+.mg-empty {
+  padding: var(--mg-spacing-sm) var(--mg-spacing-md);
+}
+@media (forced-colors: active) {
+  .mg-tab-list [aria-selected='true'],
+  .mg-options .mg-option-active {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}

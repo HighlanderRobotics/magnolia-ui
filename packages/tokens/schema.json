@@ -1001,7 +1001,8 @@
         "menuMaxHeight",
         "switchThumbDisabledLightOpacity",
         "switchThumbDisabledDarkOpacity",
-        "selectionCompactDarkRadius"
+        "selectionCompactDarkRadius",
+        "tabGap"
       ],
       "properties": {
         "switchWidth": {
@@ -1065,6 +1066,10 @@
           "minimum": 0
         },
         "selectionCompactDarkRadius": {
+          "type": "number",
+          "minimum": 0
+        },
+        "tabGap": {
           "type": "number",
           "minimum": 0
         }

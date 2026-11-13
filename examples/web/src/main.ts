@@ -4,6 +4,12 @@ import '@fontsource-variable/material-symbols-rounded';
 import { hydrate, mount } from 'svelte';
 import App from './App.svelte';
 import FigmaParity from './FigmaParity.svelte';
+import Controls from './Controls.svelte';
 const target = document.getElementById('app')!;
-if (target.dataset.ssr) hydrate(App, { target });
-else mount(location.pathname === '/figma' ? FigmaParity : App, { target });
+const component = location.pathname.includes('controls')
+  ? Controls
+  : location.pathname === '/figma'
+    ? FigmaParity
+    : App;
+if (target.dataset.ssr) hydrate(component, { target });
+else mount(component, { target });

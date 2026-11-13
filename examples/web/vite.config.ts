@@ -9,15 +9,19 @@ function ssrFixture(): Plugin {
     name: 'magnolia-ssr-fixture',
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
-        if (req.url?.split('?')[0] !== '/ssr') return next();
+        const path = req.url?.split('?')[0];
+        if (path !== '/ssr' && path !== '/controls-ssr') return next();
         try {
           const template = await readFile(
             new URL('./index.html', import.meta.url),
             'utf8',
           );
           const html = await server.transformIndexHtml('/ssr', template);
-          const { default: App } =
-            await server.ssrLoadModule('/src/App.svelte');
+          const { default: App } = await server.ssrLoadModule(
+            path === '/controls-ssr'
+              ? '/src/Controls.svelte'
+              : '/src/App.svelte',
+          );
           const { render } = await server.ssrLoadModule('svelte/server');
           const output = render(App);
           res.setHeader('Content-Type', 'text/html');

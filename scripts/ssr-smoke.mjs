@@ -18,6 +18,20 @@ try {
   assert.doesNotMatch(body, /document\.fonts/);
   const ids = [...body.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]);
   assert.equal(ids.length, new Set(ids).size, 'SSR control IDs must be unique');
+  const { default: Controls } = await server.ssrLoadModule(
+    '/examples/web/src/Controls.svelte',
+  );
+  const expanded = render(Controls).body;
+  assert.match(expanded, /role="tablist"/);
+  assert.match(expanded, /role="combobox"/);
+  const expandedIds = [...expanded.matchAll(/\sid="([^"]+)"/g)].map(
+    (m) => m[1],
+  );
+  assert.equal(
+    expandedIds.length,
+    new Set(expandedIds).size,
+    'Extended SSR IDs must be unique',
+  );
   console.log(
     'Svelte server rendering passed without window, document or font loading.',
   );

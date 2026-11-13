@@ -109,3 +109,89 @@ it('native Pill exposes selection and blocks disabled activation', () => {
   fireEvent.press(getByRole('button'));
   expect(change).toHaveBeenCalledTimes(1);
 });
+
+import { Dialog, Radio, Select, Menu } from '../../packages/react-native/src';
+import { Modal } from 'react-native';
+it('native Radio reports checked state, selected value and disabled behavior', () => {
+  const choose = jest.fn();
+  const { getByRole, rerender } = render(
+    <Radio label="Red alliance" value="red" checked onSelect={choose} />,
+  );
+  expect(getByRole('radio').props.accessibilityState.checked).toBe(true);
+  fireEvent.press(getByRole('radio'));
+  expect(choose).toHaveBeenCalledWith('red');
+  rerender(
+    <Radio label="Red alliance" value="red" disabled onSelect={choose} />,
+  );
+  fireEvent.press(getByRole('radio'));
+  expect(choose).toHaveBeenCalledTimes(1);
+});
+it('native Dialog guards back and backdrop dismissal and exposes a heading', () => {
+  const close = jest.fn();
+  const { getByTestId, getByRole, UNSAFE_getByType, rerender } = render(
+    <Dialog open title="Match notes" canClose={false} onClose={close}>
+      <Text>Notes</Text>
+    </Dialog>,
+  );
+  fireEvent(
+    getByTestId('magnolia-dialog-backdrop', { includeHiddenElements: true }),
+    'press',
+  );
+  UNSAFE_getByType(Modal).props.onRequestClose();
+  expect(close).not.toHaveBeenCalled();
+  expect(getByRole('header')).toHaveTextContent('Match notes');
+  rerender(<Dialog open title="Match notes" onClose={close} />);
+  fireEvent.press(getByRole('button', { name: 'Close Match notes' }));
+  expect(close).toHaveBeenCalledTimes(1);
+});
+it('native Select commits available choices, retains disabled options and closes', () => {
+  function Fixture() {
+    const [value, setValue] = React.useState<string | null>(null);
+    return (
+      <Select
+        label="Alliance"
+        value={value}
+        onChange={setValue}
+        items={[
+          { value: 'red', label: 'Red' },
+          { value: 'blue', label: 'Blue', disabled: true },
+        ]}
+      />
+    );
+  }
+  const { getByRole, queryByRole } = render(<Fixture />);
+  fireEvent.press(getByRole('combobox'));
+  fireEvent.press(getByRole('radio', { name: 'Blue' }));
+  expect(getByRole('combobox').props.accessibilityState.expanded).toBe(true);
+  fireEvent.press(getByRole('radio', { name: 'Red' }));
+  expect(getByRole('combobox').props.accessibilityValue.text).toBe('Red');
+  expect(getByRole('combobox').props.accessibilityState.expanded).toBe(false);
+  expect(queryByRole('radio')).toBeNull();
+});
+it('native Menu keeps failed actions open and closes only after successful completion', async () => {
+  const close = jest.fn();
+  const action = jest
+    .fn()
+    .mockRejectedValueOnce(new Error('Try again'))
+    .mockResolvedValueOnce(undefined);
+  const { getByRole } = render(
+    <Menu
+      open
+      onClose={close}
+      items={[
+        { value: 'save', label: 'Save report' },
+        { value: 'remove', label: 'Remove', disabled: true },
+      ]}
+      onSelect={action}
+    />,
+  );
+  fireEvent.press(getByRole('button', { name: 'Remove' }));
+  expect(action).not.toHaveBeenCalled();
+  fireEvent.press(getByRole('button', { name: 'Save report' }));
+  await waitFor(() =>
+    expect(getByRole('alert')).toHaveTextContent('Try again'),
+  );
+  expect(close).not.toHaveBeenCalled();
+  fireEvent.press(getByRole('button', { name: 'Save report' }));
+  await waitFor(() => expect(close).toHaveBeenCalledTimes(1));
+});
