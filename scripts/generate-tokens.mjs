@@ -33,11 +33,11 @@ export function generate(source) {
     'victory-purple': 'primary',
     'victory-purple-hover': 'primaryHover',
     'victory-purple-faded': 'primaryDisabled',
-    'on-victory-purple-faded': 'disabledText',
+    'on-victory-purple-faded': 'onPrimaryDisabled',
     'light-gray': 'secondary',
     'light-gray-hover': 'secondaryHover',
     'light-gray-faded': 'secondaryDisabled',
-    'on-light-gray-faded': 'disabledText',
+    'on-light-gray-faded': 'onSecondaryDisabled',
     'secondary-container': 'surface',
     'secondary-container-faded': 'disabledSurface',
     background: 'background',
@@ -46,8 +46,8 @@ export function generate(source) {
     placeholder: 'placeholder',
     danger: 'danger',
     'danger-hover': 'dangerHover',
-    'danger-faded': 'disabledSurface',
-    'on-danger-faded': 'disabledText',
+    'danger-faded': 'dangerDisabled',
+    'on-danger-faded': 'onDangerDisabled',
   };
   const aliases = Object.entries(legacy)
     .map(([k, v]) => `  --${k}: var(--mg-${kebab(v)});`)
@@ -56,6 +56,7 @@ export function generate(source) {
     declarations({ ...t.themes[name], ...t.frc[name] }) +
     '\n' +
     aliases +
+    `\n  --mg-switch-thumb-disabled-opacity: ${name === 'light' ? t.controls.switchThumbDisabledLightOpacity : t.controls.switchThumbDisabledDarkOpacity};\n  --mg-selection-compact-radius: ${name === 'light' ? t.density.compact.selectionRadius : t.controls.selectionCompactDarkRadius}px;` +
     '\n  color-scheme: ' +
     name +
     ';';
@@ -65,13 +66,14 @@ export function generate(source) {
   css += `@media (prefers-color-scheme: dark) { :root:not([data-magnolia-theme="light"]):not([data-theme="light"]), [data-magnolia-theme="system"] {\n${mode('dark')}\n} }\n`;
   css += `[data-magnolia-theme="dark"], .color-scheme-dark {\n${mode('dark')}\n}\n`;
   for (const [group, values] of Object.entries({
+    controls: t.controls,
     spacing: t.spacing,
     radius: t.radius,
     motion: t.motion,
   }))
-    css += `:root {\n${declarations(Object.fromEntries(Object.entries(values).map(([k, v]) => [group + '-' + k, v + (group === 'motion' ? 'ms' : 'px')])))}\n}\n`;
+    css += `:root {\n${declarations(Object.fromEntries(Object.entries(values).map(([k, v]) => [group + '-' + k, v + (k.endsWith('Opacity') ? '' : group === 'motion' ? 'ms' : 'px')])))}\n}\n`;
   for (const [name, d] of Object.entries(t.density))
-    css += `${name === 'comfortable' ? ':root, ' : ''}[data-density="${name}"] {\n${declarations(Object.fromEntries(Object.entries(d).map(([k, v]) => ['control-' + k, v + 'px'])))}\n}\n`;
+    css += `${name === 'comfortable' ? ':root, ' : ''}[data-density="${name}"] {\n${declarations(Object.fromEntries(Object.entries(d).map(([k, v]) => ['control-' + k, name === 'compact' && k === 'selectionRadius' ? 'var(--mg-selection-compact-radius)' : v + 'px'])))}\n}\n`;
   css += `:root { --mg-font-family: '${t.typography.family}', system-ui, sans-serif; --mg-line-height: ${t.typography.lineHeight}; }\n@media (prefers-reduced-motion: reduce) { :root { --mg-motion-fast: 0ms; --mg-motion-normal: 0ms; --mg-motion-slow: 0ms; } }\n`;
   let starlight = header;
   for (const m of ['dark', 'light']) {
@@ -123,6 +125,7 @@ export function generate(source) {
   }
   dart += `const magnoliaFontFamily = '${t.typography.family}';\n`;
   for (const [group, values] of Object.entries({
+    controls: t.controls,
     spacing: t.spacing,
     radius: t.radius,
     motion: t.motion,

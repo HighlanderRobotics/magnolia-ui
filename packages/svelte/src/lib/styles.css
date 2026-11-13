@@ -1,3 +1,7 @@
+@import './figma-assets.css';
+:root {
+  --mg-icon-font-family: 'Material Symbols Rounded';
+}
 .mg-root {
   color: var(--mg-on-background);
   background: var(--mg-background);
@@ -26,7 +30,8 @@
   justify-content: center;
   gap: var(--mg-spacing-sm);
   border: 0;
-  min-height: var(--mg-control-target);
+  position: relative;
+  min-height: var(--mg-control-visual-height);
   padding: var(--mg-control-padding-y) var(--mg-control-padding-x);
   font-weight: 500;
   text-decoration: none;
@@ -63,8 +68,8 @@
 }
 .mg-button[aria-disabled='true'],
 .mg-button[aria-disabled='true']:hover {
-  background: var(--mg-disabled-surface);
-  color: var(--mg-disabled-text);
+  background: var(--mg-secondary-disabled);
+  color: var(--mg-on-secondary-disabled);
   cursor: not-allowed;
 }
 .mg-button:focus-visible,
@@ -82,8 +87,9 @@
 .mg-field input,
 .mg-field select {
   min-width: 0;
-  min-height: var(--mg-control-target);
-  padding: var(--mg-control-padding-y) var(--mg-spacing-md);
+  height: var(--mg-control-visual-height);
+  padding: calc(var(--mg-control-padding-y) - 2px)
+    calc(var(--mg-control-field-padding-x) - 2px);
   color: var(--mg-on-background);
   background: var(--mg-surface);
   border: 2px solid var(--mg-outline);
@@ -95,8 +101,9 @@
   border-color: var(--mg-error-text);
 }
 .mg-field :disabled {
-  background: var(--mg-disabled-surface);
-  color: var(--mg-disabled-text);
+  background: var(--mg-field-disabled-background);
+  color: var(--mg-field-disabled-text);
+  border-color: var(--mg-field-disabled-border);
   cursor: not-allowed;
 }
 .mg-error {
@@ -106,18 +113,21 @@
 .mg-check {
   display: inline-flex;
   align-items: center;
-  gap: var(--mg-spacing-sm);
+  gap: var(--mg-control-selection-gap);
+  font-size: var(--mg-controls-selection-font-size);
   min-height: var(--mg-control-target);
   cursor: pointer;
 }
 .mg-check input {
-  width: 24px;
-  height: 24px;
+  width: var(--mg-control-selection-size);
+  height: var(--mg-control-selection-size);
+  margin: 0;
+  flex: none;
   accent-color: var(--mg-primary);
 }
 .mg-check input[role='switch'] {
-  width: 48px;
-  height: 28px;
+  width: var(--mg-controls-switch-width);
+  height: var(--mg-controls-switch-height);
 }
 .mg-dialog {
   background: var(--mg-surface);
@@ -141,10 +151,10 @@
   position: absolute;
   top: 100%;
   z-index: 50;
-  width: 222px;
-  max-height: min(320px, 60vh);
+  width: var(--mg-controls-menu-width);
+  max-height: min(var(--mg-controls-menu-max-height), 60vh);
   overflow: auto;
-  border: 1px solid var(--mg-outline);
+  border: 0;
   border-radius: var(--mg-radius-control);
   background: var(--mg-surface);
   color: var(--mg-on-background);
@@ -166,7 +176,8 @@
 }
 .mg-icon {
   display: inline-block;
-  font-family: 'Material Symbols Rounded', sans-serif;
+  font-family:
+    var(--mg-icon-font-family, 'Material Symbols Rounded'), sans-serif;
   font-weight: 500;
   font-style: normal;
   line-height: 1;
@@ -188,46 +199,296 @@
     scroll-behavior: auto !important;
   }
 }
-/* Keep switch form/keyboard behavior native while preserving Magnolia's track. */
+
+/* Visual boxes follow Figma; the invisible activation area retains the touch target. */
+.mg-button::after,
+.mg-pill::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+  min-height: var(--mg-control-target);
+  height: 100%;
+  transform: translateY(-50%);
+}
+.mg-button.primary[aria-disabled='true'] {
+  background: var(--mg-primary-disabled);
+  color: var(--mg-on-primary-disabled);
+}
+.mg-button.danger[aria-disabled='true'] {
+  background: var(--mg-danger-disabled);
+  color: var(--mg-on-danger-disabled);
+}
+.mg-button.text-only,
+.mg-button.text-only-secondary {
+  padding-inline: 0;
+}
+.mg-button.text-only:hover,
+.mg-button.text-only:active {
+  color: var(--mg-primary-hover);
+}
+.mg-button.text-only-secondary:hover,
+.mg-button.text-only-secondary:active {
+  color: var(--mg-muted);
+}
+.mg-button.text-only[aria-disabled='true'] {
+  background: transparent;
+  color: var(--mg-primary-disabled);
+}
+.mg-button.text-only-secondary[aria-disabled='true'] {
+  background: transparent;
+  color: var(--mg-on-secondary-disabled);
+}
+.mg-button.primary:active:not([aria-disabled='true']) {
+  background: var(--mg-primary-hover);
+}
+.mg-button.secondary:active:not([aria-disabled='true']) {
+  background: var(--mg-secondary-hover);
+}
+.mg-button.danger:active:not([aria-disabled='true']) {
+  background: var(--mg-danger-hover);
+}
+.mg-field input:disabled::placeholder {
+  color: var(--mg-field-disabled-placeholder);
+}
+.mg-field:has(select) {
+  position: relative;
+}
+.mg-field select {
+  appearance: none;
+  padding-inline-end: calc(
+    var(--mg-control-field-padding-x) + var(--mg-controls-select-arrow-width) +
+      8px
+  );
+}
+.mg-field select.mg-placeholder {
+  color: var(--mg-placeholder);
+}
+.mg-field select.mg-placeholder:disabled {
+  color: var(--mg-field-disabled-placeholder);
+}
+.mg-field:has(select)::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  inset-inline-end: var(--mg-control-field-padding-x);
+  bottom: calc(
+    (var(--mg-control-visual-height) - var(--mg-controls-select-arrow-height)) /
+      2
+  );
+  width: var(--mg-controls-select-arrow-width);
+  height: var(--mg-controls-select-arrow-height);
+  background-image: var(--mg-asset-select-arrow);
+  background-repeat: no-repeat;
+}
+.mg-field:has(select:disabled)::after {
+  background-image: var(--mg-select-arrow-disabled);
+}
+.mg-field:has(select):has(.mg-error)::after {
+  bottom: auto;
+  top: calc(
+    (var(--mg-control-visual-height) - var(--mg-controls-select-arrow-height)) /
+      2
+  );
+}
+.mg-field:has(label):has(select):has(.mg-error)::after {
+  top: calc(
+    1.5em + var(--mg-spacing-xs) +
+      (
+        var(--mg-control-visual-height) - var(--mg-controls-select-arrow-height)
+      ) /
+      2
+  );
+}
+.mg-menu-button {
+  border-radius: 0;
+  min-height: 0;
+  padding: var(--mg-control-menu-padding-y) var(--mg-control-menu-padding-x);
+  font-weight: 400;
+}
+.mg-menu-button::after {
+  min-height: 100%;
+}
+.mg-menu-button.secondary {
+  background: var(--mg-surface);
+  color: var(--mg-menu-text);
+}
+.mg-menu-button.secondary:hover,
+.mg-menu-button.secondary:active:not([aria-disabled='true']) {
+  background: var(--mg-secondary);
+}
+.mg-menu-button.primary {
+  font-weight: 500;
+}
+.mg-menu-button[aria-disabled='true'] {
+  background: var(--mg-surface);
+  color: var(--mg-on-secondary-disabled);
+}
+.mg-check:has(input:disabled) {
+  cursor: not-allowed;
+  color: var(--mg-selection-disabled-label);
+}
+.mg-check input:not([role='switch']) {
+  appearance: none;
+  background: var(--mg-surface);
+  border: 2px solid var(--mg-outline);
+  border-radius: var(--mg-control-selection-radius);
+}
+.mg-check input:not([role='switch']):disabled {
+  background: var(--mg-selection-disabled-background);
+  border-color: var(--mg-selection-disabled-border);
+}
+.mg-check input[type='checkbox']:not([role='switch']):checked {
+  background-image: var(--mg-checkbox-on);
+  border: 0;
+  background-color: transparent;
+  background-repeat: no-repeat;
+}
+.mg-check input[type='checkbox']:not([role='switch']):checked:disabled {
+  background-image: var(--mg-checkbox-on-disabled);
+}
+.mg-check input[type='radio'] {
+  border: 0;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-image: var(--mg-radio-off);
+}
+.mg-check input[type='radio']:checked {
+  background-image: var(--mg-radio-on);
+}
+.mg-check input[type='radio']:disabled {
+  background-image: var(--mg-radio-off-disabled);
+}
+.mg-check input[type='radio']:checked:disabled {
+  background-image: var(--mg-radio-on-disabled);
+}
 .mg-check input[role='switch'] {
   appearance: none;
   position: relative;
-  margin: 0;
-  border: 2px solid var(--mg-outline);
-  border-radius: 999px;
+  border: 0;
+  border-radius: 100px;
   background: var(--mg-secondary);
   cursor: pointer;
 }
 .mg-check input[role='switch']::before {
   content: '';
   position: absolute;
-  inset-block-start: 2px;
-  inset-inline-start: 2px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--mg-on-secondary);
+  inset-block-start: var(--mg-controls-switch-inset);
+  inset-inline-start: var(--mg-controls-switch-inset);
+  width: var(--mg-controls-switch-thumb);
+  height: var(--mg-controls-switch-thumb);
+  border-radius: 100px;
+  background: var(--mg-switch-thumb);
   transition: transform var(--mg-motion-normal);
+}
+.mg-check input[role='switch']:not(:disabled):hover {
+  background: var(--mg-secondary-hover);
 }
 .mg-check input[role='switch']:checked {
   background: var(--mg-primary);
 }
+.mg-check input[role='switch']:checked:not(:disabled):hover {
+  background: var(--mg-primary-hover);
+}
 .mg-check input[role='switch']:checked::before {
-  transform: translateX(20px);
-  background: var(--mg-on-primary);
+  transform: translateX(var(--mg-controls-switch-travel));
 }
 .mg-check input[role='switch']:disabled {
-  background: var(--mg-disabled-surface);
+  background: var(--mg-secondary-disabled);
   cursor: not-allowed;
 }
+.mg-check input[role='switch']:checked:disabled {
+  background: var(--mg-primary-disabled);
+}
 .mg-check input[role='switch']:disabled::before {
-  background: var(--mg-disabled-text);
+  opacity: var(--mg-switch-thumb-disabled-opacity);
+}
+.mg-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--mg-controls-pill-radius);
+  padding: var(--mg-controls-pill-padding-y) var(--mg-controls-pill-padding-x);
+  font-family: var(--mg-font-family);
+  font-size: var(--mg-controls-selection-font-size);
+  font-weight: 500;
+  line-height: 1.5;
+  background: transparent;
+  color: var(--mg-on-background);
+  cursor: pointer;
+}
+.mg-pill[aria-pressed='true'].primary {
+  background: var(--mg-pill-primary-active);
+  color: var(--mg-pill-on-primary-active);
+}
+.mg-pill[aria-pressed='true'].secondary {
+  background: var(--mg-pill-secondary-active);
+  color: var(--mg-pill-on-secondary-active);
+}
+.mg-pill:focus-visible {
+  outline: 3px solid var(--mg-focus);
+  outline-offset: 3px;
+}
+.mg-pill:disabled {
+  cursor: not-allowed;
+  color: var(--mg-disabled-text);
+}
+.mg-check:dir(rtl) input[role='switch']:checked::before {
+  transform: translateX(calc(-1 * var(--mg-controls-switch-travel)));
 }
 @media (forced-colors: active) {
-  .mg-check input[role='switch'] {
+  .mg-check input:not([role='switch']),
+  .mg-check input[role='switch'],
+  .mg-field select {
     appearance: auto;
+    background-image: none !important;
   }
-  .mg-check input[role='switch']::before {
+  .mg-check input[role='switch']::before,
+  .mg-field:has(select)::after {
     display: none;
   }
+  .mg-pill[aria-pressed='true'] {
+    outline: 2px solid Highlight;
+  }
+}
+
+:root,
+[data-density='comfortable'] {
+  --mg-checkbox-on: var(--mg-asset-checkbox-comfortable-on);
+  --mg-checkbox-on-disabled: var(--mg-asset-checkbox-comfortable-on-disabled);
+  --mg-radio-off: var(--mg-asset-radio-comfortable-off);
+  --mg-radio-on: var(--mg-asset-radio-comfortable-on);
+  --mg-radio-off-disabled: var(--mg-asset-radio-comfortable-off-disabled);
+  --mg-radio-on-disabled: var(--mg-asset-radio-comfortable-on-disabled);
+}
+[data-density='compact'] {
+  --mg-checkbox-on: var(--mg-asset-checkbox-compact-on);
+  --mg-checkbox-on-disabled: var(--mg-asset-checkbox-compact-on-disabled);
+  --mg-radio-off: var(--mg-asset-radio-compact-off);
+  --mg-radio-on: var(--mg-asset-radio-compact-on);
+  --mg-radio-off-disabled: var(--mg-asset-radio-compact-off-disabled);
+  --mg-radio-on-disabled: var(--mg-asset-radio-compact-on-disabled);
+}
+
+:root,
+[data-density='comfortable'] {
+  --mg-select-arrow-disabled: var(--mg-asset-select-arrow-disabled);
+}
+[data-density='compact'] {
+  --mg-select-arrow-disabled: var(--mg-asset-select-arrow-disabled-compact);
+}
+.mg-check input[type='radio']:not(:checked):not(:disabled) {
+  outline: 1px solid var(--mg-outline);
+  outline-offset: 0;
+  border-radius: 50%;
+}
+.mg-check input[type='radio']:focus-visible {
+  outline: 3px solid var(--mg-focus);
+  outline-offset: 3px;
+}
+
+.mg-menu-button:focus-visible {
+  outline-offset: -3px;
 }

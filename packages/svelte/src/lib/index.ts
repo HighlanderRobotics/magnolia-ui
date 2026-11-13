@@ -14,3 +14,5 @@ export { default as Checkbox } from './Checkbox.svelte';
 export { default as Radio } from './Radio.svelte';
 export { default as Alert } from './Alert.svelte';
 export type { ButtonProps, Variant } from './types.js';
+
+export { default as Pill } from './Pill.svelte';

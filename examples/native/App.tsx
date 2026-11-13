@@ -8,6 +8,7 @@ import {
   Switch,
   TitleLarge,
   Alert,
+  Pill,
 } from '@highlanderrobotics/magnolia-react-native';
 export default function App() {
   const [name, setName] = useState('');
@@ -23,6 +24,9 @@ export default function App() {
           onValueChange={setDark}
         />
         <TextField label="Team name" value={name} onChangeText={setName} />
+        <Pill active={ready} onChange={setReady}>
+          Ready to scout
+        </Pill>
         <Checkbox label="Ready to scout" checked={ready} onChange={setReady} />
         <Button
           variant="primary"

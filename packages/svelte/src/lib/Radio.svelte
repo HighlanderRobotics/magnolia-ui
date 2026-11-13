@@ -27,5 +27,5 @@
       if (event.currentTarget.checked) group = value;
       onchange?.(event);
     }}
-  />{label}</label
+  /><span>{label}</span></label
 >

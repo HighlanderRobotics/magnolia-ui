@@ -86,3 +86,19 @@ it('select disables unavailable options and associates errors', () => {
   );
   expect(getByRole('combobox')).toBeRequired();
 });
+
+import Pill from '../packages/svelte/src/lib/Pill.svelte';
+it('Pill supports native toggling, cancellation and disabled state', async () => {
+  const click = vi.fn((e: MouseEvent) => e.preventDefault());
+  const { getByRole, rerender } = render(Pill, {
+    props: { children, onclick: click },
+  });
+  const pill = getByRole('button');
+  await fireEvent.click(pill);
+  expect(pill).toHaveAttribute('aria-pressed', 'false');
+  await rerender({ onclick: undefined });
+  await fireEvent.click(pill);
+  expect(pill).toHaveAttribute('aria-pressed', 'true');
+  await rerender({ disabled: true });
+  expect(pill).toBeDisabled();
+});

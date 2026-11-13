@@ -52,7 +52,7 @@ export const tokens = {
       "background": "#f5f5f5",
       "onBackground": "#000000",
       "muted": "#454545",
-      "onPrimary": "#ffffff",
+      "onPrimary": "#f5f5f5",
       "onSecondary": "#000000",
       "danger": "#9e2c2c",
       "dangerHover": "#772727",
@@ -62,7 +62,24 @@ export const tokens = {
       "placeholder": "#666666",
       "focus": "#350868",
       "disabledText": "#909090",
-      "disabledSurface": "#dddddd"
+      "disabledSurface": "#dddddd",
+      "onPrimaryDisabled": "#dbd7df",
+      "onSecondaryDisabled": "#909090",
+      "dangerDisabled": "#9d7979",
+      "onDangerDisabled": "#d8c9c9",
+      "fieldDisabledBackground": "#f5f5f5",
+      "fieldDisabledBorder": "#dddddd",
+      "fieldDisabledText": "#b4b4b4",
+      "fieldDisabledPlaceholder": "#dddddd",
+      "switchThumb": "#ffffff",
+      "selectionDisabledLabel": "#828282",
+      "selectionDisabledBackground": "#f5f5f5",
+      "selectionDisabledBorder": "#eeeeee",
+      "menuText": "#000000",
+      "pillPrimaryActive": "#bbaaf0",
+      "pillOnPrimaryActive": "#1f1f1f",
+      "pillSecondaryActive": "#292929",
+      "pillOnSecondaryActive": "#e0e0e0"
     },
     "dark": {
       "primary": "#b59aff",
@@ -85,7 +102,24 @@ export const tokens = {
       "placeholder": "#a3a3a3",
       "focus": "#b59aff",
       "disabledText": "#929292",
-      "disabledSurface": "#2d2d2d"
+      "disabledSurface": "#2d2d2d",
+      "onPrimaryDisabled": "#1f1f1f",
+      "onSecondaryDisabled": "#5f5f5f",
+      "dangerDisabled": "#563333",
+      "onDangerDisabled": "#746767",
+      "fieldDisabledBackground": "#1f1f1f",
+      "fieldDisabledBorder": "#2d2d2d",
+      "fieldDisabledText": "#585858",
+      "fieldDisabledPlaceholder": "#424242",
+      "switchThumb": "#1f1f1f",
+      "selectionDisabledLabel": "#404040",
+      "selectionDisabledBackground": "#212121",
+      "selectionDisabledBorder": "#272727",
+      "menuText": "#cccccc",
+      "pillPrimaryActive": "#bbaaf0",
+      "pillOnPrimaryActive": "#1f1f1f",
+      "pillSecondaryActive": "#292929",
+      "pillOnSecondaryActive": "#e0e0e0"
     }
   },
   "material": {
@@ -193,15 +227,47 @@ export const tokens = {
       "paddingX": 20,
       "fontSize": 16,
       "radius": 7,
-      "target": 48
+      "target": 48,
+      "visualHeight": 44,
+      "fieldPaddingX": 14,
+      "selectionSize": 24,
+      "selectionGap": 10,
+      "selectionRadius": 5,
+      "menuPaddingX": 14,
+      "menuPaddingY": 8
     },
     "compact": {
       "paddingY": 6,
       "paddingX": 12,
       "fontSize": 14,
       "radius": 5,
-      "target": 44
+      "target": 44,
+      "visualHeight": 33,
+      "fieldPaddingX": 10,
+      "selectionSize": 18,
+      "selectionGap": 8,
+      "selectionRadius": 4,
+      "menuPaddingX": 10,
+      "menuPaddingY": 6
     }
+  },
+  "controls": {
+    "switchWidth": 58,
+    "switchHeight": 34,
+    "switchThumb": 28,
+    "switchInset": 3,
+    "switchTravel": 24,
+    "pillPaddingX": 10,
+    "pillPaddingY": 7,
+    "pillRadius": 7,
+    "selectionFontSize": 14,
+    "selectArrowWidth": 12.5,
+    "selectArrowHeight": 6.25,
+    "menuWidth": 222,
+    "menuMaxHeight": 140,
+    "switchThumbDisabledLightOpacity": 0.7,
+    "switchThumbDisabledDarkOpacity": 0.6,
+    "selectionCompactDarkRadius": 5
   }
 } as const;
 export type ThemeMode = keyof typeof tokens.themes;
