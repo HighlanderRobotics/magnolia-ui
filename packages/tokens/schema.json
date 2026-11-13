@@ -13,7 +13,8 @@
     "radius",
     "typography",
     "motion",
-    "density"
+    "density",
+    "controls"
   ],
   "properties": {
     "$schema": {
@@ -116,6 +117,74 @@
             "surface": {
               "type": "string",
               "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onPrimaryDisabled": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onSecondaryDisabled": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "dangerDisabled": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onDangerDisabled": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "fieldDisabledBackground": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "fieldDisabledBorder": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "fieldDisabledText": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "fieldDisabledPlaceholder": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "switchThumb": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "selectionDisabledLabel": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "selectionDisabledBackground": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "selectionDisabledBorder": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "menuText": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "pillPrimaryActive": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "pillOnPrimaryActive": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "pillSecondaryActive": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "pillOnSecondaryActive": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
             }
           },
           "required": [
@@ -139,7 +208,24 @@
             "secondary",
             "secondaryDisabled",
             "secondaryHover",
-            "surface"
+            "surface",
+            "onPrimaryDisabled",
+            "onSecondaryDisabled",
+            "dangerDisabled",
+            "onDangerDisabled",
+            "fieldDisabledBackground",
+            "fieldDisabledBorder",
+            "fieldDisabledText",
+            "fieldDisabledPlaceholder",
+            "switchThumb",
+            "selectionDisabledLabel",
+            "selectionDisabledBackground",
+            "selectionDisabledBorder",
+            "menuText",
+            "pillPrimaryActive",
+            "pillOnPrimaryActive",
+            "pillSecondaryActive",
+            "pillOnSecondaryActive"
           ],
           "additionalProperties": {
             "type": "string",
@@ -232,6 +318,74 @@
             "surface": {
               "type": "string",
               "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onPrimaryDisabled": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onSecondaryDisabled": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "dangerDisabled": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "onDangerDisabled": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "fieldDisabledBackground": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "fieldDisabledBorder": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "fieldDisabledText": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "fieldDisabledPlaceholder": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "switchThumb": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "selectionDisabledLabel": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "selectionDisabledBackground": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "selectionDisabledBorder": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "menuText": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "pillPrimaryActive": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "pillOnPrimaryActive": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "pillSecondaryActive": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
+            },
+            "pillOnSecondaryActive": {
+              "type": "string",
+              "pattern": "^(#[0-9a-fA-F]{6}|\\{[a-zA-Z0-9.\\-]+\\})$"
             }
           },
           "required": [
@@ -255,7 +409,24 @@
             "secondary",
             "secondaryDisabled",
             "secondaryHover",
-            "surface"
+            "surface",
+            "onPrimaryDisabled",
+            "onSecondaryDisabled",
+            "dangerDisabled",
+            "onDangerDisabled",
+            "fieldDisabledBackground",
+            "fieldDisabledBorder",
+            "fieldDisabledText",
+            "fieldDisabledPlaceholder",
+            "switchThumb",
+            "selectionDisabledLabel",
+            "selectionDisabledBackground",
+            "selectionDisabledBorder",
+            "menuText",
+            "pillPrimaryActive",
+            "pillOnPrimaryActive",
+            "pillSecondaryActive",
+            "pillOnSecondaryActive"
           ],
           "additionalProperties": {
             "type": "string",
@@ -675,7 +846,20 @@
       "properties": {
         "comfortable": {
           "type": "object",
-          "required": ["paddingY", "paddingX", "fontSize", "radius", "target"],
+          "required": [
+            "paddingY",
+            "paddingX",
+            "fontSize",
+            "radius",
+            "target",
+            "visualHeight",
+            "fieldPaddingX",
+            "selectionSize",
+            "selectionGap",
+            "selectionRadius",
+            "menuPaddingX",
+            "menuPaddingY"
+          ],
           "additionalProperties": false,
           "properties": {
             "paddingY": {
@@ -695,6 +879,34 @@
               "minimum": 0
             },
             "target": {
+              "type": "number",
+              "minimum": 0
+            },
+            "visualHeight": {
+              "type": "number",
+              "minimum": 0
+            },
+            "fieldPaddingX": {
+              "type": "number",
+              "minimum": 0
+            },
+            "selectionSize": {
+              "type": "number",
+              "minimum": 0
+            },
+            "selectionGap": {
+              "type": "number",
+              "minimum": 0
+            },
+            "selectionRadius": {
+              "type": "number",
+              "minimum": 0
+            },
+            "menuPaddingX": {
+              "type": "number",
+              "minimum": 0
+            },
+            "menuPaddingY": {
               "type": "number",
               "minimum": 0
             }
@@ -702,7 +914,20 @@
         },
         "compact": {
           "type": "object",
-          "required": ["paddingY", "paddingX", "fontSize", "radius", "target"],
+          "required": [
+            "paddingY",
+            "paddingX",
+            "fontSize",
+            "radius",
+            "target",
+            "visualHeight",
+            "fieldPaddingX",
+            "selectionSize",
+            "selectionGap",
+            "selectionRadius",
+            "menuPaddingX",
+            "menuPaddingY"
+          ],
           "additionalProperties": false,
           "properties": {
             "paddingY": {
@@ -724,8 +949,124 @@
             "target": {
               "type": "number",
               "minimum": 0
+            },
+            "visualHeight": {
+              "type": "number",
+              "minimum": 0
+            },
+            "fieldPaddingX": {
+              "type": "number",
+              "minimum": 0
+            },
+            "selectionSize": {
+              "type": "number",
+              "minimum": 0
+            },
+            "selectionGap": {
+              "type": "number",
+              "minimum": 0
+            },
+            "selectionRadius": {
+              "type": "number",
+              "minimum": 0
+            },
+            "menuPaddingX": {
+              "type": "number",
+              "minimum": 0
+            },
+            "menuPaddingY": {
+              "type": "number",
+              "minimum": 0
             }
           }
+        }
+      },
+      "additionalProperties": false
+    },
+    "controls": {
+      "type": "object",
+      "required": [
+        "switchWidth",
+        "switchHeight",
+        "switchThumb",
+        "switchInset",
+        "switchTravel",
+        "pillPaddingX",
+        "pillPaddingY",
+        "pillRadius",
+        "selectionFontSize",
+        "selectArrowWidth",
+        "selectArrowHeight",
+        "menuWidth",
+        "menuMaxHeight",
+        "switchThumbDisabledLightOpacity",
+        "switchThumbDisabledDarkOpacity",
+        "selectionCompactDarkRadius"
+      ],
+      "properties": {
+        "switchWidth": {
+          "type": "number",
+          "minimum": 0
+        },
+        "switchHeight": {
+          "type": "number",
+          "minimum": 0
+        },
+        "switchThumb": {
+          "type": "number",
+          "minimum": 0
+        },
+        "switchInset": {
+          "type": "number",
+          "minimum": 0
+        },
+        "switchTravel": {
+          "type": "number",
+          "minimum": 0
+        },
+        "pillPaddingX": {
+          "type": "number",
+          "minimum": 0
+        },
+        "pillPaddingY": {
+          "type": "number",
+          "minimum": 0
+        },
+        "pillRadius": {
+          "type": "number",
+          "minimum": 0
+        },
+        "selectionFontSize": {
+          "type": "number",
+          "minimum": 0
+        },
+        "selectArrowWidth": {
+          "type": "number",
+          "minimum": 0
+        },
+        "selectArrowHeight": {
+          "type": "number",
+          "minimum": 0
+        },
+        "menuWidth": {
+          "type": "number",
+          "minimum": 0
+        },
+        "menuMaxHeight": {
+          "type": "number",
+          "minimum": 0
+        },
+        "switchThumbDisabledLightOpacity": {
+          "type": "number",
+          "minimum": 0
+        },
+        "switchThumbDisabledDarkOpacity": {
+          "type": "number",
+          "minimum": 0
+        },
+        "selectionCompactDarkRadius": {
+          "type": "number",
+          "minimum": 0
         }
       },
       "additionalProperties": false

@@ -1,0 +1,59 @@
+/* Original Figma vector assets. See docs/figma-assets.json for source and integrity. */
+:root,
+[data-magnolia-theme='system'],
+[data-magnolia-theme='light'],
+.color-scheme-light {
+  --mg-asset-checkbox-comfortable-on: url('./assets/figma/ec624.svg');
+  --mg-asset-checkbox-comfortable-on-disabled: url('./assets/figma/171e4.svg');
+  --mg-asset-checkbox-compact-on: url('./assets/figma/430a5.svg');
+  --mg-asset-checkbox-compact-on-disabled: url('./assets/figma/22923.svg');
+  --mg-asset-radio-comfortable-off: url('./assets/figma/26c8b.svg');
+  --mg-asset-radio-comfortable-on: url('./assets/figma/7ab1c.svg');
+  --mg-asset-radio-comfortable-on-disabled: url('./assets/figma/548f3.svg');
+  --mg-asset-radio-comfortable-off-disabled: url('./assets/figma/8be31.svg');
+  --mg-asset-radio-compact-off: url('./assets/figma/57389.svg');
+  --mg-asset-radio-compact-on: url('./assets/figma/1b390.svg');
+  --mg-asset-radio-compact-on-disabled: url('./assets/figma/d8950.svg');
+  --mg-asset-radio-compact-off-disabled: url('./assets/figma/476c6.svg');
+  --mg-asset-select-arrow: url('./assets/figma/b20cb.svg');
+  --mg-asset-select-arrow-disabled: url('./assets/figma/da2d4.svg');
+  --mg-asset-select-arrow-disabled-compact: url('./assets/figma/a25b6.svg');
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-magnolia-theme='light']):not([data-theme='light']),
+  [data-magnolia-theme='system'] {
+    --mg-asset-checkbox-comfortable-on: url('./assets/figma/14d74.svg');
+    --mg-asset-checkbox-comfortable-on-disabled: url('./assets/figma/76db5.svg');
+    --mg-asset-checkbox-compact-on: url('./assets/figma/7859e.svg');
+    --mg-asset-checkbox-compact-on-disabled: url('./assets/figma/704f2.svg');
+    --mg-asset-radio-comfortable-off: url('./assets/figma/1887c.svg');
+    --mg-asset-radio-comfortable-on: url('./assets/figma/2bc71.svg');
+    --mg-asset-radio-comfortable-on-disabled: url('./assets/figma/c822a.svg');
+    --mg-asset-radio-comfortable-off-disabled: url('./assets/figma/6f0ad.svg');
+    --mg-asset-radio-compact-off: url('./assets/figma/46b3d.svg');
+    --mg-asset-radio-compact-on: url('./assets/figma/d1b20.svg');
+    --mg-asset-radio-compact-on-disabled: url('./assets/figma/e1ba2.svg');
+    --mg-asset-radio-compact-off-disabled: url('./assets/figma/ab7c6.svg');
+    --mg-asset-select-arrow: url('./assets/figma/93d28.svg');
+    --mg-asset-select-arrow-disabled: url('./assets/figma/21c15.svg');
+    --mg-asset-select-arrow-disabled-compact: url('./assets/figma/21c15.svg');
+  }
+}
+[data-magnolia-theme='dark'],
+.color-scheme-dark {
+  --mg-asset-checkbox-comfortable-on: url('./assets/figma/14d74.svg');
+  --mg-asset-checkbox-comfortable-on-disabled: url('./assets/figma/76db5.svg');
+  --mg-asset-checkbox-compact-on: url('./assets/figma/7859e.svg');
+  --mg-asset-checkbox-compact-on-disabled: url('./assets/figma/704f2.svg');
+  --mg-asset-radio-comfortable-off: url('./assets/figma/1887c.svg');
+  --mg-asset-radio-comfortable-on: url('./assets/figma/2bc71.svg');
+  --mg-asset-radio-comfortable-on-disabled: url('./assets/figma/c822a.svg');
+  --mg-asset-radio-comfortable-off-disabled: url('./assets/figma/6f0ad.svg');
+  --mg-asset-radio-compact-off: url('./assets/figma/46b3d.svg');
+  --mg-asset-radio-compact-on: url('./assets/figma/d1b20.svg');
+  --mg-asset-radio-compact-on-disabled: url('./assets/figma/e1ba2.svg');
+  --mg-asset-radio-compact-off-disabled: url('./assets/figma/ab7c6.svg');
+  --mg-asset-select-arrow: url('./assets/figma/93d28.svg');
+  --mg-asset-select-arrow-disabled: url('./assets/figma/21c15.svg');
+  --mg-asset-select-arrow-disabled-compact: url('./assets/figma/21c15.svg');
+}

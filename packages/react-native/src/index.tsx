@@ -174,6 +174,19 @@ export function Button({
     };
   }, []);
   const inactive = disabled || loading || busy;
+  const disabledBackground =
+    backgroundColorSet?.faded ??
+    (variant === 'primary'
+      ? t.colors.primaryDisabled
+      : variant === 'danger'
+        ? t.colors.dangerDisabled
+        : t.colors.secondaryDisabled);
+  const disabledForeground =
+    variant === 'primary'
+      ? t.colors.onPrimaryDisabled
+      : variant === 'danger'
+        ? t.colors.onDangerDisabled
+        : t.colors.onSecondaryDisabled;
   const color =
     variant === 'primary'
       ? t.colors.primary
@@ -238,7 +251,7 @@ export function Button({
             backgroundColor: !filled
               ? 'transparent'
               : inactive
-                ? (backgroundColorSet?.faded ?? t.colors.disabledSurface)
+                ? disabledBackground
                 : backgroundColorSet
                   ? state.pressed
                     ? backgroundColorSet.hover
@@ -261,11 +274,7 @@ export function Button({
           style={{
             fontSize: sizes.fontSize,
             fontWeight: '500',
-            color: inactive
-              ? t.colors.disabledText
-              : filled
-                ? foreground
-                : color,
+            color: inactive ? disabledForeground : filled ? foreground : color,
           }}
         >
           {busy || loading ? (loadingChildren ?? children) : children}
@@ -330,7 +339,7 @@ export const TextField = forwardRef<
                   : t.colors.outline,
             borderRadius: sizes.radius,
             paddingVertical: sizes.paddingY,
-            paddingHorizontal: tokens.spacing.md,
+            paddingHorizontal: sizes.fieldPaddingX,
           },
           style,
         ]}
@@ -390,7 +399,7 @@ export function Checkbox({
           minWidth: 48,
           flexDirection: 'row',
           alignItems: 'center',
-          gap: tokens.spacing.sm,
+          gap: t.sizes.selectionGap,
         },
         style,
       ]}
@@ -399,11 +408,11 @@ export function Checkbox({
         accessibilityElementsHidden
         importantForAccessibility="no-hide-descendants"
         style={{
-          width: 24,
-          height: 24,
+          width: t.sizes.selectionSize,
+          height: t.sizes.selectionSize,
           borderWidth: 2,
           borderColor: t.colors.outline,
-          borderRadius: tokens.radius.compact,
+          borderRadius: t.sizes.selectionRadius,
           backgroundColor: checked ? t.colors.primary : t.colors.surface,
           alignItems: 'center',
           justifyContent: 'center',
@@ -481,5 +490,72 @@ export function Alert({
         {children}
       </Text>
     </View>
+  );
+}
+
+/** Selectable filter pill; applications own which pills form an exclusive group. */
+export function Pill({
+  active = false,
+  variant = 'primary',
+  disabled = false,
+  onChange,
+  children,
+  ...props
+}: Omit<PressableProps, 'children'> & {
+  active?: boolean;
+  variant?: 'primary' | 'secondary';
+  onChange?: (active: boolean) => void;
+  children: ReactNode;
+}) {
+  const t = useMagnolia();
+  return (
+    <Pressable
+      {...props}
+      disabled={disabled}
+      accessibilityRole="button"
+      accessibilityState={{
+        ...props.accessibilityState,
+        selected: active,
+        disabled: !!disabled,
+      }}
+      onPress={(event) => {
+        props.onPress?.(event);
+        if (!event?.isDefaultPrevented()) onChange?.(!active);
+      }}
+      style={(state) => [
+        {
+          position: 'relative',
+          minHeight: 48,
+          minWidth: 48,
+          alignItems: 'center',
+          justifyContent: 'center',
+          paddingVertical: tokens.controls.pillPaddingY,
+          paddingHorizontal: tokens.controls.pillPaddingX,
+          borderRadius: tokens.controls.pillRadius,
+          backgroundColor: active
+            ? variant === 'primary'
+              ? t.colors.pillPrimaryActive
+              : t.colors.pillSecondaryActive
+            : 'transparent',
+        },
+        typeof props.style === 'function' ? props.style(state) : props.style,
+      ]}
+    >
+      <Text
+        style={{
+          fontSize: tokens.controls.selectionFontSize,
+          fontWeight: '500',
+          color: disabled
+            ? t.colors.disabledText
+            : active
+              ? variant === 'primary'
+                ? t.colors.pillOnPrimaryActive
+                : t.colors.pillOnSecondaryActive
+              : t.colors.onBackground,
+        }}
+      >
+        {children}
+      </Text>
+    </Pressable>
   );
 }

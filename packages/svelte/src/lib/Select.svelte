@@ -28,6 +28,7 @@
   <select
     {...rest}
     id={controlId}
+    class:mg-placeholder={value == null}
     bind:value
     aria-label={ariaLabel ?? rest['aria-label'] ?? undefined}
     aria-invalid={!!errorMessage}

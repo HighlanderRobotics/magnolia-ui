@@ -89,3 +89,23 @@ it('provider maps semantic themes and allows native text scaling', () => {
   );
   expect(getByText('Light text').props.allowFontScaling).not.toBe(false);
 });
+
+import { Pill } from '../../packages/react-native/src';
+it('native Pill exposes selection and blocks disabled activation', () => {
+  const change = jest.fn();
+  const { getByRole, rerender } = render(
+    <Pill active onChange={change}>
+      Scouting
+    </Pill>,
+  );
+  expect(getByRole('button').props.accessibilityState.selected).toBe(true);
+  fireEvent.press(getByRole('button'));
+  expect(change).toHaveBeenCalledWith(false);
+  rerender(
+    <Pill disabled onChange={change}>
+      Scouting
+    </Pill>,
+  );
+  fireEvent.press(getByRole('button'));
+  expect(change).toHaveBeenCalledTimes(1);
+});

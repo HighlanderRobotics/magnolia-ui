@@ -83,3 +83,34 @@ test('schema rejects missing semantic roles and invalid numeric density', async 
   invalid.density.compact.target = -1;
   assert.equal(validate(invalid), false);
 });
+
+test('Figma control dimensions and vector assets remain faithful', async () => {
+  const { createHash } = await import('node:crypto');
+  assert.equal(resolved.controls.switchWidth, 58);
+  assert.equal(resolved.controls.switchHeight, 34);
+  assert.equal(resolved.controls.switchThumb, 28);
+  assert.equal(resolved.density.comfortable.visualHeight, 44);
+  assert.equal(resolved.density.compact.visualHeight, 33);
+  const manifest = JSON.parse(
+    readFileSync(new URL('../docs/figma-assets.json', import.meta.url)),
+  );
+  const css = readFileSync(
+    new URL('../packages/svelte/src/lib/figma-assets.css', import.meta.url),
+    'utf8',
+  );
+  for (const asset of manifest.assets) {
+    const bytes = readFileSync(
+      new URL(
+        '../packages/svelte/src/lib/assets/figma/' + asset.file,
+        import.meta.url,
+      ),
+    );
+    assert.ok(bytes.length > 0);
+    assert.equal(
+      createHash('sha256').update(bytes).digest('hex'),
+      asset.sha256,
+      asset.file,
+    );
+    assert.ok(css.includes(asset.file), asset.file + ' callsite');
+  }
+});

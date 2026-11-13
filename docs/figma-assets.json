@@ -1,0 +1,209 @@
+{
+  "fileKey": "aFsGTC9XlSZIO6HEQA1Zyz",
+  "nodeId": "5:29",
+  "assets": [
+    {
+      "name": "imgVector",
+      "file": "b20cb.svg",
+      "bytes": 245,
+      "sha256": "6bd4de3d92d96b8e086ea5bb94c91c1de518beea60a9d4742738114167235ad4",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"12.5\" height=\"6.25\" viewBox=\"0 0 12.5 6.25\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    },
+    {
+      "name": "imgVector1",
+      "file": "da2d4.svg",
+      "bytes": 245,
+      "sha256": "38d844733e59e14c288e0d4d6f3432616a93efebccbc90fff0bc1a0609dc644b",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"12.5\" height=\"6.25\" viewBox=\"0 0 12.5 6.25\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    },
+    {
+      "name": "imgVector2",
+      "file": "a25b6.svg",
+      "bytes": 245,
+      "sha256": "38d844733e59e14c288e0d4d6f3432616a93efebccbc90fff0bc1a0609dc644b",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"12.5\" height=\"6.25\" viewBox=\"0 0 12.5 6.25\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    },
+    {
+      "name": "imgFrame1",
+      "file": "ec624.svg",
+      "bytes": 404,
+      "sha256": "748e5d41e48aaf274e96001e2299dcd48f649872eb365e868a0dc7bb8aa72e39",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    },
+    {
+      "name": "imgFrame2",
+      "file": "171e4.svg",
+      "bytes": 404,
+      "sha256": "8e90e47ec6b9afa4ac34ae9a00e1fe1e550939774532849db1e3da893b44f7a3",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    },
+    {
+      "name": "imgFrame3",
+      "file": "430a5.svg",
+      "bytes": 402,
+      "sha256": "2d8e621f4b137af460f74a68bf60779639cd0cbd2c3a8cb07b8929f8c6726abd",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"18\" height=\"18\" viewBox=\"0 0 18 18\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    },
+    {
+      "name": "imgFrame4",
+      "file": "22923.svg",
+      "bytes": 402,
+      "sha256": "7b0a18d4db88f2b3f9d260acb16bff1c20d81e4358cf80158afc0f4d26f1f77e",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"18\" height=\"18\" viewBox=\"0 0 18 18\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    },
+    {
+      "name": "imgEllipse1",
+      "file": "26c8b.svg",
+      "bytes": 268,
+      "sha256": "96fd1f9f1217ead42f5c639688b4927948f802eb358b809d3d5a3d27478857ea",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    },
+    {
+      "name": "imgEllipse2",
+      "file": "7ab1c.svg",
+      "bytes": 267,
+      "sha256": "501b737225a7366504268a7d13f4dffc15e05e2658456072acddc38a9cc11a9f",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    },
+    {
+      "name": "imgEllipse3",
+      "file": "548f3.svg",
+      "bytes": 267,
+      "sha256": "be8430380eede0776056fcff4a326753aec20e25dd904d53c4dc889350f4864b",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    },
+    {
+      "name": "imgEllipse4",
+      "file": "8be31.svg",
+      "bytes": 270,
+      "sha256": "40c61cf25f641ab69ab105fc958a377ec38e76579cd978edcd1000de135f4c1e",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    },
+    {
+      "name": "imgEllipse5",
+      "file": "57389.svg",
+      "bytes": 265,
+      "sha256": "5fea0112f70a5a215d2c65b1ca2b1532e5b7299a83c4b903af68b9c8b1740349",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"18\" height=\"18\" viewBox=\"0 0 18 18\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    },
+    {
+      "name": "imgEllipse6",
+      "file": "1b390.svg",
+      "bytes": 270,
+      "sha256": "bad1027b75504fd87e42e2b54bec976c3208f4be4b9f84801c2098ee751c3c30",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"18\" height=\"18\" viewBox=\"0 0 18 18\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    },
+    {
+      "name": "imgEllipse7",
+      "file": "d8950.svg",
+      "bytes": 270,
+      "sha256": "e40183929b17fc2ac7e9fd9f19249d2af96fade1beee53ca3d10678e23f9dd5e",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"18\" height=\"18\" viewBox=\"0 0 18 18\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    },
+    {
+      "name": "imgEllipse8",
+      "file": "476c6.svg",
+      "bytes": 267,
+      "sha256": "c175fbb162c3b7576bc279990c0adb3ce92bedfd29280965b02722678545d8a1",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"18\" height=\"18\" viewBox=\"0 0 18 18\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    },
+    {
+      "name": "imgVector3",
+      "file": "93d28.svg",
+      "bytes": 245,
+      "sha256": "130706a1b470ea1d2cbff0adf6713a68fb3fa702eb5fa47eea2991fa701128d7",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"12.5\" height=\"6.25\" viewBox=\"0 0 12.5 6.25\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    },
+    {
+      "name": "imgVector4",
+      "file": "21c15.svg",
+      "bytes": 245,
+      "sha256": "037b133b4f37972cc7db8f479c93e122e1af62b73ad9e7b0f0d9f9f4572f763b",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"12.5\" height=\"6.25\" viewBox=\"0 0 12.5 6.25\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    },
+    {
+      "name": "imgFrame5",
+      "file": "14d74.svg",
+      "bytes": 384,
+      "sha256": "6f3bbe02379e44988ef22fc5f7a0bd62ce86343f9305e3caff8f746ebba2f33b",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    },
+    {
+      "name": "imgFrame6",
+      "file": "76db5.svg",
+      "bytes": 405,
+      "sha256": "9d474a4f9b8fcae2ee9c8c0d7952ce2294ce17f5189e371bd84e13f096d873c4",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    },
+    {
+      "name": "imgFrame7",
+      "file": "7859e.svg",
+      "bytes": 382,
+      "sha256": "c9dc85a1380131e9d85f6efa730e29d243d71fd64a23025efab8f14cdd317ff9",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"18\" height=\"18\" viewBox=\"0 0 18 18\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    },
+    {
+      "name": "imgFrame8",
+      "file": "704f2.svg",
+      "bytes": 403,
+      "sha256": "25b67e429b703ef6b9769dc8fabf26b0f11756f2ec4f78a4f1fe55f18fc636e9",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"18\" height=\"18\" viewBox=\"0 0 18 18\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    },
+    {
+      "name": "imgEllipse9",
+      "file": "1887c.svg",
+      "bytes": 270,
+      "sha256": "9ca3cbd9c8b4976fd2e2dfaaea132ea708eebd49adc6d75316ac841df9b4684a",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    },
+    {
+      "name": "imgEllipse10",
+      "file": "2bc71.svg",
+      "bytes": 269,
+      "sha256": "f17eb0f0c545cf6eebac59063f942a0d92d0af87f1e1ff72ab64fcdf5e78509d",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    },
+    {
+      "name": "imgEllipse11",
+      "file": "c822a.svg",
+      "bytes": 269,
+      "sha256": "bc71741da2fe719f8ccaa422b1c828273f2f05ac404d1b6732f156db209d5a76",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    },
+    {
+      "name": "imgEllipse12",
+      "file": "6f0ad.svg",
+      "bytes": 270,
+      "sha256": "db72d28a1162450d24d68cba52b9f5b9b3c8120576e1bb115a7270b7f44d34ee",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    },
+    {
+      "name": "imgEllipse13",
+      "file": "46b3d.svg",
+      "bytes": 267,
+      "sha256": "968056c86c3880caff26671da02552188a7485722f4628d6467e7cbd59af03f5",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"18\" height=\"18\" viewBox=\"0 0 18 18\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    },
+    {
+      "name": "imgEllipse14",
+      "file": "d1b20.svg",
+      "bytes": 272,
+      "sha256": "550bc0bd69b2eb8865ab75a0f77e0d69c523a81a817bcad3e72a50a5ce0b3ea1",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"18\" height=\"18\" viewBox=\"0 0 18 18\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    },
+    {
+      "name": "imgEllipse15",
+      "file": "e1ba2.svg",
+      "bytes": 272,
+      "sha256": "9e5f4a310766e7c976ac037c71a6cf6738d2a9008ef4afd529b5d538a74d4b03",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"18\" height=\"18\" viewBox=\"0 0 18 18\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    },
+    {
+      "name": "imgEllipse16",
+      "file": "ab7c6.svg",
+      "bytes": 267,
+      "sha256": "a2db7551e3c26d46fbe74772d760a30b1b62388dc0bafa8617a071f55aff3005",
+      "root": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"18\" height=\"18\" viewBox=\"0 0 18 18\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">"
+    }
+  ]
+}

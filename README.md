@@ -29,7 +29,7 @@ npm run test:browser
 npm run gallery
 ```
 
-The interactive gallery runs at `http://127.0.0.1:4173`. It demonstrates every web export, themes, nested density, form errors, dialogs and action menus. `npm run gallery:build` produces a deployable gallery without requiring application secrets. No website is deployed by these commands.
+The interactive gallery runs at `http://127.0.0.1:4173`. The [Figma comparison](http://127.0.0.1:4173/figma) shows the source-linked light/dark components in both densities with bundled fonts. It demonstrates every web export, themes, nested density, form errors, dialogs and action menus. `npm run gallery:build` produces a deployable gallery without requiring application secrets. No website is deployed by these commands.
 
 For Flutter, use Flutter 3.35+ and Dart 3.8+:
 
@@ -71,7 +71,7 @@ npm install --save-exact @highlanderrobotics/magnolia-svelte@0.1.0
 
 Fonts are application-owned. Bundle Heebo and Material Symbols for offline native use. For web you may self-host them, use system fonts, or explicitly import `@highlanderrobotics/magnolia-svelte/fonts.css` to opt into Google-hosted fonts. Magnolia performs no `document.fonts.load()` calls. Importing individual web controls without `MagnoliaUIRoot` requires both `@highlanderrobotics/magnolia-tokens/css` and `@highlanderrobotics/magnolia-svelte/styles.css`.
 
-See [component contracts](docs/components.md), [tokens](docs/tokens.md), [migration and rollback](docs/migration.md), [release setup](docs/releases.md), [parity inventory](docs/parity.md) and [validation evidence](docs/validation.md).
+See [component contracts](docs/components.md), [tokens](docs/tokens.md), [migration and rollback](docs/migration.md), [release setup](docs/releases.md), [parity inventory](docs/parity.md), [Figma parity](docs/figma-parity.md) and [validation evidence](docs/validation.md).
 
 ## Contribute and release
 

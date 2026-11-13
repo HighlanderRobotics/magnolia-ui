@@ -10,5 +10,6 @@
 </script>
 
 <label class="mg-check" for={id}
-  ><input {...rest} {id} type="checkbox" bind:checked />{label}</label
+  ><input {...rest} {id} type="checkbox" bind:checked /><span>{label}</span
+  ></label
 >
