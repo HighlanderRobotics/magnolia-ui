@@ -9,11 +9,13 @@
     "directory": "packages/starlight"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "files": [
     "theme.css",
-    "README.md"
+    "README.md",
+    "CHANGELOG.md"
   ],
   "sideEffects": [
     "**/*.css"
@@ -28,5 +30,10 @@
     "@astrojs/starlight": {
       "optional": true
     }
-  }
+  },
+  "homepage": "https://github.com/HighlanderRobotics/magnolia-ui#readme",
+  "bugs": {
+    "url": "https://github.com/HighlanderRobotics/magnolia-ui/issues"
+  },
+  "license": "UNLICENSED"
 }

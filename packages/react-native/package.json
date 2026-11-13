@@ -1,6 +1,6 @@
 {
   "name": "@highlanderrobotics/magnolia-react-native",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "description": "Magnolia UI react-native design system",
   "repository": {
@@ -9,11 +9,13 @@
     "directory": "packages/react-native"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "CHANGELOG.md"
   ],
   "sideEffects": [
     "**/*.css"
@@ -30,10 +32,15 @@
     "react-native": ">=0.81 <1"
   },
   "dependencies": {
-    "@highlanderrobotics/magnolia-tokens": "0.1.0"
+    "@highlanderrobotics/magnolia-tokens": "0.2.0"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "check": "tsc -p tsconfig.json --noEmit"
-  }
+  },
+  "homepage": "https://github.com/HighlanderRobotics/magnolia-ui#readme",
+  "bugs": {
+    "url": "https://github.com/HighlanderRobotics/magnolia-ui/issues"
+  },
+  "license": "UNLICENSED"
 }
