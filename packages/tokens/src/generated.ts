@@ -267,7 +267,8 @@ export const tokens = {
     "menuMaxHeight": 140,
     "switchThumbDisabledLightOpacity": 0.7,
     "switchThumbDisabledDarkOpacity": 0.6,
-    "selectionCompactDarkRadius": 5
+    "selectionCompactDarkRadius": 5,
+    "tabGap": 7
   }
 } as const;
 export type ThemeMode = keyof typeof tokens.themes;

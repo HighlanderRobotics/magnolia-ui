@@ -79,3 +79,7 @@ Give Dialog a title or accessible label. `canClose=false` prevents dismissal ges
 `Text`, `BodyMedium`, `LabelSmall`, `TitleLarge`, `TitleMedium`, `Heading1Small`, `TextField` (forwarded ref), `Checkbox`, native `Switch`, `Icon`, `Pill` and `Alert` pass relevant native props and retain text scaling. Native controls use 48px targets. `Icon.renderIcon` lets the app supply FRC/domain art; decorative symbols are hidden from accessibility. Label icons that convey independent meaning. Device screen-reader validation remains a release gate.
 
 See [Figma parity](figma-parity.md) for measured control sizes, original assets, native hit-area behavior and accessibility adjustments.
+
+## Additional controls
+
+Tooltip, Popover, Tabs, Toast, Accordion, Combobox, MultiSelect, Table and Pagination are exported by Svelte. Radio, Select, Dialog and Menu are now exported by React Native. See [extended control contracts](extended-controls.md) for props, keyboard/form behavior, Figma source nodes, examples and platform limits. These additions require the pending minor release.

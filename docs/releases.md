@@ -53,3 +53,9 @@ npm trust github @highlanderrobotics/magnolia-tokens \
 Repeat for Svelte, React Native and Starlight. Verify with `npm trust list <package>`. Future releases use the manually dispatched GitHub workflow and its `npm` environment review; no long-lived npm token is required. The first manual bootstrap does not claim CI provenance; subsequent trusted-publisher releases generate it. See [npm trust prerequisites](https://docs.npmjs.com/cli/v11/commands/npm-trust/) and [trusted publishing](https://docs.npmjs.com/trusted-publishers/).
 
 Registry-only consumer verification uses `node scripts/package-smoke.mjs npm registry` (also `pnpm`, `yarn` and `bun`). This mode pins the versions above and uses no local tarballs or dependency overrides. The default mode remains packed-artifact validation for unpublished changes in CI.
+
+## v1.0 milestone
+
+The owner requested v1.0 once the planned library is complete. Readiness means the LVT-361 control catalog and supported native/Material adapters have documented stable contracts, Figma parity or explicit composition mappings, and passing keyboard/form/SSR/accessibility checks. Representative native device screen-reader/text-scaling checks and Lovat consumer workflows must also be validated under LVT-368; the consumer migration PRs supply that evidence. The first trusted-publisher release should verify registry provenance and clean installs across all four package managers.
+
+When these gates pass, prepare coordinated major Changesets for the four JavaScript packages to 1.0.0, review migration/rollback notes, and publish through the existing reviewed `npm` environment. Version and tag the Flutter adapter separately as `flutter-v1.0.0` when its supported platform checks pass. Additional controls currently carry a pending minor Changeset while these integration and device gates are completed.

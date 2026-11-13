@@ -19,7 +19,7 @@ The legacy source inventory is pinned at `765e43e5b2efc9bfbdb84e1b7751cae73ad7c9
 
 Native control styling and transition behavior intentionally differ from the previous custom div switch/overlay implementations. The gallery records light/dark and comfortable/compact screenshots at desktop and mobile sizes. These are implementation snapshots, not a proof of legacy pixel parity.
 
-Checkbox, Radio, Pill and Alert extend core form/feedback coverage. Tooltip, Popover, Tabs, Toast, Combobox, MultiSelect, Table, Pagination and Accordion remain deferred until concrete consumers and accessible contracts are established (LVT-361).
+Checkbox, Radio, Pill and Alert extend core form/feedback coverage. Tooltip, Popover, Tabs, Toast, Combobox, MultiSelect, Table, Pagination and Accordion now have source implementations, examples and tests under LVT-361. React Native adds Radio, Select, Dialog and Menu. See [extended contracts](extended-controls.md); publishing the pending minor release and device/consumer acceptance remain separate gates.
 
 Do not mark LVT-369 complete or archive anything until all consumer migrations, released clean installs, representative visual approval, device accessibility validation, rollback documentation and explicit owner sign-off are recorded. Existing Lovat tarball dependencies and patches are deliberately retained for now.
 

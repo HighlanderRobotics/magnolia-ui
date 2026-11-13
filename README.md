@@ -29,7 +29,7 @@ npm run test:browser
 npm run gallery
 ```
 
-The interactive gallery runs at `http://127.0.0.1:4173`. The [Figma comparison](http://127.0.0.1:4173/figma) shows the source-linked light/dark components in both densities with bundled fonts. It demonstrates every web export, themes, nested density, form errors, dialogs and action menus. `npm run gallery:build` produces a deployable gallery without requiring application secrets. No website is deployed by these commands.
+The interactive gallery runs at `http://127.0.0.1:4173`. The [additional controls preview](http://127.0.0.1:4173/controls) demonstrates the pending LVT-361 additions; see [their contracts](docs/extended-controls.md). The [Figma comparison](http://127.0.0.1:4173/figma) shows the source-linked light/dark components in both densities with bundled fonts. It demonstrates every web export, themes, nested density, form errors, dialogs and action menus. `npm run gallery:build` produces a deployable gallery without requiring application secrets. No website is deployed by these commands.
 
 For Flutter, use Flutter 3.35+ and Dart 3.8+:
 

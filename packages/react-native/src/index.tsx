@@ -8,6 +8,10 @@ import React, {
 } from 'react';
 import type { PropsWithChildren, ReactNode } from 'react';
 import {
+  AccessibilityInfo,
+  findNodeHandle,
+  Modal,
+  ScrollView,
   ActivityIndicator,
   Pressable,
   Switch as NativeSwitch,
@@ -557,5 +561,306 @@ export function Pill({
         {children}
       </Text>
     </Pressable>
+  );
+}
+
+export type ChoiceItem = { value: string; label: string; disabled?: boolean };
+
+/** Controlled single choice; group state belongs to the application. */
+export function Radio({
+  label,
+  value,
+  checked = false,
+  disabled = false,
+  onSelect,
+}: {
+  label: string;
+  value: string;
+  checked?: boolean;
+  disabled?: boolean;
+  onSelect?: (value: string) => void;
+}) {
+  const t = useMagnolia();
+  return (
+    <Pressable
+      accessibilityRole="radio"
+      accessibilityLabel={label}
+      accessibilityState={{ checked, disabled }}
+      disabled={disabled}
+      onPress={() => onSelect?.(value)}
+      style={{
+        minHeight: 48,
+        minWidth: 48,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: t.sizes.selectionGap,
+      }}
+    >
+      <View
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
+        style={{
+          width: t.sizes.selectionSize,
+          height: t.sizes.selectionSize,
+          borderRadius: t.sizes.selectionSize / 2,
+          borderWidth: 2,
+          borderColor: disabled
+            ? t.colors.selectionDisabledBorder
+            : checked
+              ? t.colors.primary
+              : t.colors.outline,
+          backgroundColor: t.colors.surface,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        {checked && (
+          <View
+            style={{
+              width: t.sizes.selectionSize / 2,
+              height: t.sizes.selectionSize / 2,
+              borderRadius: t.sizes.selectionSize / 4,
+              backgroundColor: disabled
+                ? t.colors.primaryDisabled
+                : t.colors.primary,
+            }}
+          />
+        )}
+      </View>
+      <Text
+        color={
+          disabled ? t.colors.selectionDisabledLabel : t.colors.onBackground
+        }
+        style={{ fontSize: tokens.controls.selectionFontSize, flexShrink: 1 }}
+      >
+        {label}
+      </Text>
+    </Pressable>
+  );
+}
+
+/** Native modal owns background isolation and Android's back-button behavior. */
+export function Dialog({
+  open,
+  title,
+  canClose = true,
+  onClose,
+  onDismiss,
+  children,
+}: PropsWithChildren<{
+  open: boolean;
+  title: string;
+  canClose?: boolean;
+  onClose: () => void;
+  onDismiss?: () => void;
+}>) {
+  const t = useMagnolia();
+  const heading = useRef<NativeText>(null);
+  return (
+    <Modal
+      visible={open}
+      transparent
+      animationType="none"
+      onRequestClose={() => {
+        if (canClose) onClose();
+      }}
+      onDismiss={onDismiss}
+      onShow={() => {
+        const handle = findNodeHandle(heading.current);
+        if (handle != null) AccessibilityInfo.setAccessibilityFocus(handle);
+      }}
+    >
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: tokens.spacing.lg,
+        }}
+      >
+        <Pressable
+          testID="magnolia-dialog-backdrop"
+          accessible={false}
+          onPress={() => {
+            if (canClose) onClose();
+          }}
+          style={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            backgroundColor: '#0008',
+          }}
+        />
+        <View
+          accessibilityViewIsModal
+          importantForAccessibility="yes"
+          style={{
+            width: '100%',
+            maxWidth: 600,
+            maxHeight: '85%',
+            padding: tokens.spacing.lg,
+            backgroundColor: t.colors.surface,
+            borderRadius: tokens.radius.dialog,
+            gap: tokens.spacing.md,
+          }}
+        >
+          <NativeText
+            ref={heading}
+            accessibilityRole="header"
+            style={{
+              fontFamily: t.fontFamily,
+              fontSize: tokens.typography.title,
+              color: t.colors.onBackground,
+            }}
+          >
+            {title}
+          </NativeText>
+          <ScrollView
+            style={{ flexShrink: 1 }}
+            keyboardShouldPersistTaps="handled"
+          >
+            {children}
+          </ScrollView>
+          {canClose && (
+            <Button
+              variant="secondary"
+              accessibilityLabel={`Close ${title}`}
+              onPress={onClose}
+            >
+              Close
+            </Button>
+          )}
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
+/** Platform choice sheet; selection stays controlled and disabled options stay visible. */
+export function Select({
+  label,
+  value,
+  items,
+  onChange,
+  disabled = false,
+  placeholder = 'Choose an option',
+  errorMessage,
+}: {
+  label: string;
+  value?: string | null;
+  items: ChoiceItem[];
+  onChange: (value: string) => void;
+  disabled?: boolean;
+  placeholder?: string;
+  errorMessage?: string;
+}) {
+  const t = useMagnolia();
+  const [open, setOpen] = useState(false);
+  const trigger = useRef<View>(null);
+  const selected = items.find((item) => item.value === value);
+  const restore = () => {
+    const handle = findNodeHandle(trigger.current);
+    if (handle != null) AccessibilityInfo.setAccessibilityFocus(handle);
+  };
+  useEffect(() => {
+    if (disabled) setOpen(false);
+  }, [disabled]);
+  return (
+    <View style={{ gap: tokens.spacing.xs }}>
+      <Text>{label}</Text>
+      <Pressable
+        ref={trigger}
+        accessibilityRole="combobox"
+        accessibilityLabel={label}
+        accessibilityValue={{ text: selected?.label ?? placeholder }}
+        accessibilityState={{ disabled, expanded: open }}
+        disabled={disabled}
+        onPress={() => setOpen(true)}
+        style={{
+          minHeight: 48,
+          justifyContent: 'center',
+          borderWidth: 2,
+          borderRadius: t.sizes.radius,
+          borderColor: errorMessage ? t.colors.errorText : t.colors.outline,
+          backgroundColor: t.colors.surface,
+          paddingHorizontal: t.sizes.fieldPaddingX,
+          paddingVertical: t.sizes.paddingY,
+        }}
+      >
+        <Text
+          color={
+            disabled
+              ? t.colors.disabledText
+              : selected
+                ? t.colors.onBackground
+                : t.colors.placeholder
+          }
+        >
+          {selected?.label ?? placeholder}
+        </Text>
+      </Pressable>
+      {errorMessage && (
+        <Text accessibilityRole="alert" color={t.colors.errorText}>
+          {errorMessage}
+        </Text>
+      )}
+      <Dialog
+        open={open && !disabled}
+        title={label}
+        onClose={() => setOpen(false)}
+        onDismiss={restore}
+      >
+        {items.map((item) => (
+          <Radio
+            key={item.value}
+            {...item}
+            checked={value === item.value}
+            onSelect={(next) => {
+              onChange(next);
+              setOpen(false);
+            }}
+          />
+        ))}
+      </Dialog>
+    </View>
+  );
+}
+
+/** Native action sheet rather than desktop menu keyboard semantics. */
+export function Menu({
+  open,
+  onClose,
+  onDismiss,
+  label = 'Actions',
+  items,
+  onSelect,
+}: {
+  open: boolean;
+  onClose: () => void;
+  onDismiss?: () => void;
+  label?: string;
+  items: (ChoiceItem & { danger?: boolean })[];
+  onSelect: (value: string) => void | Promise<void>;
+}) {
+  return (
+    <Dialog {...{ open, onClose, onDismiss }} title={label}>
+      <View style={{ gap: tokens.spacing.sm }}>
+        {items.map((item) => (
+          <Button
+            key={item.value}
+            disabled={item.disabled}
+            variant={item.danger ? 'danger' : 'secondary'}
+            onPress={async () => {
+              await onSelect(item.value);
+              onClose();
+            }}
+          >
+            {item.label}
+          </Button>
+        ))}
+      </View>
+    </Dialog>
   );
 }
