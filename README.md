@@ -2,7 +2,7 @@
 
 Highlander Robotics’ cross-platform design system. One JSON token source generates semantic CSS, typed TypeScript, Flutter Material 3 color schemes and Starlight styles.
 
-This is the new repository for [LVT-362](https://linear.app/highlander-robotics/issue/LVT-362). **Lovat’s dependencies have not been changed.** The legacy `magnolia-ui-svelte` repository remains available. These packages are development artifacts until the release gates below are completed.
+This is the new repository for [LVT-362](https://linear.app/highlander-robotics/issue/LVT-362). **Lovat’s dependencies have not been changed.** The legacy `magnolia-ui-svelte` repository remains available. Initial npm publications have been accepted; release and consumer-validation status is recorded in [release setup](docs/releases.md).
 
 | Package                                     | Purpose                                                      |
 | ------------------------------------------- | ------------------------------------------------------------ |

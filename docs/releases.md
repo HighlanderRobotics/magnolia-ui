@@ -4,11 +4,11 @@ Packages are independent semver units managed with Changesets. Run `npm run chan
 
 The release workflow runs only via an explicit workflow dispatch on main. It builds/tests first, then publishes from the protected GitHub `npm` environment using npm OIDC. The `npm` environment permits only `main` and requires review by `jackshim415`. The workflow has `id-token: write` and no stored npm token. npm CLI must be 11.5.1+ for trusted publishing. Scope ownership, administrator 2FA and initial package creation are account configuration, not repository code.
 
-Before first release:
+Release checklist:
 
-1. Confirm ownership and publishing permission for npm `@highlanderrobotics`.
+1. npm `jackshim415` is a verified owner of `@highlanderrobotics`, with account 2FA enabled for authentication and writes.
 2. The GitHub repository is public (verified during setup), providing a source for provenance.
-3. Sign in as an authorized npm scope maintainer and bootstrap the four package names. They are currently unpublished. Then configure each package’s trusted publisher with owner `HighlanderRobotics`, repository `magnolia-ui`, workflow `release.yml`, environment `npm`, and direct publish permission.
+3. All four initial publications have been accepted by npm. Their trusted publishers are configured and read back as owner `HighlanderRobotics`, repository `magnolia-ui`, workflow `release.yml`, environment `npm`, with direct publish permission.
 4. Review versions, changelogs, clean-install tests and the intended npm dist-tag. Never execute release automation just to test its configuration.
 5. Dispatch the release workflow, inspect registry artifacts/provenance, and create immutable release tags. Changesets tags npm packages after successful publication. Tag Flutter separately as `flutter-vX.Y.Z` only after Flutter checks pass.
 
@@ -20,7 +20,7 @@ A breaking token/component contract needs a major version. Release fixes as patc
 
 References: [npm trusted publishing](https://docs.npmjs.com/trusted-publishers/), [Svelte props and bindable values](https://svelte.dev/docs/svelte/$props), [Starlight CSS variables](https://starlight.astro.build/guides/css-and-tailwind/).
 
-## Prepared initial releases
+## Initial npm releases
 
 | Package                                     | Version |
 | ------------------------------------------- | ------- |
@@ -28,6 +28,8 @@ References: [npm trusted publishing](https://docs.npmjs.com/trusted-publishers/)
 | `@highlanderrobotics/magnolia-svelte`       | 0.2.0   |
 | `@highlanderrobotics/magnolia-react-native` | 0.2.0   |
 | `@highlanderrobotics/magnolia-starlight`    | 0.1.0   |
+
+npm accepted these initial publications on 2026-11-12 (America/Los_Angeles). Immutable package tags point to source commit `fb6a12d`. Public registry metadata can take time to propagate after first publication; acceptance is separate from a successful clean registry install.
 
 The Figma Changeset is consumed into versions/changelogs. Internal token dependencies are pinned to 0.2.0. Run `npm run build && npm run release:check` to inspect the exact package inventory before publication. The preflight rejects pending Changesets, mismatched internal versions, incorrect registry/repository metadata, missing changelogs and missing original Figma assets. Published metadata retains `UNLICENSED`, since the repository has no license grant.
 
@@ -49,3 +51,5 @@ npm trust github @highlanderrobotics/magnolia-tokens \
 ```
 
 Repeat for Svelte, React Native and Starlight. Verify with `npm trust list <package>`. Future releases use the manually dispatched GitHub workflow and its `npm` environment review; no long-lived npm token is required. The first manual bootstrap does not claim CI provenance; subsequent trusted-publisher releases generate it. See [npm trust prerequisites](https://docs.npmjs.com/cli/v11/commands/npm-trust/) and [trusted publishing](https://docs.npmjs.com/trusted-publishers/).
+
+Registry-only consumer verification uses `node scripts/package-smoke.mjs npm registry` (also `pnpm`, `yarn` and `bun`). This mode pins the versions above and uses no local tarballs or dependency overrides. The default mode remains packed-artifact validation for unpublished changes in CI.

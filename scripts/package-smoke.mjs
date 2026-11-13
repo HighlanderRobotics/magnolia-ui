@@ -1,10 +1,13 @@
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 const manager = process.argv[2] ?? 'npm';
 if (!['npm', 'pnpm', 'yarn', 'bun'].includes(manager))
   throw new Error('Choose npm, pnpm, yarn or bun');
+const source = process.argv[3] ?? 'packed';
+if (!['packed', 'registry'].includes(source))
+  throw new Error('Choose packed or registry package source');
 const directory = mkdtempSync(join(tmpdir(), `magnolia-${manager}-`));
 const dependencies = {
   svelte: '^5.39.0',
@@ -13,6 +16,13 @@ const dependencies = {
   '@types/react': '^19.1.0',
 };
 for (const name of ['tokens', 'svelte', 'react-native', 'starlight']) {
+  if (source === 'registry') {
+    const manifest = JSON.parse(
+      readFileSync(`packages/${name}/package.json`, 'utf8'),
+    );
+    dependencies[manifest.name] = manifest.version;
+    continue;
+  }
   const output = execFileSync(
     'npm',
     [
@@ -38,7 +48,7 @@ writeFileSync(
     private: true,
     type: 'module',
     dependencies,
-    ...(manager === 'pnpm'
+    ...(source === 'packed' && manager === 'pnpm'
       ? {
           pnpm: {
             overrides: {
@@ -48,7 +58,7 @@ writeFileSync(
           },
         }
       : {}),
-    ...(manager === 'yarn'
+    ...(source === 'packed' && manager === 'yarn'
       ? {
           resolutions: {
             '@highlanderrobotics/magnolia-tokens':
@@ -56,7 +66,7 @@ writeFileSync(
           },
         }
       : {}),
-    ...(manager === 'bun'
+    ...(source === 'packed' && manager === 'bun'
       ? {
           overrides: {
             '@highlanderrobotics/magnolia-tokens':
@@ -86,7 +96,7 @@ if (manager === 'yarn')
     cwd: directory,
     stdio: 'inherit',
   });
-const inspect = `import {tokens} from '@highlanderrobotics/magnolia-tokens'; import {readFileSync} from 'node:fs'; if(tokens.themes.dark.primary!=='#b59aff')throw Error('Bad tokens'); for(const path of ['@highlanderrobotics/magnolia-tokens/css','@highlanderrobotics/magnolia-starlight/theme.css']) if(!readFileSync(import.meta.resolve(path).replace('file://',''),'utf8')) throw Error('Missing CSS'); console.log('Packed token imports and CSS exports passed.');`;
+const inspect = `import {tokens} from '@highlanderrobotics/magnolia-tokens'; import {readFileSync} from 'node:fs'; if(tokens.themes.dark.primary!=='#b59aff')throw Error('Bad tokens'); for(const path of ['@highlanderrobotics/magnolia-tokens/css','@highlanderrobotics/magnolia-starlight/theme.css']) if(!readFileSync(import.meta.resolve(path).replace('file://',''),'utf8')) throw Error('Missing CSS'); console.log('Token imports and CSS exports passed.');`;
 writeFileSync(join(directory, 'smoke.mjs'), inspect);
 execFileSync('node', ['smoke.mjs'], { cwd: directory, stdio: 'inherit' });
 // Resolve published Svelte declarations and RN types from the isolated consumer.
@@ -110,4 +120,4 @@ execFileSync(
   ],
   { cwd: directory, stdio: 'inherit' },
 );
-console.log(`${manager} packed consumer passed: ${directory}`);
+console.log(`${manager} ${source} consumer passed: ${directory}`);
