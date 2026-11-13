@@ -14,7 +14,7 @@ Run `npm run gallery` and open [the comparison preview](http://127.0.0.1:4173/fi
 | Menu/Spacious/Light 116:476; Compact 223:1498; Dark 196:135/223:1532 | 222px menu width, 140px maximum height, 8px/14px or 6px/10px row padding, surface background |
 | Pills 1969:943                                                       | 14px Heebo Medium, 7px/10px padding, 7px radius, purple/secondary active states              |
 
-Button widths with the reference label differ by less than one pixel because Figma rounds text bounds while browser text shaping retains subpixel widths. Heights, switch dimensions and selection sizes are asserted directly in browser tests.
+Button widths with the reference label differ by up to one pixel because Figma rounds text bounds while browser text shaping and platform hinting differ. Heights, switch dimensions and selection sizes are asserted directly in browser tests.
 
 Role-specific disabled colors are preserved instead of collapsing every button into the same gray. Text-only buttons stay transparent when disabled. Native React Native controls share these semantic states and Pill colors; they retain 48px touch targets and native platform interaction. Flutter remains a Material 3 adapter, rather than a web-control renderer.
 

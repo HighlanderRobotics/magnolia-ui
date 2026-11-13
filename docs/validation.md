@@ -37,6 +37,6 @@ GitHub CI covers Node 22/24, four package managers, Chromium and Flutter 3.35.7/
 
 ## Figma comparison pass
 
-The supplied Lovat 2027 design was inspected through Figma MCP. The comparison preview at `/figma` self-hosts Heebo and Material Symbols and uses the production components. Desktop/mobile checks cover all four light/dark and comfortable/compact panels: 44px/33px visible button and field heights, 58×34 switches, 24px/18px selections, original SVG bindings, role-specific disabled colors and keyboard Pill toggling. Axe passes on this page. Button label widths differ by less than one pixel due to text shaping. Original bytes for all 29 Figma SVGs are checked by SHA-256.
+The supplied Lovat 2027 design was inspected through Figma MCP. The comparison preview at `/figma` self-hosts Heebo and Material Symbols and uses the production components. Desktop/mobile checks cover all four light/dark and comfortable/compact panels: 44px/33px visible button and field heights, 58×34 switches, 24px/18px selections, original SVG bindings, role-specific disabled colors and keyboard Pill toggling. Axe passes on this page. Button label widths differ by up to one pixel due to text shaping. Original bytes for all 29 Figma SVGs are checked by SHA-256.
 
 See [Figma parity](figma-parity.md) for source nodes, measured values and retained accessibility adjustments. This pass adds Svelte and React Native Pill components; it does not establish consumer migration or native-device visual parity. The gallery fonts are bundled only in the example application.

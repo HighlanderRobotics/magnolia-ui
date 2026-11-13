@@ -19,13 +19,13 @@ test('Figma component geometry, role states and original assets match the refere
         '.mg-button.primary[data-preview-state="enabled"]',
       );
       expect((await enabled.boundingBox())!.height).toBe(expectedHeight);
-      // Figma rounds its text bounds to whole pixels; browser font shaping can differ subpixel.
+      // Figma rounds text bounds; macOS/Linux browser shaping differs by up to one pixel.
       expect(
         Math.abs(
           (await enabled.boundingBox())!.width -
             (density === 'comfortable' ? 88 : 66),
         ),
-      ).toBeLessThan(1);
+      ).toBeLessThanOrEqual(1);
       const disabled = buttons.locator('.mg-button.primary:disabled');
       expect(
         await disabled.evaluate((el) => getComputedStyle(el).backgroundColor),
