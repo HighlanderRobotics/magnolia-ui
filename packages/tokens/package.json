@@ -1,6 +1,6 @@
 {
   "name": "@highlanderrobotics/magnolia-tokens",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "description": "Magnolia UI tokens design system",
   "repository": {
@@ -9,13 +9,16 @@
     "directory": "packages/tokens"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "files": [
     "dist",
     "tokens.css",
     "tokens.json",
-    "schema.json"
+    "schema.json",
+    "README.md",
+    "CHANGELOG.md"
   ],
   "sideEffects": [
     "**/*.css"
@@ -30,5 +33,10 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json"
-  }
+  },
+  "homepage": "https://github.com/HighlanderRobotics/magnolia-ui#readme",
+  "bugs": {
+    "url": "https://github.com/HighlanderRobotics/magnolia-ui/issues"
+  },
+  "license": "UNLICENSED"
 }

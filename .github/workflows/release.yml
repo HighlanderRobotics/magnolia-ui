@@ -18,7 +18,7 @@ jobs:
           cache: npm
       - run: npm install --global npm@11.6.2
       - run: npm ci
-      - run: npm run build && npm run check && npm run lint && npm test && npm run test:ssr && npm run test:native && npm run check:packages
+      - run: npm run build && npm run check && npm run lint && npm test && npm run test:ssr && npm run test:native && npm run check:packages && npm run release:check
       - run: npx playwright install --with-deps chromium
       - run: npm run test:browser
   publish:

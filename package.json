@@ -26,7 +26,7 @@
     "format": "prettier --write .",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "npm run build && changeset publish",
+    "release": "npm run build && npm run release:check && changeset publish",
     "test:native": "jest --config jest.config.cjs",
     "validate": "npm run build && npm run check && npm test && npm run test:ssr && npm run test:native && npm run gallery:build && npm run docs:build && npm run test:browser",
     "test:ssr": "node scripts/ssr-smoke.mjs",
@@ -34,7 +34,8 @@
     "check:packages": "node scripts/check-packages.mjs",
     "test:consumer": "node scripts/package-smoke.mjs",
     "docs:build": "astro build --root examples/starlight",
-    "docs:preview": "vite preview --outDir examples/starlight/dist --host 127.0.0.1 --port 4174 --strictPort"
+    "docs:preview": "vite preview --outDir examples/starlight/dist --host 127.0.0.1 --port 4174 --strictPort",
+    "release:check": "node scripts/check-release.mjs"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",

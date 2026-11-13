@@ -49,7 +49,7 @@ Generated artifacts are committed. Change `packages/tokens/tokens.json`, run `np
 After the first approved npm release:
 
 ```sh
-npm install --save-exact @highlanderrobotics/magnolia-svelte@0.1.0
+npm install --save-exact @highlanderrobotics/magnolia-svelte@0.2.0
 ```
 
 ```svelte
