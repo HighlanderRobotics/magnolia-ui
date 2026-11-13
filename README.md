@@ -46,7 +46,7 @@ Generated artifacts are committed. Change `packages/tokens/tokens.json`, run `np
 
 ## Use the packages
 
-After the first approved npm release:
+Install a published package:
 
 ```sh
 npm install --save-exact @highlanderrobotics/magnolia-svelte@0.2.0
