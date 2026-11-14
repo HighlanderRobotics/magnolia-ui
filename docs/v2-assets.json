@@ -1,0 +1,21 @@
+{
+  "fileKey": "cXx2mM66UtpxNVbResHxq3",
+  "assets": [
+    {
+      "path": "packages/svelte/src/lib/v2/assets/spinner-dark.svg",
+      "nodeId": "43:43",
+      "slot": "Button loading spinner",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "5a6dc4bb38b625708be8fe19a891a9e23c3610f50ed53f728cec044c90a73e8c"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/error.svg",
+      "nodeId": "44:166",
+      "slot": "TextField error helper",
+      "width": 12.0,
+      "height": 12.0,
+      "sha256": "f8fa003973db9de14e6ee6a559d356f2833aa3ba4693412070632acd06a111cd"
+    }
+  ]
+}

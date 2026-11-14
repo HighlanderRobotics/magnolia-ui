@@ -27,7 +27,12 @@
       "default": "./dist/index.js"
     },
     "./styles.css": "./dist/styles.css",
-    "./fonts.css": "./dist/fonts.css"
+    "./fonts.css": "./dist/fonts.css",
+    "./v2": {
+      "types": "./dist/v2/index.d.ts",
+      "svelte": "./dist/v2/index.js",
+      "default": "./dist/v2/index.js"
+    }
   },
   "svelte": "./dist/index.js",
   "types": "./dist/index.d.ts",

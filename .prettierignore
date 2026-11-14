@@ -5,7 +5,12 @@ node_modules
 packages/tokens/src/generated.*
 packages/tokens/tokens.css
 packages/starlight/theme.css
+packages/starlight/v2.css
 playwright-report
 test-results
 
 packages/svelte/src/lib/assets/figma/
+packages/svelte/src/lib/v2/assets/
+packages/tokens/src/v2.ts
+packages/tokens/v2/tokens.css
+packages/tokens/v2/tokens.json

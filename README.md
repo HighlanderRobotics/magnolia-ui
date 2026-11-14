@@ -4,6 +4,8 @@ Highlander Robotics’ cross-platform design system. One JSON token source gener
 
 This is the new repository for [LVT-362](https://linear.app/highlander-robotics/issue/LVT-362). **Lovat’s dependencies have not been changed.** The legacy `magnolia-ui-svelte` repository remains available. Initial npm publications have been accepted; release and consumer-validation status is recorded in [release setup](docs/releases.md).
 
+Magnolia v2 now has an [opt-in source implementation](docs/magnolia-v2.md) based on the new Figma file: complete exported foundations, initial core controls, native adapters and a [v2 preview](http://127.0.0.1:4180/v2). Full component parity remains in progress in LVT-380.
+
 | Package                                     | Purpose                                                      |
 | ------------------------------------------- | ------------------------------------------------------------ |
 | `@highlanderrobotics/magnolia-tokens`       | Validated JSON, CSS, typed tokens, density and FRC semantics |

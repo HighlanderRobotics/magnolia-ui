@@ -11,6 +11,8 @@ module.exports = {
     'node_modules/(?!((@)?react-native|@react-native|@react-native-community)/)',
   ],
   moduleNameMapper: {
+    '^@highlanderrobotics/magnolia-tokens/v2$':
+      '<rootDir>/packages/tokens/dist/v2.js',
     '^@highlanderrobotics/magnolia-tokens$':
       '<rootDir>/packages/tokens/dist/index.js',
   },

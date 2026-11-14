@@ -73,7 +73,7 @@ jobs:
         working-directory: packages/flutter
       - run: flutter analyze
         working-directory: packages/flutter
-      - run: dart format --output=none --set-exit-if-changed lib/magnolia_ui.dart test example/lib
+      - run: dart format --output=none --set-exit-if-changed lib/magnolia_ui.dart lib/magnolia_v2.dart test example/lib
         working-directory: packages/flutter
       - run: flutter test
         working-directory: packages/flutter

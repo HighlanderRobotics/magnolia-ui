@@ -1,5 +1,7 @@
 # Figma component parity
 
+This page records the original library reference. New Magnolia v2 work uses [the v2 source and coverage record](magnolia-v2.md).
+
 Reference: [Lovat 2027 — Components](https://www.figma.com/design/aFsGTC9XlSZIO6HEQA1Zyz/Lovat-2027?node-id=0-1). Inspected through Figma MCP for this implementation. The supplied App page is 1701:108; shared component definitions are on 0:1. No Figma document was edited.
 
 Run `npm run gallery` and open [the comparison preview](http://127.0.0.1:4173/figma). It renders production components, with source links beside each group. The preview self-hosts Heebo 400/500 and Material Symbols; the library continues to leave font ownership with the application.
