@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
+  import CardHeader from './CardHeader.svelte';
   let {
     title,
     description,
@@ -17,13 +18,6 @@
 </script>
 
 <section {...rest} class="mg2-card {className}">
-  {#if title || action}<div class="mg2-card-header">
-      <div>
-        {#if title}<h3>{title}</h3>{/if}{#if description}<p>
-            {description}
-          </p>{/if}
-      </div>
-      {#if action}<div>{@render action()}</div>{/if}
-    </div>{/if}
+  {#if title || action}<CardHeader {title} {description} {action} />{/if}
   {@render children?.()}
 </section>

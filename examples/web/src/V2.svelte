@@ -19,7 +19,23 @@
     SearchField,
     TextArea,
     Select,
+    Badge,
+    StatusIndicator,
+    Trend,
+    Avatar,
+    AvatarGroup,
+    ProgressBar,
+    ProgressRing,
+    Spinner,
+    Skeleton,
+    Divider,
+    CardHeader,
+    EmptyState,
+    Banner,
+    ListItem,
+    AmbientWash,
   } from '../../../packages/svelte/src/lib/v2/index';
+  import Glyph from '../../../packages/svelte/src/lib/v2/Glyph.svelte';
   let theme = $state<'dark' | 'light' | 'system'>('dark');
   let density = $state<'comfortable' | 'compact'>('comfortable');
   let tab = $state('overview');
@@ -36,6 +52,9 @@
     search = $state(''),
     note = $state('');
   let submitted = $state('');
+  let selectedList = $state('northwind'),
+    bannerOpen = $state(true),
+    context = $state<string | null>('session-alpha');
   const source =
     'https://www.figma.com/design/cXx2mM66UtpxNVbResHxq3/Magnolia-v2--Copy-';
   function save() {
@@ -247,10 +266,149 @@
           </p>{/snippet}
       </SegmentedControl>
     </section>
-    <section aria-labelledby="display">
+    <section aria-labelledby="display" data-testid="display-family">
       <div class="section-title">
         <h2 id="display">Display</h2>
         <a href={`${source}?node-id=49-142`}>Figma: Stat</a>
+      </div>
+      <div class="display-stack">
+        <div class="row">
+          {#each ['neutral', 'accent', 'success', 'warning', 'danger', 'info'] as tone}<Badge
+              label={tone}
+              tone={tone as
+                | 'neutral'
+                | 'accent'
+                | 'success'
+                | 'warning'
+                | 'danger'
+                | 'info'}
+              icon
+            />{/each}
+        </div>
+        <div class="row">
+          <StatusIndicator label="Synced" /><StatusIndicator
+            label="3 overdue"
+            tone="warning"
+          /><StatusIndicator label="Review required" tone="danger" />
+        </div>
+        <div class="row">
+          <Trend value={12} sentiment="positive" /><Trend
+            value={-8}
+            sentiment="positive"
+          /><Trend value={0} />
+        </div>
+        <Divider />
+        <div class="row">
+          {#each [24, 28, 32, 40] as size}<Avatar
+              name="Alex Baker"
+              size={size as 24 | 28 | 32 | 40}
+            /><Avatar
+              name="Unassigned person"
+              size={size as 24 | 28 | 32 | 40}
+              content="icon"
+            />{/each}
+          <AvatarGroup
+            people={[
+              { name: 'Maya Chen' },
+              { name: 'Sam Rivera' },
+              { name: 'Priya Nair' },
+              { name: 'Alex Kim' },
+              { name: 'Jordan Lee' },
+              { name: 'Taylor Reed' },
+            ]}
+          />
+        </div>
+        <div class="row">
+          <ProgressBar label="Neutral completion" value={65} /><ProgressBar
+            label="Accent completion"
+            value={42}
+            tone="accent"
+          /><ProgressBar label="Pending completion" />
+        </div>
+        <div class="row">
+          {#each [0, 25, 50, 75, 100] as value}<ProgressRing
+              label={`${value} percent complete`}
+              {value}
+              tone="accent"
+            />{/each}<ProgressRing
+            label="Overall completion"
+            value={65}
+            size="large"
+            tone="accent"
+          />
+        </div>
+        <div class="row">
+          <Spinner label="Loading small" /><Spinner
+            label="Loading medium"
+            size="medium"
+          /><Spinner label="Loading large" size="large" /><Skeleton /><Skeleton
+            shape="block"
+          /><Skeleton shape="circle" />
+        </div>
+        <Banner
+          title="Review pending tasks"
+          body="Three tasks need an owner before this project can be completed."
+          tone="warning"
+          dismissible
+          bind:open={bannerOpen}
+        >
+          {#snippet action()}<Button
+              variant="tertiary"
+              size="medium"
+              onclick={() => (selectedList = 'larkspur')}>Review tasks</Button
+            >{/snippet}
+        </Banner>
+        {#if !bannerOpen}<Button
+            variant="tertiary"
+            onclick={() => (bannerOpen = true)}>Restore banner</Button
+          >{/if}
+        <Card
+          ><CardHeader title="Recent activity" description="Last 7 days" />
+          <ListItem
+            title="Northwind"
+            description="214 entries"
+            meta="2 h"
+            selected={selectedList === 'northwind'}
+            unread
+            onclick={() => (selectedList = 'northwind')}
+            >{#snippet leading()}<Avatar name="Maya Chen" />{/snippet}</ListItem
+          >
+          <ListItem
+            title="Larkspur"
+            description="233 entries"
+            meta="4 h"
+            selected={selectedList === 'larkspur'}
+            onclick={() => (selectedList = 'larkspur')}
+            >{#snippet leading()}<Glyph name="folder" />{/snippet}</ListItem
+          >
+          <ListItem
+            title="Archived workspace"
+            description="Read only"
+            disabled
+          />
+        </Card>
+        <EmptyState
+          >{#snippet action()}<Button
+              variant="secondary"
+              onclick={() => (name = 'New project')}
+              >{#snippet icon()}<Glyph name="plus" />{/snippet}Create item</Button
+            >{/snippet}</EmptyState
+        >
+        <Select
+          label="Data context"
+          bind:value={context}
+          items={[
+            { value: 'session-alpha', label: 'Session Alpha' },
+            { value: 'session-beta', label: 'Session Beta' },
+          ]}
+        />
+        <div class="wash-demo">
+          <AmbientWash contextId={context ?? 'session-alpha'} />
+          <h3>
+            {context === 'session-alpha' ? 'Session Alpha' : 'Session Beta'}
+          </h3>
+          <p>The same session gets the same ambient color on each device.</p>
+        </div>
       </div>
       <div class="grid">
         <Card title={name || 'Untitled project'} description="Last 7 days">
@@ -391,6 +549,27 @@
     padding: 0;
     margin: 16px 0 0;
     min-width: 0;
+  }
+  .display-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 24px;
+  }
+  .wash-demo {
+    position: relative;
+    isolation: isolate;
+    max-width: 390px;
+    min-height: 400px;
+    padding: 24px;
+    background: var(--mg-v2-color-bg-base);
+  }
+  .wash-demo h3 {
+    margin: 0;
+    font-weight: 500;
+  }
+  .wash-demo p {
+    color: var(--mg-v2-color-fg-secondary);
   }
   .choice-set legend {
     font-size: var(--mg-v2-type-label-sm-size);

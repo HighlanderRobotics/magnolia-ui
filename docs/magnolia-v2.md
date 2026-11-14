@@ -80,8 +80,18 @@ Starlight exposes the generated semantic color mapping at `@highlanderrobotics/m
 
 Flutter exposes `package:magnolia_ui/magnolia_v2.dart`, `MagnoliaV2Theme.dark/light(compact: ...)`, and a `MagnoliaV2` theme extension containing every semantic color and density value. This is a Material adapter, not a claim that every Material control is a pixel-exact v2 component. The old `magnolia_ui.dart` API remains available.
 
+## Display components
+
+Both Svelte and React Native export Badge (49:32), StatusIndicator (49:57), Avatar (49:79), AvatarGroup (94:1116), Trend (49:125), ProgressBar (49:214), ProgressRing (78:1520), Spinner (50:473), Skeleton (50:460), Divider, CardHeader (50:220), EmptyState (50:453), Banner (50:210), ListItem (50:441), and AmbientWash (131:1172).
+
+Progress accepts finite percentages, clamps to 0–100, and treats undefined/nonfinite values as indeterminate rather than zero. Small/large rings retain the source's 24/96 px geometry. The original opaque full-ring asset supplies the track silhouette; the semantic track token owns opacity exactly once in both themes. Live progress geometry is data-driven. Web animations honor reduced motion; native Spinner honors the platform reduced-motion preference, while native Skeleton and indeterminate progress remain static placeholders.
+
+Avatars support names, dynamic photos with initials fallback, and original person icons at 24/28/32/40 px. AvatarGroup shows a configurable count and a remaining-count avatar, preserving the rendered source's 6 px overlap and 1.5 px surface rings. Trend exposes direction, sign and sentiment independently; a decrease can mean improvement. Banners support semantic tones, optional actions and dismissal. List rows preserve selected, unread and disabled states. AmbientWash uses the original 390×400 fade behind a page header/context, with deterministic context hues shared across clients; give its parent a positioning/stacking context. It is decorative and never a status indicator.
+
 ## Source discrepancies and remaining coverage
 
 Resolved Figma variables and component renders govern implementation when prose differs. The current compact title/lg binding is 28/36 even though the Typography prose says 24/32. The rendered SegmentedControl has a subtle edge and a 3 px inset despite its older description saying no border/2 px. The Card section renders `bg/raised`, while Principles describes page-colored cards. These source discrepancies have not been edited in Figma.
 
-The full token source and the controls above are implemented. Number/Date/Time inputs, Combo/MultiSelect, Slider, files/attachments, Steps/SelectableCard, display/status components, data/charts, and the remaining navigation/overlays still require v2 implementation and parity checks. Existing v1 controls do not count as v2 coverage. LVT-380 stays In Progress; no v1.0 or v2 release is implied, and Lovat dependencies remain unchanged.
+Selected list rows use the primary foreground for description/meta text: Figma's secondary/tertiary text on the rendered selected surface fails AA contrast (4.48:1 and 3.19:1). Other list states retain the source tokens. AvatarGroup follows the rendered 6 px overlap/1.5 px rings rather than the older 8 px/2 px prose.
+
+The full token source and the controls above are implemented. Number/Date/Time inputs, Combo/MultiSelect, Slider, files/attachments, Steps/SelectableCard, data/charts, and the remaining navigation/overlays still require v2 implementation and parity checks. Existing v1 controls do not count as v2 coverage. LVT-380 stays In Progress; no v1.0 or v2 release is implied, and Lovat dependencies remain unchanged.

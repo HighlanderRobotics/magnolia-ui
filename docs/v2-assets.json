@@ -168,6 +168,222 @@
       "width": 16.0,
       "height": 16.0,
       "sha256": "5e0c6d043151ad9717a334283075fc7b7c328330a03458fdfeb01d762c89eee0"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/badge-check.svg",
+      "nodeId": "361:994",
+      "slot": "badge-check",
+      "width": 12.0,
+      "height": 12.0,
+      "sha256": "afb04acfbd053793e31ddd16b615152e2101ce73fc94d80b191f26dda8f2ff0b"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/status-dot.svg",
+      "nodeId": "49:34",
+      "slot": "status-dot",
+      "width": 8.0,
+      "height": 8.0,
+      "sha256": "e8090c35e276e341b7b9e72e68ef986f3783d0eab1344fb764838d6bbdf42962"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/avatar-user-24.svg",
+      "nodeId": "49:68",
+      "slot": "avatar-user-24",
+      "width": 14.0,
+      "height": 14.0,
+      "sha256": "db5cdc858180a482ea91f1a3ad623aea757480a218985afea30539b85171e6c8"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/avatar-user-28.svg",
+      "nodeId": "361:1577",
+      "slot": "avatar-user-28",
+      "width": 17.0,
+      "height": 17.0,
+      "sha256": "d6fee652fdfe846324a77725f04ff02cb9d302b65055c62c30061c61410817d8"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/avatar-user-32.svg",
+      "nodeId": "49:72",
+      "slot": "avatar-user-32",
+      "width": 19.0,
+      "height": 19.0,
+      "sha256": "c26cefd37b4e15fea333f2511fe488598cc58ff245465baf7a5555d6f95edf4f"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/avatar-user-40.svg",
+      "nodeId": "49:76",
+      "slot": "avatar-user-40",
+      "width": 24.0,
+      "height": 24.0,
+      "sha256": "1c9638be526b17c7f914150e38dc59d3bb9b866d9683432eafcfc827e9e0ed65"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/trend-up.svg",
+      "nodeId": "49:81",
+      "slot": "trend-up",
+      "width": 16.0,
+      "height": 16.0,
+      "sha256": "c73a76bd4ad8b2b8654a16414825452de9c3f69ca2214c22c5e8c602ec38be90"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/trend-down.svg",
+      "nodeId": "49:101",
+      "slot": "trend-down",
+      "width": 16.0,
+      "height": 16.0,
+      "sha256": "6dfe0a8f9d5bb960e8673b9fc819bf3058ac5b4e806a431f6d07618268a84c72"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/trend-flat.svg",
+      "nodeId": "49:121",
+      "slot": "trend-flat",
+      "width": 18.375,
+      "height": 18.375,
+      "sha256": "9d3e1b7afbb72364a273744ee45ddef893f12dadfd9d39bc2634f413d4cc7774"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/spinner-small.svg",
+      "nodeId": "50:462",
+      "slot": "spinner-small",
+      "width": 16.0,
+      "height": 16.0,
+      "sha256": "809a25473d24ad4561c651051569ee5ae68d2c0e9e114662269a1e530d34da58"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/spinner-medium.svg",
+      "nodeId": "50:466",
+      "slot": "spinner-medium",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "2d24757abc6e1439da7e1540d7164e8244dc229ca63556c40b2f3615d1d4aa40"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/spinner-large.svg",
+      "nodeId": "50:470",
+      "slot": "spinner-large",
+      "width": 32.0,
+      "height": 32.0,
+      "sha256": "84fdb1f838c0ef17c10ba3ef6bfac58d3acf31c63eef1d79f0016d9b40960ac9"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/banner-info.svg",
+      "nodeId": "50:166",
+      "slot": "banner-info",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "bd2222a96a20a8df0f00219335861ae1106750a97b2841378802fa80d70c4793"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/close.svg",
+      "nodeId": "50:171",
+      "slot": "close",
+      "width": 11.143,
+      "height": 11.143,
+      "sha256": "7a2c7b8e87214f3a9792b0aaf5f3d3456bf772d4e47fde2a31c1ae8429ba8d19"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/banner-success.svg",
+      "nodeId": "50:184",
+      "slot": "banner-success",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "13b3187eaa8fa2e47b82b55bf3b5497f17f523c236dc732cc348e8ff6f197460"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/banner-warning.svg",
+      "nodeId": "50:193",
+      "slot": "banner-warning",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "b6bfdeec2e9872babcc403cd62f292d60e986e67925973b389f3d4dbd2bcb294"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/banner-danger.svg",
+      "nodeId": "50:202",
+      "slot": "banner-danger",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "d7403eee793c06c4e27dfb5568db23281895fed8250c5a20138a10cbbfb09929"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/folder.svg",
+      "nodeId": "50:296",
+      "slot": "folder",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "5fcb93cf20c17212e72ee37f521f8900807b8efe56f3b933b2422131cc695f05"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/chevron-right.svg",
+      "nodeId": "50:304",
+      "slot": "chevron-right",
+      "width": 16.0,
+      "height": 16.0,
+      "sha256": "058a2e67a466f934d77b216064803eb3b313d043083f82649fbe42880cacff6e"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/unread.svg",
+      "nodeId": "50:237",
+      "slot": "unread",
+      "width": 8.0,
+      "height": 8.0,
+      "sha256": "e9859576e7d45500738bd4d85e95638a43d31bd0909dec43de55c9d0b992f2a3"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/inbox.svg",
+      "nodeId": "50:444",
+      "slot": "inbox",
+      "width": 24.0,
+      "height": 24.0,
+      "sha256": "0278a6d57d5e1e4bb2a205d79bf63b8e48bfbcc84a75bebe325857468fad9b01"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/plus.svg",
+      "nodeId": "I50:448;43:50",
+      "slot": "plus",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "7ef45a7f28a207a57dde2ed415082eb5a7f9016a7bbce20d676b5371b2e7d1de"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/wash.svg",
+      "nodeId": "131:1948",
+      "slot": "wash",
+      "width": 390.0,
+      "height": 400.0,
+      "sha256": "721f129a51f1a1734b61d79bed3e0ac609d58ac77c283c663008bf93f8a24fad"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/ring-track-large.svg",
+      "nodeId": "309:868",
+      "slot": "ring-track-large",
+      "width": 96.0,
+      "height": 96.0,
+      "sha256": "de9398897c76fb65f208a5e820c2d473cd1b3db54085181cedde7f1d3b84ef3e"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/ring-track-small.svg",
+      "nodeId": "78:1487",
+      "slot": "ring-track-small",
+      "width": 24.0,
+      "height": 24.0,
+      "sha256": "bb896c78b857f978dbab7d2dc5345fb6d704129f744ccf81d39c169dfecf62f7"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/ring-fill-large.svg",
+      "nodeId": "309:891",
+      "slot": "ring-fill-large",
+      "width": 96.0,
+      "height": 96.0,
+      "sha256": "c56c367a167ea3486c761938e5e30ec11c4f1141bdd5e65bbe8fe1c4d16888f7"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/ring-fill-small.svg",
+      "nodeId": "309:862",
+      "slot": "ring-fill-small",
+      "width": 24.0,
+      "height": 24.0,
+      "sha256": "4e80498ad00b061cb5435b0196742c478fb5ce1586349074f134e7bb695c2d35"
     }
   ]
 }

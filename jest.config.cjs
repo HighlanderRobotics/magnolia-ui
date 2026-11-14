@@ -11,8 +11,7 @@ module.exports = {
     'node_modules/(?!((@)?react-native|@react-native|@react-native-community)/)',
   ],
   moduleNameMapper: {
-    '^\\./v2-glyphs.generated.js$':
-      '<rootDir>/packages/react-native/src/v2-glyphs.generated.ts',
+    '^(\\.{1,2}/.*)\\.js$': '$1',
     '^@highlanderrobotics/magnolia-tokens/v2$':
       '<rootDir>/packages/tokens/dist/v2.js',
     '^@highlanderrobotics/magnolia-tokens$':

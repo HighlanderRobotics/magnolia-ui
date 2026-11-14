@@ -1,5 +1,68 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+test('v2 display controls expose progress, selection and dismissal without losing geometry', async ({
+  page,
+}) => {
+  await page.goto('/v2');
+  const display = page.getByTestId('display-family');
+  const empty = display.getByRole('progressbar', {
+    name: '0 percent complete',
+    exact: true,
+  });
+  await expect(empty).toHaveAttribute('aria-valuenow', '0');
+  await expect(empty.locator('circle')).toHaveCount(0);
+  await expect(
+    display.getByRole('progressbar', {
+      name: '100 percent complete',
+      exact: true,
+    }),
+  ).toHaveAttribute('aria-valuenow', '100');
+  await expect(
+    display.getByRole('progressbar', {
+      name: 'Pending completion',
+      exact: true,
+    }),
+  ).not.toHaveAttribute('aria-valuenow');
+  expect(
+    (await display
+      .getByRole('progressbar', { name: 'Overall completion', exact: true })
+      .boundingBox())!.width,
+  ).toBe(96);
+  expect(
+    (await display.locator('.mg2-avatar-group').boundingBox())!.width,
+  ).toBe(110);
+  const northwind = display.getByRole('button', { name: /Unread: Northwind/ });
+  await expect(northwind).toHaveAttribute('aria-pressed', 'true');
+  await display
+    .getByRole('button', { name: 'Review tasks', exact: true })
+    .click();
+  await expect(northwind).toHaveAttribute('aria-pressed', 'false');
+  await expect(
+    display.getByRole('button', { name: /Larkspur/ }),
+  ).toHaveAttribute('aria-pressed', 'true');
+  await expect(
+    display.getByRole('button', { name: /Archived workspace/ }),
+  ).toBeDisabled();
+  await display
+    .getByRole('button', { name: 'Dismiss Review pending tasks', exact: true })
+    .click();
+  await expect(
+    display.getByText('Three tasks need an owner', { exact: false }),
+  ).toHaveCount(0);
+  await display
+    .getByRole('button', { name: 'Restore banner', exact: true })
+    .click();
+  await expect(
+    display.getByText('Three tasks need an owner', { exact: false }),
+  ).toBeVisible();
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  expect(
+    await display
+      .locator('.mg2-loading-spinner .mg2-glyph')
+      .first()
+      .evaluate((el) => getComputedStyle(el).animationName),
+  ).toBe('none');
+});
 test('v2 choices, search, select and textarea work with keyboards and native forms', async ({
   page,
 }) => {
@@ -193,6 +256,8 @@ test('v2 tabs, segmented controls, inputs and loading keep their interaction con
   await expect(save).toHaveAttribute('aria-busy', 'true');
   await expect(save).toBeDisabled();
   expect((await save.boundingBox())!.width).toBe(width);
-  await expect(page.getByRole('status')).toHaveText('Changes saved');
+  await expect(
+    page.getByRole('status').filter({ hasText: 'Changes saved' }),
+  ).toBeVisible();
   await expect(save).toBeEnabled();
 });

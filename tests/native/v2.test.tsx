@@ -15,7 +15,55 @@ import {
   Select,
   IconButton,
   Kbd,
+  ProgressBar,
+  ProgressRing,
+  Avatar,
+  ListItem,
+  Banner,
 } from '../../packages/react-native/src/v2';
+test('v2 native display clamps progress, preserves missing data and avatar fallback', () => {
+  const { getByRole, getByText } = render(
+    <MagnoliaProvider>
+      <ProgressBar label="Complete" value={120} />
+      <ProgressRing label="Pending" value={NaN} />
+      <ProgressRing label="Not started" value={-1} />
+      <Avatar name="Maya Chen" />
+    </MagnoliaProvider>,
+  );
+  expect(
+    getByRole('progressbar', { name: 'Complete' }).props.accessibilityValue.now,
+  ).toBe(100);
+  expect(
+    getByRole('progressbar', { name: 'Pending' }).props.accessibilityState.busy,
+  ).toBe(true);
+  expect(
+    getByRole('progressbar', { name: 'Not started' }).props.accessibilityValue
+      .now,
+  ).toBe(0);
+  expect(getByText('MC')).toBeTruthy();
+});
+test('v2 native display retains list selection, disabled activation and dismissible banners', () => {
+  const press = jest.fn(),
+    dismiss = jest.fn();
+  const { getByRole, queryByText } = render(
+    <MagnoliaProvider>
+      <ListItem title="Northwind" unread selected onPress={press} />
+      <ListItem title="Archived" disabled onPress={press} />
+      <Banner title="Review tasks" dismissible onDismiss={dismiss} />
+    </MagnoliaProvider>,
+  );
+  expect(
+    getByRole('button', { name: 'Unread: Northwind' }).props.accessibilityState
+      .selected,
+  ).toBe(true);
+  fireEvent.press(getByRole('button', { name: 'Archived' }));
+  expect(press).not.toHaveBeenCalled();
+  fireEvent.press(getByRole('button', { name: 'Unread: Northwind' }));
+  expect(press).toHaveBeenCalledTimes(1);
+  fireEvent.press(getByRole('button', { name: 'Dismiss Review tasks' }));
+  expect(dismiss).toHaveBeenCalledTimes(1);
+  expect(queryByText('Review tasks')).toBeNull();
+});
 test('v2 native choices retain mixed, disabled and selected semantics', () => {
   const changed = jest.fn();
   const { getByRole, getByLabelText } = render(
