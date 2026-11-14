@@ -1,5 +1,75 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+test('v2 choices, search, select and textarea work with keyboards and native forms', async ({
+  page,
+}) => {
+  await page.goto('/v2');
+  const checkbox = page.getByRole('checkbox', {
+    name: 'Include archived',
+    exact: true,
+  });
+  await expect(checkbox).toBeChecked();
+  await checkbox.focus();
+  await page.keyboard.press('Space');
+  await expect(checkbox).not.toBeChecked();
+  const mixed = page.getByRole('checkbox', {
+    name: 'Select all projects',
+    exact: true,
+  });
+  await expect(mixed).toHaveJSProperty('indeterminate', true);
+  await mixed.click();
+  await expect(mixed).toHaveJSProperty('indeterminate', false);
+  const toggle = page.getByRole('switch', {
+    name: 'Notifications',
+    exact: true,
+  });
+  await toggle.focus();
+  await page.keyboard.press('Space');
+  await expect(toggle).not.toBeChecked();
+  await page
+    .getByRole('radio', { name: 'Daily frequency', exact: true })
+    .check();
+  await expect(
+    page.getByRole('radio', { name: 'Weekly frequency', exact: true }),
+  ).not.toBeChecked();
+  const search = page.getByRole('searchbox', {
+    name: 'Search projects',
+    exact: true,
+  });
+  await search.fill('Northwind');
+  await page
+    .getByRole('button', { name: 'Clear Search projects', exact: true })
+    .click();
+  await expect(search).toHaveValue('');
+  await expect(search).toBeFocused();
+  const select = page.getByRole('combobox', { name: /Report interval/ });
+  await select.focus();
+  await page.keyboard.press('Space');
+  await expect(page.getByRole('listbox')).toBeVisible();
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('Enter');
+  await expect(select).toContainText('Monthly');
+  const notes = page.getByRole('textbox', {
+    name: 'Report notes',
+    exact: true,
+  });
+  await notes.fill('x'.repeat(281));
+  await page.getByRole('button', { name: 'Save report', exact: true }).click();
+  await expect(page.getByTestId('report-saved')).toHaveCount(0);
+  await expect(notes).toHaveAttribute('aria-invalid', 'true');
+  await notes.fill('Useful report');
+  await page.getByRole('button', { name: 'Save report', exact: true }).click();
+  await expect(page.getByTestId('report-saved')).toContainText(
+    'Saved month report: Useful report',
+  );
+  await page.getByRole('button', { name: 'Reset report', exact: true }).click();
+  await expect(select).toContainText('Weekly');
+  await expect(checkbox).toBeChecked();
+  await expect(toggle).toBeChecked();
+  await expect(
+    page.getByRole('radio', { name: 'Weekly frequency', exact: true }),
+  ).toBeChecked();
+});
 test('v2 Figma controls retain geometry, fonts and accessibility in every theme and density', async ({
   page,
 }, info) => {
@@ -27,6 +97,42 @@ test('v2 Figma controls retain geometry, fonts and accessibility in every theme 
       expect(
         await root.evaluate((el) => getComputedStyle(el).fontFamily),
       ).toContain('Roboto');
+      const choiceBox = (await page
+        .locator('.mg2-choice-box')
+        .first()
+        .boundingBox())!;
+      expect([choiceBox.width, choiceBox.height]).toEqual(
+        density === 'comfortable' ? [20, 20] : [16, 16],
+      );
+      const track = (await page.locator('.mg2-switch-control').boundingBox())!;
+      expect([track.width, track.height]).toEqual(
+        density === 'comfortable' ? [44, 24] : [32, 20],
+      );
+      const thumb = (await page
+        .locator('.mg2-switch-thumb .mg2-glyph')
+        .boundingBox())!;
+      expect([thumb.width, thumb.height]).toEqual(
+        density === 'comfortable' ? [20, 20] : [16, 16],
+      );
+      const iconButton = (await page
+        .getByRole('button', { name: 'More options', exact: true })
+        .boundingBox())!;
+      expect([iconButton.width, iconButton.height]).toEqual(
+        density === 'comfortable' ? [44, 44] : [32, 32],
+      );
+      const chip = (await page
+        .getByRole('button', { name: 'Active projects', exact: true })
+        .locator('.mg2-glyph')
+        .boundingBox())!;
+      expect([chip.width, chip.height]).toEqual(
+        density === 'comfortable' ? [14, 14] : [12, 12],
+      );
+      expect(
+        (await page
+          .getByRole('searchbox', { name: 'Search projects' })
+          .locator('..')
+          .boundingBox())!.height,
+      ).toBe(density === 'comfortable' ? 44 : 32);
       const spinner = page.locator('.mg2-spinner').first();
       expect(
         await spinner.evaluate((el) => getComputedStyle(el).maskImage),

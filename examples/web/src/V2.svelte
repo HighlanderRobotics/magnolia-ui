@@ -10,6 +10,15 @@
     Tabs,
     Card,
     Stat,
+    Checkbox,
+    Radio,
+    Switch,
+    Chip,
+    IconButton,
+    Kbd,
+    SearchField,
+    TextArea,
+    Select,
   } from '../../../packages/svelte/src/lib/v2/index';
   let theme = $state<'dark' | 'light' | 'system'>('dark');
   let density = $state<'comfortable' | 'compact'>('comfortable');
@@ -18,6 +27,15 @@
   let name = $state('Northwind');
   let loading = $state(false);
   let saved = $state(false);
+  let checked = $state(true),
+    mixed = $state(true),
+    notifications = $state(true),
+    filter = $state(true);
+  let radio = $state<string | null>('weekly'),
+    interval = $state<string | null>('week'),
+    search = $state(''),
+    note = $state('');
+  let submitted = $state('');
   const source =
     'https://www.figma.com/design/cXx2mM66UtpxNVbResHxq3/Magnolia-v2--Copy-';
   function save() {
@@ -83,6 +101,93 @@
           variant="danger">Button</Button
         >
       </div>
+      <div class="row">
+        <IconButton label="More options" /><IconButton
+          label="More options disabled"
+          disabled
+        /><Kbd key="K" modifier /><Kbd key="Enter" />
+      </div>
+    </section>
+    <section aria-labelledby="input-controls">
+      <div class="section-title">
+        <h2 id="input-controls">Form controls</h2>
+        <a href={`${source}?node-id=46-403`}>Figma: Actions &amp; Inputs</a>
+      </div>
+      <form
+        onsubmit={(event) => {
+          event.preventDefault();
+          submitted = `Saved ${interval} report: ${note}`;
+        }}
+      >
+        <div class="grid fields">
+          <Select
+            label="Report interval"
+            items={[
+              { value: 'day', label: 'Daily' },
+              { value: 'week', label: 'Weekly' },
+              { value: 'disabled', label: 'Unavailable', disabled: true },
+              { value: 'month', label: 'Monthly' },
+            ]}
+            name="interval"
+            bind:value={interval}
+            required
+          />
+          <SearchField
+            label="Search projects"
+            placeholder="Search"
+            shortcut="K"
+            bind:value={search}
+          />
+          <TextArea
+            label="Report notes"
+            bind:value={note}
+            characterLimit={280}
+            placeholder="Add a note"
+          />
+        </div>
+        <div class="row">
+          <Checkbox label="Include archived" name="archived" bind:checked />
+          <Checkbox
+            label="Select all projects"
+            checked
+            indeterminate={mixed}
+            onchange={() => (mixed = false)}
+          />
+          <Checkbox label="Disabled choice" disabled />
+          <Switch label="Notifications" bind:checked={notifications} />
+        </div>
+        <fieldset class="choice-set">
+          <legend>Report frequency</legend>
+          <div class="row">
+            <Radio
+              name="frequency"
+              value="daily"
+              label="Daily frequency"
+              bind:group={radio}
+            /><Radio
+              name="frequency"
+              value="weekly"
+              label="Weekly frequency"
+              bind:group={radio}
+            /><Radio
+              name="frequency"
+              value="disabled"
+              label="Unavailable frequency"
+              disabled
+              bind:group={radio}
+            />
+          </div>
+        </fieldset>
+        <div class="row">
+          <Chip label="Active projects" bind:selected={filter} /><Chip
+            label="Paused"
+          /><Chip label="Disabled filter" disabled /><Button
+            type="submit"
+            variant="secondary">Save report</Button
+          ><Button type="reset" variant="tertiary">Reset report</Button>
+        </div>
+        {#if submitted}<p data-testid="report-saved">{submitted}</p>{/if}
+      </form>
     </section>
     <section aria-labelledby="fields">
       <div class="section-title">
@@ -265,6 +370,7 @@
     gap: 24px;
   }
   .fields {
+    align-items: start;
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   .stats {
@@ -279,6 +385,16 @@
   }
   .panel {
     margin: 16px 0 24px;
+  }
+  .choice-set {
+    border: 0;
+    padding: 0;
+    margin: 16px 0 0;
+    min-width: 0;
+  }
+  .choice-set legend {
+    font-size: var(--mg-v2-type-label-sm-size);
+    color: var(--mg-v2-color-fg-secondary);
   }
   @media (max-width: 800px) {
     main {

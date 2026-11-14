@@ -40,7 +40,7 @@
     "@highlanderrobotics/magnolia-tokens": "0.2.0"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && node ../../scripts/copy-native-assets.mjs",
     "check": "tsc -p tsconfig.json --noEmit"
   },
   "homepage": "https://github.com/HighlanderRobotics/magnolia-ui#readme",

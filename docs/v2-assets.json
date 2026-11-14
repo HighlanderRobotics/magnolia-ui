@@ -16,6 +16,158 @@
       "width": 12.0,
       "height": 12.0,
       "sha256": "f8fa003973db9de14e6ee6a559d356f2833aa3ba4693412070632acd06a111cd"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/check.svg",
+      "nodeId": "47:404",
+      "slot": "check",
+      "width": 12.0,
+      "height": 12.0,
+      "sha256": "6a8851fd8527f6666fc7b13fa97cb5d11fb79207874a3126624db39a3b571593"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/mixed.svg",
+      "nodeId": "47:435",
+      "slot": "mixed",
+      "width": 12.0,
+      "height": 12.0,
+      "sha256": "a04c31b96b6de4f38778338fcc1ce3edc2441de18425dbb84ceda4b24e6e4b8e"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/check-compact.svg",
+      "nodeId": "I90:1442;47:404",
+      "slot": "check-compact",
+      "width": 10.0,
+      "height": 10.0,
+      "sha256": "80d0758c7582970f871f6df23d412dab1d92eeba427fc68fdb04df8f646c6591"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/chip-check.svg",
+      "nodeId": "47:604",
+      "slot": "chip-check",
+      "width": 14.0,
+      "height": 14.0,
+      "sha256": "b5a212aa6d087b3199d643e50e60033118c73d9bbadd62c188f771dabc6f098a"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/chip-check-compact.svg",
+      "nodeId": "I90:1461;47:604",
+      "slot": "chip-check-compact",
+      "width": 12.0,
+      "height": 12.0,
+      "sha256": "142c14738329010dd302b16aa34476dd37b44d400775bdc56ade6b0480e9a414"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/search.svg",
+      "nodeId": "46:370",
+      "slot": "search",
+      "width": 16.0,
+      "height": 16.0,
+      "sha256": "377025f76efd669ced40d2445e92b7b856680edfcab0483b7332a39f0dd3a603"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/clear.svg",
+      "nodeId": "46:399",
+      "slot": "clear",
+      "width": 16.0,
+      "height": 16.0,
+      "sha256": "f55d9309006a655f593ca9912b98e1e24a437ad1060730b7d340721d50575a2c"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/chevron-down.svg",
+      "nodeId": "44:245",
+      "slot": "chevron-down",
+      "width": 16.0,
+      "height": 16.0,
+      "sha256": "d521b4d6a7ae37f73331ad6c978a58c2dccd2940efadd30e80eac76fe920c6b2"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/ellipsis.svg",
+      "nodeId": "43:212",
+      "slot": "ellipsis",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "fb3fd1a6d8370dc9e2b02348622aeb49000e751c5bcfc6e0ac6d31a02a36445b"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/modifier.svg",
+      "nodeId": "46:365",
+      "slot": "modifier",
+      "width": 10.575,
+      "height": 9.65,
+      "sha256": "99b25993029965580bf418ca4226369c3f87649a92f5d03b6cdc03c793c56528"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/switch-track.svg",
+      "nodeId": "47:515",
+      "slot": "switch-track",
+      "width": 44.0,
+      "height": 24.0,
+      "sha256": "2caedf4edcedf6dfaee38d9b0f2f37cbb6a29226f7662f174c2b293629f253af"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/switch-track-compact.svg",
+      "nodeId": "90:1451",
+      "slot": "switch-track-compact",
+      "width": 32.0,
+      "height": 20.0,
+      "sha256": "1c61bf4b7b99a3af24b4a3e6331fe501d07d7c24480eb2d6ea49026b94719fb4"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/switch-thumb.svg",
+      "nodeId": "47:514",
+      "slot": "switch-thumb",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "2ceadffc35d0c543f436f5340507fe3b0a111da564253d27c3e4f56617dfdf1a"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/switch-thumb-compact.svg",
+      "nodeId": "I90:1451;47:530",
+      "slot": "switch-thumb-compact",
+      "width": 16.0,
+      "height": 16.0,
+      "sha256": "7bad1eb6e9e90021fa465b2354cde4aef2e560e227f3e6fef566840628f6451b"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/radio-box.svg",
+      "nodeId": "47:487",
+      "slot": "radio-box",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "f482eb8320f9974d62dbdc8bbac2e751271d5667e480b17410a17617f73b257c"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/radio-box-compact.svg",
+      "nodeId": "I90:1447;47:487",
+      "slot": "radio-box-compact",
+      "width": 16.0,
+      "height": 16.0,
+      "sha256": "2477ea0c9f8b413e5dbe9a8a27982d0b0c5ca8e31fcc02a1f85dce3f70d7edff"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/radio-dot.svg",
+      "nodeId": "47:488",
+      "slot": "radio-dot",
+      "width": 7.0,
+      "height": 7.0,
+      "sha256": "2e8f96bc145544c28ffe70db23818492ce88fdb7542f4dd8acf65a26086cd1e7"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/radio-dot-compact.svg",
+      "nodeId": "I90:1447;47:488",
+      "slot": "radio-dot-compact",
+      "width": 5.6,
+      "height": 5.6,
+      "sha256": "f1c14a3f2a2401941921fba70f3981550c86aa5af23d9be57dfa9b39e245e02d"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/option-check.svg",
+      "nodeId": "339:2231",
+      "slot": "selected option check",
+      "width": 16.0,
+      "height": 16.0,
+      "sha256": "5e0c6d043151ad9717a334283075fc7b7c328330a03458fdfeb01d762c89eee0"
     }
   ]
 }

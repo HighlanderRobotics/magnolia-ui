@@ -15,6 +15,7 @@
   },
   "scripts": {
     "generate": "node scripts/generate-tokens.mjs && node scripts/generate-v2.mjs",
+    "generate:v2-assets": "node scripts/generate-v2-assets.mjs",
     "generate:check": "node scripts/generate-tokens.mjs --check && node scripts/generate-v2.mjs --check",
     "build": "npm run generate && npm run build --workspace @highlanderrobotics/magnolia-tokens && npm run build --workspace @highlanderrobotics/magnolia-svelte && npm run build --workspace @highlanderrobotics/magnolia-react-native",
     "check": "npm run generate:check && npm run check --workspace @highlanderrobotics/magnolia-svelte && npm run check --workspace @highlanderrobotics/magnolia-react-native && npm run check:css",
@@ -70,6 +71,7 @@
     "react": "19.1.0",
     "react-native": "0.81.5",
     "react-test-renderer": "19.1.0",
+    "sharp": "0.35.5",
     "svelte": "^5.39.0",
     "svelte-check": "^4.3.0",
     "typescript": "^5.9.0",

@@ -50,9 +50,25 @@ Applications load Roboto 400/500 and, for code, Roboto Mono 400. The gallery sel
 | Card             | optional `title`, `description`, `action` snippet; content snippet and section attributes                               | 50:555          |
 | Stat             | `label`, `value`, `unit`, large/medium `size`, `emphasis`, `loading`; null is missing data                              | 49:142          |
 
+| Additional control | Public contract                                                                        | Figma reference |
+| ------------------ | -------------------------------------------------------------------------------------- | --------------- |
+| Checkbox           | `label`, bindable `checked` and `indeterminate`, `error`, native input props           | 47:464          |
+| Radio              | `label`, `value`, bindable `group`, `error`, native radio group name/props             | 47:512          |
+| Switch             | `label`, bindable `checked`, native input props                                        | 47:545          |
+| Chip               | `label`, bindable `selected`, cancellable `onclick`, native button props               | 47:629          |
+| IconButton         | required accessible `label`, optional `icon` snippet, Button variants/loading          | 43:212          |
+| Kbd                | `key`, `modifier`, cap/field `variant`, visual `disabled` state                        | 336:4807        |
+| SearchField        | required accessible `label`, bindable `value`, optional `shortcut`, native input props | 46:402          |
+| TextArea           | `label`, bindable `value`, `characterLimit`, `helper`/`error`, native textarea props   | 44:242          |
+| Select             | `label`, `items`, bindable `value`, placeholder/required/name/disabled/helper/error    | 44:278          |
+
 Buttons retain label width and their accessible name while loading, block duplicate activation, and expose busy state. Tabs reuse the tested roving-focus behavior, skip disabled items, support RTL arrows and link each tab to its panel. Error helpers are associated with inputs. Missing stat values never become zero.
 
-The two original Figma SVGs and their hashes/dimensions are recorded in `v2-assets.json`. Masks preserve the original 20×20 spinner and 12×12 error glyph while inheriting semantic foreground colors in both themes. No temporary Figma asset URLs remain at runtime.
+Choices preserve native keyboard/form semantics, including mixed checkbox state and form resets. Select supports arrow/Home/End navigation, typeahead, Escape, disabled options, required validation, and a native form value. TextArea grows up to six lines, then scrolls; its character limit participates in native form validation. Search clear retains focus and emits the input event. Compact SVG variants are used where supplied by Figma; the mixed glyph and ellipsis scale proportionally with their bound icon sizes. Dark selected chips use the source's purple-200 foreground; light uses semantic fg/accent to retain contrast.
+
+Original Figma SVGs and their hashes/dimensions are recorded in `v2-assets.json`. Masks preserve their silhouettes while inheriting semantic foreground colors in both themes. Switch tracks/thumbs and radio boxes/dots remain separate original layers so colors and position can respond to state. No temporary Figma asset URLs remain at runtime.
+
+`npm run generate:v2-assets` compiles those unchanged SVGs into 3× PNGs for native Image, retaining their original point dimensions. The rasterizer is pinned, generated images are packaged with the native library, and tests verify their dimensions and source hashes. Consumers need no SVG transformer or additional runtime dependency.
 
 Run `npm run gallery -- --port 4180` and open [the v2 preview](http://127.0.0.1:4180/v2). It uses production components with interactive state and links to each design reference. Run `npm run test:v2` for the focused browser checks. The normal browser suite also includes these checks.
 
@@ -68,4 +84,4 @@ Flutter exposes `package:magnolia_ui/magnolia_v2.dart`, `MagnoliaV2Theme.dark/li
 
 Resolved Figma variables and component renders govern implementation when prose differs. The current compact title/lg binding is 28/36 even though the Typography prose says 24/32. The rendered SegmentedControl has a subtle edge and a 3 px inset despite its older description saying no border/2 px. The Card section renders `bg/raised`, while Principles describes page-colored cards. These source discrepancies have not been edited in Figma.
 
-This first pass establishes the full token source and the core components above. Checkbox/Radio/Switch, IconButton, Kbd, TextArea, Select/Search, Number/Date/Time inputs, Combo/MultiSelect, Slider, files/attachments, Steps/SelectableCard, display/status components, data/charts, and the remaining navigation/overlays still require v2 implementation and parity checks. Existing v1 controls do not count as v2 coverage. LVT-380 stays In Progress; no v1.0 or v2 release is implied, and Lovat dependencies remain unchanged.
+The full token source and the controls above are implemented. Number/Date/Time inputs, Combo/MultiSelect, Slider, files/attachments, Steps/SelectableCard, display/status components, data/charts, and the remaining navigation/overlays still require v2 implementation and parity checks. Existing v1 controls do not count as v2 coverage. LVT-380 stays In Progress; no v1.0 or v2 release is implied, and Lovat dependencies remain unchanged.
