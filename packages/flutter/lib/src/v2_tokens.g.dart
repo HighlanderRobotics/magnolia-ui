@@ -1,4 +1,6 @@
 // Generated from packages/tokens/v2/figma.json. Do not edit.
+// Retain Flutter 3.35 compatibility before the material_ui package split.
+// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 const magnoliaV2DarkColors = <String, Color>{
   'color/bg/canvas': Color(0xff171717),

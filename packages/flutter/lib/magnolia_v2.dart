@@ -1,5 +1,7 @@
 library;
 
+// Retain Flutter 3.35 compatibility before the material_ui package split.
+// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'src/v2_tokens.g.dart';
 export 'src/v2_tokens.g.dart';

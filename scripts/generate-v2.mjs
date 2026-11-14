@@ -112,7 +112,7 @@ export function generateV2(input) {
   for (const [name, values] of Object.entries(resolved.density))
     css += `[data-magnolia-version="2"][data-density="${name}"] {\n${declarations(values)}\n}\n`;
   let dart =
-    "// Generated from packages/tokens/v2/figma.json. Do not edit.\nimport 'package:flutter/material.dart';\n";
+    "// Generated from packages/tokens/v2/figma.json. Do not edit.\n// Retain Flutter 3.35 compatibility before the material_ui package split.\n// ignore: deprecated_member_use\nimport 'package:flutter/material.dart';\n";
   const dartName = (s) => s[0].toUpperCase() + s.slice(1);
   for (const [mode] of Object.entries(resolved.color)) {
     const c = input.variables.filter(
