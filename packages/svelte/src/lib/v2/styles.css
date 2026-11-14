@@ -1355,3 +1355,231 @@
   position: absolute;
   inset: -8px;
 }
+.mg2-number-control {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-height: var(--mg-v2-size-control);
+  padding-inline: 12px;
+  border: 1px solid var(--mg-v2-color-border-default);
+  border-radius: var(--mg-v2-radius-control);
+  background: var(--mg-v2-color-bg-field);
+}
+.mg2-number-control:hover {
+  border-color: var(--mg-v2-color-border-field-hover);
+}
+.mg2-number-control:focus-within {
+  border-color: var(--mg-v2-color-border-accent);
+  box-shadow: 0 0 0 3px var(--mg-v2-color-tint-accent-18);
+}
+.mg2-number-control[data-error='true'] {
+  border-color: var(--mg-v2-color-border-danger);
+}
+.mg2-number-control[data-error='true']:focus-within {
+  box-shadow: 0 0 0 3px var(--mg-v2-color-bg-danger-subtle);
+}
+.mg2-number-field input {
+  border: 0;
+  background: transparent;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  padding-inline: 0;
+  flex: 1;
+  width: 0;
+  min-height: calc(var(--mg-v2-size-control) - 2px);
+  appearance: textfield;
+}
+.mg2-number-field input::-webkit-inner-spin-button,
+.mg2-number-field input::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+.mg2-number-field input:focus-visible {
+  outline: 0;
+}
+.mg2-number-unit {
+  color: var(--mg-v2-color-fg-secondary);
+  font-size: var(--mg-v2-type-body-size);
+}
+.mg2-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mg-v2-gap-group);
+}
+.mg2-stepper output {
+  min-width: 34px;
+  text-align: center;
+  font-size: var(--mg-v2-type-step-value-size);
+  line-height: var(--mg-v2-type-step-value-line);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.mg2-stepper[data-disabled='true'] output {
+  opacity: 0.4;
+}
+.mg2-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 2.25px;
+  font-size: var(--mg-v2-type-body-size);
+  line-height: var(--mg-v2-type-body-line);
+  color: var(--mg-v2-color-fg-accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  border-radius: 4px;
+}
+.mg2-link:hover,
+.mg2-link:active {
+  color: var(--mg-v2-color-fg-link-hover);
+}
+.mg2-link[data-variant='quiet'] {
+  color: var(--mg-v2-color-fg-primary);
+  text-decoration: none;
+}
+.mg2-link[data-variant='quiet']:hover,
+.mg2-link[data-variant='quiet']:focus-visible {
+  text-decoration: underline;
+}
+.mg2-link[data-variant='quiet']:active {
+  color: var(--mg-v2-color-fg-link-quiet-pressed);
+  text-decoration: underline;
+}
+.mg2-link:focus-visible {
+  outline: 2px solid var(--mg-v2-color-border-focus);
+  outline-offset: 4px;
+}
+.mg2-link[aria-disabled='true'] {
+  color: var(--mg-v2-color-fg-disabled);
+  text-decoration: none;
+  cursor: not-allowed;
+}
+.mg2-selectable-card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--mg-v2-gap-group);
+  padding: var(--mg-v2-pad-choice-card-y) var(--mg-v2-pad-choice-card-x);
+  width: 288px;
+  max-width: 100%;
+  border: 1px solid var(--mg-v2-color-border-subtle);
+  border-radius: var(--mg-v2-radius-control-ring);
+  background: var(--mg-v2-color-bg-raised);
+  cursor: pointer;
+}
+.mg2-selectable-card > input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.mg2-selectable-card:hover:not([data-disabled='true']) {
+  background:
+    linear-gradient(
+      var(--mg-v2-color-bg-list-hover),
+      var(--mg-v2-color-bg-list-hover)
+    ),
+    var(--mg-v2-color-bg-raised);
+  border-color: var(--mg-v2-color-border-choice-card-hover);
+}
+.mg2-selectable-card[data-selected='true'] {
+  border-color: var(--mg-v2-color-border-accent);
+  background:
+    linear-gradient(
+      var(--mg-v2-color-tint-accent-10),
+      var(--mg-v2-color-tint-accent-10)
+    ),
+    var(--mg-v2-color-bg-raised);
+}
+.mg2-selectable-card[data-selected='true']:hover:not([data-disabled='true']) {
+  background:
+    linear-gradient(
+      var(--mg-v2-color-tint-accent-10),
+      var(--mg-v2-color-tint-accent-10)
+    ),
+    linear-gradient(
+      var(--mg-v2-color-tint-accent-10),
+      var(--mg-v2-color-tint-accent-10)
+    ),
+    var(--mg-v2-color-bg-raised);
+}
+.mg2-selectable-card:active:not([data-disabled='true']) {
+  background:
+    linear-gradient(
+      var(--mg-v2-color-bg-list-pressed),
+      var(--mg-v2-color-bg-list-pressed)
+    ),
+    var(--mg-v2-color-bg-raised);
+}
+.mg2-selectable-card[data-selected='true']:active:not([data-disabled='true']) {
+  background:
+    linear-gradient(
+      var(--mg-v2-color-tint-accent-18),
+      var(--mg-v2-color-tint-accent-18)
+    ),
+    linear-gradient(
+      var(--mg-v2-color-tint-accent-10),
+      var(--mg-v2-color-tint-accent-10)
+    ),
+    var(--mg-v2-color-bg-raised);
+}
+.mg2-selectable-card:has(input:focus-visible) {
+  outline: 2px solid var(--mg-v2-color-border-focus);
+  outline-offset: 4px;
+}
+.mg2-selectable-card[data-disabled='true'] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.mg2-card-indicator {
+  position: relative;
+  flex-shrink: 0;
+  width: 20px;
+  height: 22px;
+  color: var(--mg-v2-color-fg-tertiary);
+}
+.mg2-selectable-card[data-selected='true'] .mg2-card-indicator {
+  color: var(--mg-v2-color-bg-accent-strong);
+}
+.mg2-card-indicator [data-glyph='card-dot'] {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  color: var(--mg-v2-color-fg-on-accent);
+}
+.mg2-selectable-text {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--mg-v2-gap-choice-card-text);
+}
+.mg2-selectable-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--mg-v2-gap-group);
+}
+.mg2-selectable-title {
+  flex: 1;
+  min-width: 0;
+  font-weight: 500;
+  font-size: var(--mg-v2-type-choice-title-size);
+  line-height: var(--mg-v2-type-choice-title-line);
+}
+.mg2-selectable-meta,
+.mg2-selectable-description {
+  font-size: var(--mg-v2-type-choice-desc-size);
+  line-height: var(--mg-v2-type-choice-desc-line);
+}
+.mg2-selectable-meta {
+  color: var(--mg-v2-color-fg-secondary);
+  white-space: nowrap;
+}
+.mg2-selectable-description {
+  color: var(--mg-v2-color-fg-secondary);
+  white-space: pre-line;
+}
+.mg2-stepper .mg2-icon-button .mg2-glyph {
+  width: var(--mg2-glyph-width);
+  height: var(--mg2-glyph-height);
+}

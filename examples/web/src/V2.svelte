@@ -34,6 +34,10 @@
     Banner,
     ListItem,
     AmbientWash,
+    NumberField,
+    Stepper,
+    Link,
+    SelectableCard,
   } from '../../../packages/svelte/src/lib/v2/index';
   import Glyph from '../../../packages/svelte/src/lib/v2/Glyph.svelte';
   let theme = $state<'dark' | 'light' | 'system'>('dark');
@@ -52,6 +56,9 @@
     search = $state(''),
     note = $state('');
   let submitted = $state('');
+  let cycleTime = $state<number | undefined>(4.2),
+    tally = $state(3),
+    choice = $state<string | null>('phone');
   let selectedList = $state('northwind'),
     bannerOpen = $state(true),
     context = $state<string | null>('session-alpha');
@@ -227,6 +234,75 @@
           placeholder="Placeholder"
           disabled
         />
+      </div>
+    </section>
+    <section aria-labelledby="numeric-controls" data-testid="numeric-family">
+      <div class="section-title">
+        <h2 id="numeric-controls">Numbers and choices</h2>
+        <a href={`${source}?node-id=103-1453`}>Figma: NumberField</a>
+      </div>
+      <form onsubmit={(event) => event.preventDefault()}>
+        <div class="grid">
+          <NumberField
+            label="Cycle time"
+            unit="s"
+            helper="0–60, one decimal"
+            min={0}
+            max={60}
+            step={0.1}
+            bind:value={cycleTime}
+            placeholder="–"
+            name="cycleTime"
+          />
+          <div>
+            <Stepper
+              label="Items counted"
+              bind:value={tally}
+              min={0}
+              max={5}
+              name="tally"
+            />
+          </div>
+        </div>
+        <fieldset class="choice-set">
+          <legend>Data source</legend>
+          <div class="row">
+            <SelectableCard
+              title="This phone"
+              description={'Items checked 12\nNotes: Latch is loose; reported to facilities.'}
+              meta="2:41 PM"
+              name="source"
+              value="phone"
+              bind:group={choice}
+            /><SelectableCard
+              title="Cloud version"
+              description={'Items checked 14\nNotes: Reviewed by Maya.'}
+              meta="2:45 PM"
+              name="source"
+              value="cloud"
+              bind:group={choice}
+            /><SelectableCard
+              title="Archived version"
+              description="Unavailable"
+              name="source"
+              value="archived"
+              disabled
+              bind:group={choice}
+            />
+          </div>
+        </fieldset>
+        <Button type="reset" variant="tertiary"
+          >Reset numbers and choices</Button
+        >
+      </form>
+      <div class="row">
+        <Link href="#display">View all entries</Link><Link
+          href="#display"
+          variant="quiet">Team 8033</Link
+        ><Link href={source} external>Open design source</Link><Link
+          href="#display"
+          disabled>Unavailable link</Link
+        >
       </div>
     </section>
     <section aria-labelledby="navigation">

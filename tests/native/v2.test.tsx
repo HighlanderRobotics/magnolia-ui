@@ -20,7 +20,69 @@ import {
   Avatar,
   ListItem,
   Banner,
+  NumberField,
+  Stepper,
+  SelectableCard,
+  Link,
 } from '../../packages/react-native/src/v2';
+test('v2 native numeric controls preserve raw decimals and clamp stepper activation', () => {
+  const change = jest.fn();
+  const { getByRole, getByLabelText } = render(
+    <MagnoliaProvider>
+      <NumberField
+        label="Cycle time"
+        unit="seconds"
+        value="4.2"
+        onChangeText={change}
+      />
+      <Stepper label="Items" value={0} min={0} max={5} onValueChange={change} />
+    </MagnoliaProvider>,
+  );
+  fireEvent.changeText(getByLabelText('Cycle time'), '4.');
+  expect(change).toHaveBeenCalledWith('4.');
+  expect(getByLabelText('Cycle time').props.keyboardType).toBe('decimal-pad');
+  change.mockClear();
+  fireEvent.press(getByRole('button', { name: 'Decrease Items' }));
+  expect(change).not.toHaveBeenCalled();
+  fireEvent.press(getByRole('button', { name: 'Increase Items' }));
+  expect(change).toHaveBeenCalledWith(1);
+});
+test('v2 native selectable cards expose radio state and disabled links block navigation', () => {
+  const choose = jest.fn(),
+    navigate = jest.fn();
+  const { getByRole } = render(
+    <MagnoliaProvider density="compact">
+      <SelectableCard
+        title="Phone"
+        value="phone"
+        selected
+        onValueChange={choose}
+      />
+      <SelectableCard
+        title="Archive"
+        value="archive"
+        selected={false}
+        disabled
+        onValueChange={choose}
+      />
+      <Link
+        label="Unavailable"
+        href="https://example.com"
+        disabled
+        onPress={navigate}
+      />
+    </MagnoliaProvider>,
+  );
+  expect(
+    getByRole('radio', { name: 'Phone' }).props.accessibilityState.checked,
+  ).toBe(true);
+  fireEvent.press(getByRole('radio', { name: 'Archive' }));
+  expect(choose).not.toHaveBeenCalled();
+  fireEvent.press(getByRole('radio', { name: 'Phone' }));
+  expect(choose).toHaveBeenCalledWith('phone');
+  fireEvent.press(getByRole('link', { name: 'Unavailable' }));
+  expect(navigate).not.toHaveBeenCalled();
+});
 test('v2 native display clamps progress, preserves missing data and avatar fallback', () => {
   const { getByRole, getByText } = render(
     <MagnoliaProvider>

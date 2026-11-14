@@ -29,3 +29,7 @@ export { default as EmptyState } from './EmptyState.svelte';
 export { default as Banner } from './Banner.svelte';
 export { default as ListItem } from './ListItem.svelte';
 export { default as AmbientWash } from './AmbientWash.svelte';
+export { default as NumberField } from './NumberField.svelte';
+export { default as Stepper } from './Stepper.svelte';
+export { default as Link } from './Link.svelte';
+export { default as SelectableCard } from './SelectableCard.svelte';

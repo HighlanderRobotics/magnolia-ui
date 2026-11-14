@@ -384,6 +384,54 @@
       "width": 24.0,
       "height": 24.0,
       "sha256": "4e80498ad00b061cb5435b0196742c478fb5ce1586349074f134e7bb695c2d35"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/step-minus.svg",
+      "nodeId": "124:1742",
+      "slot": "Stepper minus",
+      "width": 16.0,
+      "height": 16.0,
+      "sha256": "06e7c07c0751a5e1b9c08ec91fb9d3f9f9886372c2014ffda2edf15de35f433b"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/step-plus.svg",
+      "nodeId": "124:1743",
+      "slot": "Stepper plus",
+      "width": 16.0,
+      "height": 16.0,
+      "sha256": "ac7145842eac2aa63307cb9643eb2842da6f65627b7bf9a790aa4bbdb38a0105"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/external.svg",
+      "nodeId": "77:1160",
+      "slot": "Link external",
+      "width": 12.0,
+      "height": 12.0,
+      "sha256": "81d6f15af03cac260668d6fdde0dadf2f381442a590e1d3667ad3468f307406e"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/card-unselected.svg",
+      "nodeId": "109:1530",
+      "slot": "SelectableCard unselected indicator",
+      "width": 20.0,
+      "height": 22.0,
+      "sha256": "7e07165378bce771059dcdd72447428eecc0ba01d0823192e0613416306d516e"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/card-selected.svg",
+      "nodeId": "109:1578",
+      "slot": "SelectableCard selected indicator",
+      "width": 20.0,
+      "height": 22.0,
+      "sha256": "612df299be80090072cd26a500905c718e7987a63f1698474c65a8c53843218a"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/card-dot.svg",
+      "nodeId": "47:488",
+      "slot": "SelectableCard selected center, same original radio dot",
+      "width": 7.0,
+      "height": 7.0,
+      "sha256": "2e8f96bc145544c28ffe70db23818492ce88fdb7542f4dd8acf65a26086cd1e7"
     }
   ]
 }

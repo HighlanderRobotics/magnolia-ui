@@ -48,5 +48,11 @@ export const nativeGlyphs = {
   'ring-track-small': { source: require('./assets/v2/ring-track-small.png'), width: 24, height: 24 },
   'ring-fill-large': { source: require('./assets/v2/ring-fill-large.png'), width: 96, height: 96 },
   'ring-fill-small': { source: require('./assets/v2/ring-fill-small.png'), width: 24, height: 24 },
+  'step-minus': { source: require('./assets/v2/step-minus.png'), width: 16, height: 16 },
+  'step-plus': { source: require('./assets/v2/step-plus.png'), width: 16, height: 16 },
+  'external': { source: require('./assets/v2/external.png'), width: 12, height: 12 },
+  'card-unselected': { source: require('./assets/v2/card-unselected.png'), width: 20, height: 22 },
+  'card-selected': { source: require('./assets/v2/card-selected.png'), width: 20, height: 22 },
+  'card-dot': { source: require('./assets/v2/card-dot.png'), width: 7, height: 7 },
 } as const;
 export type NativeGlyphName = keyof typeof nativeGlyphs;

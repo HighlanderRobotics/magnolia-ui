@@ -1,5 +1,60 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+test('v2 numeric and card choices retain bounds, keyboard and reset semantics', async ({
+  page,
+}) => {
+  await page.goto('/v2');
+  const controls = page.getByTestId('numeric-family');
+  const input = controls.getByRole('spinbutton', {
+    name: 'Cycle time',
+    exact: true,
+  });
+  await input.fill('4.25');
+  expect(
+    await input.evaluate((el: HTMLInputElement) => el.validity.stepMismatch),
+  ).toBe(true);
+  await input.fill('4.3');
+  expect(
+    await input.evaluate((el: HTMLInputElement) => el.validity.valid),
+  ).toBe(true);
+  const decrease = controls.getByRole('button', {
+    name: 'Decrease Items counted',
+    exact: true,
+  });
+  for (let i = 0; i < 3; i++) await decrease.click();
+  await expect(decrease).toBeDisabled();
+  await expect(controls.locator('output')).toHaveText('0');
+  const increase = controls.getByRole('button', {
+    name: 'Increase Items counted',
+    exact: true,
+  });
+  for (let i = 0; i < 5; i++) await increase.click();
+  await expect(increase).toBeDisabled();
+  const phone = controls.getByRole('radio', {
+    name: 'This phone',
+    exact: true,
+  });
+  await phone.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(
+    controls.getByRole('radio', { name: 'Cloud version', exact: true }),
+  ).toBeChecked();
+  await expect(
+    controls.getByRole('radio', { name: 'Archived version', exact: true }),
+  ).toBeDisabled();
+  await expect(
+    controls.getByRole('link', { name: 'Unavailable link', exact: true }),
+  ).not.toHaveAttribute('href');
+  await expect(
+    controls.getByRole('link', { name: /Open design source/ }),
+  ).toHaveAttribute('rel', 'noopener noreferrer');
+  await controls
+    .getByRole('button', { name: 'Reset numbers and choices', exact: true })
+    .click();
+  await expect(phone).toBeChecked();
+  await expect(input).toHaveValue('4.2');
+  await expect(controls.locator('output')).toHaveText('3');
+});
 test('v2 display controls expose progress, selection and dismissal without losing geometry', async ({
   page,
 }) => {
@@ -183,6 +238,10 @@ test('v2 Figma controls retain geometry, fonts and accessibility in every theme 
       expect([iconButton.width, iconButton.height]).toEqual(
         density === 'comfortable' ? [44, 44] : [32, 32],
       );
+      const stepGlyph = (await page
+        .locator('[data-glyph="step-plus"]')
+        .boundingBox())!;
+      expect([stepGlyph.width, stepGlyph.height]).toEqual([16, 16]);
       const chip = (await page
         .getByRole('button', { name: 'Active projects', exact: true })
         .locator('.mg2-glyph')

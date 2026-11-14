@@ -47,6 +47,12 @@ import asset44 from './assets/ring-track-large.svg';
 import asset45 from './assets/ring-track-small.svg';
 import asset46 from './assets/ring-fill-large.svg';
 import asset47 from './assets/ring-fill-small.svg';
+import asset48 from './assets/step-minus.svg';
+import asset49 from './assets/step-plus.svg';
+import asset50 from './assets/external.svg';
+import asset51 from './assets/card-unselected.svg';
+import asset52 from './assets/card-selected.svg';
+import asset53 from './assets/card-dot.svg';
 export const glyphs = {
   'spinner-dark': { src: asset0, width: 20, height: 20 },
   'error': { src: asset1, width: 12, height: 12 },
@@ -96,5 +102,11 @@ export const glyphs = {
   'ring-track-small': { src: asset45, width: 24, height: 24 },
   'ring-fill-large': { src: asset46, width: 96, height: 96 },
   'ring-fill-small': { src: asset47, width: 24, height: 24 },
+  'step-minus': { src: asset48, width: 16, height: 16 },
+  'step-plus': { src: asset49, width: 16, height: 16 },
+  'external': { src: asset50, width: 12, height: 12 },
+  'card-unselected': { src: asset51, width: 20, height: 22 },
+  'card-selected': { src: asset52, width: 20, height: 22 },
+  'card-dot': { src: asset53, width: 7, height: 7 },
 } as const;
 export type GlyphName = keyof typeof glyphs;
