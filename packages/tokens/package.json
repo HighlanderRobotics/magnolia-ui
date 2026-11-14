@@ -16,6 +16,7 @@
     "dist",
     "tokens.css",
     "tokens.json",
+    "v2",
     "schema.json",
     "README.md",
     "CHANGELOG.md"
@@ -29,7 +30,13 @@
       "import": "./dist/index.js"
     },
     "./css": "./tokens.css",
-    "./tokens.json": "./tokens.json"
+    "./tokens.json": "./tokens.json",
+    "./v2": {
+      "types": "./dist/v2.d.ts",
+      "import": "./dist/v2.js"
+    },
+    "./v2/css": "./v2/tokens.css",
+    "./v2/tokens.json": "./v2/tokens.json"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json"

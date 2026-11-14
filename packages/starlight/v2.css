@@ -1,0 +1,49 @@
+/* Generated from packages/tokens/v2/figma.json. Do not edit. */
+:root, :root[data-theme="dark"] {
+  --sl-color-accent-low: #40356a;
+  --sl-color-accent: #b59aff;
+  --sl-color-accent-high: #b59aff;
+  --sl-color-white: #e6e6e6;
+  --sl-color-gray-1: #e6e6e6;
+  --sl-color-gray-2: #b7b7b7;
+  --sl-color-gray-3: #9a9a9a;
+  --sl-color-gray-4: #666666;
+  --sl-color-gray-5: #3c3c3c;
+  --sl-color-gray-6: #262626;
+  --sl-color-gray-7: #1f1f1f;
+  --sl-color-black: #1f1f1f;
+  --sl-color-bg: #1f1f1f;
+  --sl-color-bg-nav: #1f1f1f;
+  --sl-color-bg-sidebar: #1f1f1f;
+  --sl-color-text: #e6e6e6;
+  --sl-color-text-accent: #b59aff;
+  --sl-color-hairline: #424242;
+  --sl-color-hairline-light: #424242;
+  --sl-color-bg-inline-code: #262626;
+  --sl-font: 'Roboto', system-ui, sans-serif;
+  --sl-font-mono: 'Roboto Mono', monospace;
+}
+:root[data-theme="light"] {
+  --sl-color-accent-low: #e9e4fe;
+  --sl-color-accent: #6434b4;
+  --sl-color-accent-high: #6434b4;
+  --sl-color-white: #171717;
+  --sl-color-gray-1: #171717;
+  --sl-color-gray-2: #4a4a4a;
+  --sl-color-gray-3: #666666;
+  --sl-color-gray-4: #838383;
+  --sl-color-gray-5: #ffffff;
+  --sl-color-gray-6: #ffffff;
+  --sl-color-gray-7: #ffffff;
+  --sl-color-black: #ffffff;
+  --sl-color-bg: #ffffff;
+  --sl-color-bg-nav: #ffffff;
+  --sl-color-bg-sidebar: #ffffff;
+  --sl-color-text: #171717;
+  --sl-color-text-accent: #6434b4;
+  --sl-color-hairline: #d9d9d9;
+  --sl-color-hairline-light: #d9d9d9;
+  --sl-color-bg-inline-code: #ffffff;
+  --sl-font: 'Roboto', system-ui, sans-serif;
+  --sl-font-mono: 'Roboto Mono', monospace;
+}

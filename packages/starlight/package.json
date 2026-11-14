@@ -14,6 +14,7 @@
   },
   "files": [
     "theme.css",
+    "v2.css",
     "README.md",
     "CHANGELOG.md"
   ],
@@ -21,7 +22,8 @@
     "**/*.css"
   ],
   "exports": {
-    "./theme.css": "./theme.css"
+    "./theme.css": "./theme.css",
+    "./v2.css": "./v2.css"
   },
   "peerDependencies": {
     "@astrojs/starlight": ">=0.35 <1"
