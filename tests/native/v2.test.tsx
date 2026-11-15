@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react-native';
+import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import {
   MagnoliaProvider,
   Button,
@@ -30,7 +30,90 @@ import {
   Calendar,
   DateField,
   TimeField,
+  Combobox,
+  MultiSelect,
+  Slider,
 } from '../../packages/react-native/src/v2';
+test('v2 native Slider exposes stepped accessibility adjustments and disabled state', () => {
+  const change = jest.fn();
+  const { getByRole } = render(
+    <MagnoliaProvider>
+      <Slider label="Confidence" value={70} step={5} onValueChange={change} />
+      <Slider label="Locked" value={100} disabled onValueChange={change} />
+    </MagnoliaProvider>,
+  );
+  const slider = getByRole('adjustable', { name: 'Confidence' });
+  expect(slider.props.accessibilityValue.now).toBe(70);
+  fireEvent(slider, 'accessibilityAction', {
+    nativeEvent: { actionName: 'increment' },
+  });
+  expect(change).toHaveBeenLastCalledWith(75);
+  fireEvent(slider, 'accessibilityAction', {
+    nativeEvent: { actionName: 'decrement' },
+  });
+  expect(change).toHaveBeenLastCalledWith(65);
+  fireEvent(
+    getByRole('adjustable', { name: 'Locked' }),
+    'accessibilityAction',
+    { nativeEvent: { actionName: 'decrement' } },
+  );
+  expect(change).toHaveBeenCalledTimes(2);
+});
+test('v2 native searchable choices announce loading and suppress choices during a request', async () => {
+  const choose = jest.fn();
+  const { getByRole, getByText, queryByRole } = render(
+    <MagnoliaProvider>
+      <Combobox
+        label="Owner"
+        value={null}
+        items={[{ value: 'priya', label: 'Priya Nair' }]}
+        onValueChange={choose}
+        loading
+      />
+    </MagnoliaProvider>,
+  );
+  fireEvent.press(getByRole('combobox', { name: 'Owner' }));
+  await waitFor(() => expect(getByText('Searching…')).toBeTruthy());
+  expect(queryByRole('radio')).toBeNull();
+  expect(choose).not.toHaveBeenCalled();
+});
+test('v2 native searchable choices filter options, skip disabled values and preserve token removal', () => {
+  const choose = jest.fn(),
+    multi = jest.fn();
+  const items = [
+    { value: 'priya', label: 'Priya Nair' },
+    { value: 'pritam', label: 'Pritam Rao' },
+    { value: 'disabled', label: 'Unavailable', disabled: true },
+  ];
+  const { getByRole, getByLabelText, queryByRole } = render(
+    <MagnoliaProvider>
+      <Combobox
+        label="Owner"
+        items={items}
+        value="priya"
+        onValueChange={choose}
+      />
+      <MultiSelect
+        label="Tags"
+        items={items}
+        value={['priya']}
+        onValueChange={multi}
+      />
+    </MagnoliaProvider>,
+  );
+  fireEvent.press(getByRole('combobox', { name: 'Owner' }));
+  fireEvent.changeText(getByLabelText('Search Owner'), 'Prit');
+  expect(queryByRole('radio', { name: 'Priya Nair' })).toBeNull();
+  fireEvent.press(getByRole('radio', { name: 'Pritam Rao' }));
+  expect(choose).toHaveBeenCalledWith('pritam');
+  fireEvent.press(getByRole('button', { name: 'Remove Priya Nair' }));
+  expect(multi).toHaveBeenCalledWith([]);
+  fireEvent.press(getByRole('combobox', { name: 'Tags' }));
+  fireEvent.press(getByRole('checkbox', { name: 'Unavailable' }));
+  expect(multi).toHaveBeenCalledTimes(1);
+  fireEvent.press(getByRole('checkbox', { name: 'Pritam Rao' }));
+  expect(multi).toHaveBeenLastCalledWith(['priya', 'pritam']);
+});
 test('v2 native temporal controls validate typed dates and expose calendar/time choices', () => {
   const dateChange = jest.fn(),
     timeChange = jest.fn();

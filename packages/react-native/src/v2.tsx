@@ -30,6 +30,8 @@ import { nativeGlyphs, type NativeGlyphName } from './v2-glyphs.generated.js';
 export { NumberField, Stepper, Link, SelectableCard } from './v2-numeric.js';
 export { Steps, FileField, Attachment } from './v2-files.js';
 export { DayCell, Calendar, DateField, TimeField } from './v2-temporal.js';
+export { Combobox, MultiSelect } from './v2-combo.js';
+export { Slider } from './v2-slider.js';
 export {
   Badge,
   StatusIndicator,

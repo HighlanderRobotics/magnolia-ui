@@ -1,5 +1,138 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+test('v2 system theme updates original artwork with the device preference', async ({
+  page,
+}) => {
+  await page.goto('/v2');
+  const art = page.locator('.mg2-slider img').first(),
+    theme = page.getByLabel('Theme', { exact: true });
+  const dark = await art.getAttribute('src');
+  await theme.selectOption('light');
+  const light = await art.getAttribute('src');
+  expect(light).not.toBe(dark);
+  await page.emulateMedia({ colorScheme: 'light' });
+  await theme.selectOption('system');
+  await expect(art).toHaveAttribute('src', light!);
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await expect(art).toHaveAttribute('src', dark!);
+});
+test('v2 Slider supports keyboard and pointer changes, announces values and resets its form', async ({
+  page,
+}) => {
+  await page.goto('/v2');
+  const slider = page.getByRole('slider', { name: 'Confidence', exact: true });
+  await slider.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(slider).toHaveValue('71');
+  await expect(slider).toHaveAttribute('aria-valuetext', '71%');
+  await page.keyboard.press('Home');
+  await expect(slider).toHaveValue('0');
+  await page.keyboard.press('End');
+  await expect(slider).toHaveValue('100');
+  const box = (await slider.locator('..').boundingBox())!;
+  if (await page.evaluate(() => matchMedia('(pointer:coarse)').matches))
+    await page.touchscreen.tap(box.x + box.width / 2, box.y + 12);
+  else await page.mouse.click(box.x + box.width / 2, box.y + 12);
+  await expect(slider).toHaveValue('50');
+  await expect(
+    page.getByRole('slider', { name: 'Disabled confidence', exact: true }),
+  ).toBeDisabled();
+  await page
+    .getByRole('button', { name: 'Reset confidence', exact: true })
+    .click();
+  await expect(slider).toHaveValue('70');
+});
+test('v2 searchable choice popup states retain accessible roles and contrast', async ({
+  page,
+}) => {
+  test.setTimeout(60000);
+  await page.goto('/v2');
+  const controls = page.getByTestId('combo-family'),
+    owner = controls.getByRole('combobox', { name: 'Owner', exact: true });
+  for (const theme of ['dark', 'light']) {
+    await page.getByLabel('Theme', { exact: true }).selectOption(theme);
+    for (const query of ['pri', 'zz']) {
+      await owner.fill(query);
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include('.mg2-combo')
+            .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      await page.bringToFront();
+      await owner.press('Escape');
+    }
+  }
+  await controls
+    .getByRole('switch', { name: 'Simulate searching', exact: true })
+    .check();
+  await owner.fill('pri');
+  expect(
+    (
+      await new AxeBuilder({ page })
+        .include('.mg2-combo')
+        .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+        .analyze()
+    ).violations,
+  ).toEqual([]);
+});
+test('v2 searchable choices retain selection, multi-value forms, loading and reset behavior', async ({
+  page,
+}) => {
+  await page.goto('/v2');
+  const controls = page.getByTestId('combo-family'),
+    owner = controls.getByRole('combobox', { name: 'Owner', exact: true }),
+    tags = controls.getByRole('combobox', { name: 'Tags', exact: true });
+  await owner.fill('pri');
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('Enter');
+  await expect(owner).toHaveValue('Pritam Rao');
+  await expect(controls.locator('input[name="owner"]')).toHaveValue('pritam');
+  await tags.fill('review');
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('Enter');
+  await expect(
+    controls.getByRole('button', { name: 'Remove Needs review', exact: true }),
+  ).toBeVisible();
+  await expect(
+    controls.getByRole('listbox', { name: 'Tags', exact: true }),
+  ).toBeVisible();
+  await page.keyboard.press('Escape');
+  const selected = () =>
+    controls
+      .locator('select[name="tags"]')
+      .evaluate((el: HTMLSelectElement) =>
+        Array.from(el.selectedOptions).map((option) => option.value),
+      );
+  expect(await selected()).toEqual(['damaged', 'followup', 'review']);
+  await controls
+    .getByRole('button', { name: 'Remove Damaged', exact: true })
+    .click();
+  expect(await selected()).toEqual(['followup', 'review']);
+  await owner.fill('zz');
+  await expect(controls.getByRole('status')).toContainText(
+    'No results for “zz”',
+  );
+  await page.keyboard.press('Escape');
+  await controls
+    .getByRole('switch', { name: 'Simulate searching', exact: true })
+    .check();
+  await owner.fill('pri');
+  await expect(controls.getByRole('status')).toContainText('Searching');
+  await expect(controls.getByRole('option')).toHaveCount(0);
+  await page.keyboard.press('Escape');
+  await controls
+    .getByRole('switch', { name: 'Simulate searching', exact: true })
+    .uncheck();
+  await controls
+    .getByRole('button', { name: 'Reset searchable choices', exact: true })
+    .click();
+  await expect(owner).toHaveValue('Priya Nair');
+  expect(await selected()).toEqual(['damaged', 'followup']);
+});
 test('v2 temporal popovers retain readable focus states in every theme and density', async ({
   page,
 }, info) => {
@@ -411,6 +544,13 @@ test('v2 Figma controls retain geometry, fonts and accessibility in every theme 
       await page.getByLabel('Theme', { exact: true }).selectOption(theme);
       await page.getByLabel('Density', { exact: true }).selectOption(density);
       const root = page.locator('.mg-v2');
+      for (const field of await page
+        .getByTestId('combo-family')
+        .locator('.mg-combobox-control')
+        .all())
+        expect((await field.boundingBox())!.height).toBe(
+          density === 'comfortable' ? 44 : 32,
+        );
       expect(
         (await page
           .getByRole('group', { name: 'Date range', exact: true })
@@ -439,11 +579,16 @@ test('v2 Figma controls retain geometry, fonts and accessibility in every theme 
       expect([choiceBox.width, choiceBox.height]).toEqual(
         density === 'comfortable' ? [20, 20] : [16, 16],
       );
-      const track = (await page.locator('.mg2-switch-control').boundingBox())!;
+      const notification = page
+        .getByRole('switch', { name: 'Notifications', exact: true })
+        .locator('..');
+      const track = (await notification
+        .locator('.mg2-switch-control')
+        .boundingBox())!;
       expect([track.width, track.height]).toEqual(
         density === 'comfortable' ? [44, 24] : [32, 20],
       );
-      const thumb = (await page
+      const thumb = (await notification
         .locator('.mg2-switch-thumb .mg2-glyph')
         .boundingBox())!;
       expect([thumb.width, thumb.height]).toEqual(

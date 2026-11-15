@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, untrack } from 'svelte';
+  import type { Snippet } from 'svelte';
   const id = $props.id();
   type Item = { value: string; label: string; disabled?: boolean };
   let {
@@ -11,6 +12,18 @@
     required = false,
     name,
     errorMessage,
+    loading = false,
+    multiple = false,
+    selectedValues = [],
+    showAllOnOpen = false,
+    onSelect,
+    onQueryChange,
+    controlPrefix,
+    trailing,
+    optionContent,
+    statusContent,
+    footer,
+    errorContent,
   }: {
     value?: string | null;
     items: Item[];
@@ -20,27 +33,51 @@
     required?: boolean;
     name?: string;
     errorMessage?: string;
+    loading?: boolean;
+    multiple?: boolean;
+    selectedValues?: string[];
+    showAllOnOpen?: boolean;
+    onSelect?: (item: Item) => void;
+    onQueryChange?: (query: string) => void;
+    controlPrefix?: Snippet;
+    trailing?: Snippet<[boolean, () => void]>;
+    optionContent?: Snippet<[Item, string, boolean]>;
+    statusContent?: Snippet<[string, boolean]>;
+    footer?: Snippet<[number]>;
+    errorContent?: Snippet<[string]>;
   } = $props();
   let root = $state<HTMLDivElement>(null!);
   let input = $state<HTMLInputElement>(null!);
   let open = $state(false);
-  let query = $state('');
+  let query = $state(
+    untrack(() => items.find((item) => item.value === value)?.label ?? ''),
+  );
+  let filtering = $state(false);
+  let search = $derived(showAllOnOpen && !filtering ? '' : query);
   let active = $state(-1);
   let matches = $derived(
     items.filter((item) =>
-      item.label.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
+      item.label.toLocaleLowerCase().includes(search.toLocaleLowerCase()),
     ),
   );
   $effect(() => {
-    if (!open) query = items.find((item) => item.value === value)?.label ?? '';
+    if (!open) {
+      query = items.find((item) => item.value === value)?.label ?? '';
+      filtering = false;
+    }
   });
   $effect(() => {
     if (disabled) open = false;
   });
   $effect(() => {
-    const valid = items.some((item) => item.value === value && !item.disabled);
+    const valid = items.some(
+      (item) =>
+        (multiple
+          ? selectedValues.includes(item.value)
+          : item.value === value) && !item.disabled,
+    );
     input?.setCustomValidity(
-      (required || query.length > 0) && !valid
+      (required || (!multiple && query.length > 0)) && !valid
         ? 'Choose an available option.'
         : '',
     );
@@ -61,6 +98,8 @@
   });
   onMount(() => {
     const initial = value;
+    input.defaultValue =
+      items.find((item) => item.value === initial)?.label ?? '';
     const form = input.form;
     const reset = () => {
       value = initial;
@@ -70,14 +109,23 @@
     return () => form?.removeEventListener('reset', reset);
   });
   function select(item: Item) {
-    if (!item.disabled) {
-      value = item.value;
-      query = item.label;
-      open = false;
+    if (!item.disabled && !loading) {
+      value = multiple ? null : item.value;
+      query = multiple ? '' : item.label;
+      if (multiple) {
+        filtering = false;
+        onQueryChange?.('');
+      }
+      open = multiple;
+      onSelect?.(item);
       input.focus();
     }
   }
   function move(direction: number) {
+    if (loading) {
+      active = -1;
+      return;
+    }
     const enabled = matches
       .map((item, i) => (item.disabled ? -1 : i))
       .filter((i) => i >= 0);
@@ -91,6 +139,14 @@
   }
   function keydown(event: KeyboardEvent) {
     if (event.isComposing) return;
+    if (
+      loading &&
+      ['ArrowDown', 'ArrowUp', 'Home', 'End', 'Enter'].includes(event.key)
+    ) {
+      event.preventDefault();
+      open = true;
+      return;
+    }
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       event.preventDefault();
       open = true;
@@ -114,59 +170,97 @@
 
 <div class="mg-combobox mg-field" bind:this={root}>
   <label for={id}>{label}</label>
-  <input
-    bind:this={input}
-    {id}
-    role="combobox"
-    aria-autocomplete="list"
-    aria-expanded={open}
-    aria-controls={open ? `${id}-list` : undefined}
-    aria-activedescendant={open && matches[active]
-      ? `${id}-option-${active}`
-      : undefined}
-    aria-invalid={!!errorMessage}
-    aria-errormessage={errorMessage ? `${id}-error` : undefined}
-    aria-describedby={errorMessage ? `${id}-error` : undefined}
-    {disabled}
-    {required}
-    {placeholder}
-    value={query}
-    autocomplete="off"
-    oninput={(event) => {
-      query = event.currentTarget.value;
-      value = null;
-      active = -1;
-      open = true;
-    }}
-    onclick={() => {
-      if (!disabled) {
-        open = !open;
+  {#snippet control()}<input
+      bind:this={input}
+      {id}
+      role="combobox"
+      aria-autocomplete="list"
+      aria-expanded={open}
+      aria-busy={loading || undefined}
+      aria-controls={open ? `${id}-list` : undefined}
+      aria-activedescendant={open && !loading && matches[active]
+        ? `${id}-option-${active}`
+        : undefined}
+      aria-invalid={!!errorMessage}
+      aria-errormessage={errorMessage ? `${id}-error` : undefined}
+      aria-describedby={errorMessage ? `${id}-error` : undefined}
+      {disabled}
+      required={required && !(multiple && selectedValues.length)}
+      {placeholder}
+      value={query}
+      autocomplete="off"
+      oninput={(event) => {
+        query = event.currentTarget.value;
+        filtering = true;
+        onQueryChange?.(query);
+        value = null;
         active = -1;
-      }
-    }}
-    onblur={() => (open = false)}
-    onkeydown={keydown}
-  />
+        open = true;
+      }}
+      onclick={() => {
+        if (!disabled) {
+          open = !open;
+          active = -1;
+        }
+      }}
+      onblur={() => (open = false)}
+      onkeydown={keydown}
+    />{/snippet}
+  {#if controlPrefix || trailing}<div class="mg-combobox-control">
+      {@render controlPrefix?.()}{@render control()}{@render trailing?.(
+        open,
+        () => {
+          if (!disabled) {
+            open = !open;
+            active = -1;
+            input.focus();
+          }
+        },
+      )}
+    </div>{:else}{@render control()}{/if}
   <input type="hidden" {name} value={value ?? ''} {disabled} />
   {#if open}
-    <div id={`${id}-list`} role="listbox" aria-label={label} class="mg-options">
-      {#each matches as item, i}<button
-          type="button"
-          role="option"
-          id={`${id}-option-${i}`}
-          tabindex="-1"
-          class:mg-option-active={i === active}
-          aria-selected={value === item.value}
-          disabled={item.disabled}
-          onpointerdown={(e) => e.preventDefault()}
-          onclick={() => select(item)}>{item.label}</button
-        >{/each}
-      {#if !matches.length}<div class="mg-empty" role="status">
-          No results
+    <div class="mg-options">
+      <div
+        id={`${id}-list`}
+        role="listbox"
+        aria-label={label}
+        aria-multiselectable={multiple || undefined}
+      >
+        {#if !loading}{#each matches as item, i}<button
+              type="button"
+              role="option"
+              id={`${id}-option-${i}`}
+              tabindex="-1"
+              class:mg-option-active={i === active}
+              aria-selected={multiple
+                ? selectedValues.includes(item.value)
+                : value === item.value}
+              disabled={item.disabled}
+              onpointerdown={(e) => e.preventDefault()}
+              onclick={() => select(item)}
+              >{#if optionContent}{@render optionContent(
+                  item,
+                  search,
+                  multiple
+                    ? selectedValues.includes(item.value)
+                    : value === item.value,
+                )}{:else}{item.label}{/if}</button
+            >{/each}
+        {/if}
+      </div>
+      {#if loading || !matches.length}<div class="mg-empty" role="status">
+          {#if statusContent}{@render statusContent(
+              query,
+              loading,
+            )}{:else}{loading ? 'Searching…' : 'No results'}{/if}
         </div>{/if}
+      {#if !loading && matches.length}{@render footer?.(matches.length)}{/if}
     </div>
   {/if}
   {#if errorMessage}<span class="mg-error" id={`${id}-error`}
-      >{errorMessage}</span
+      >{#if errorContent}{@render errorContent(
+          errorMessage,
+        )}{:else}{errorMessage}{/if}</span
     >{/if}
 </div>

@@ -44,6 +44,9 @@
     Calendar,
     DateField,
     TimeField,
+    Combobox,
+    MultiSelect,
+    Slider,
   } from '../../../packages/svelte/src/lib/v2/index';
   import Glyph from '../../../packages/svelte/src/lib/v2/Glyph.svelte';
   let theme = $state<'dark' | 'light' | 'system'>('dark');
@@ -62,6 +65,23 @@
     search = $state(''),
     note = $state('');
   let submitted = $state('');
+  let confidence = $state(70);
+  let owner = $state<string | null>('priya'),
+    tags = $state(['damaged', 'followup']),
+    searching = $state(false);
+  const people = [
+    { value: 'priya', label: 'Priya Nair' },
+    { value: 'pritam', label: 'Pritam Rao' },
+    { value: 'april', label: 'April Ochoa' },
+    { value: 'maya', label: 'Maya Chen' },
+    { value: 'unavailable', label: 'Unavailable person', disabled: true },
+  ];
+  const tagOptions = [
+    { value: 'damaged', label: 'Damaged' },
+    { value: 'followup', label: 'Follow up' },
+    { value: 'review', label: 'Needs review' },
+    { value: 'archive', label: 'Archived', disabled: true },
+  ];
   let dueDate = $state<string | undefined>('2026-10-14'),
     startTime = $state<string | undefined>('14:30'),
     rangeStart = $state<string | undefined>('2026-10-14'),
@@ -414,6 +434,46 @@
         bind:endValue={rangeEnd}
         today="2026-10-09"
       />
+    </section>
+    <section aria-labelledby="searchable-choices" data-testid="combo-family">
+      <div class="section-title">
+        <h2 id="searchable-choices">Searchable choices</h2>
+        <a href={`${source}?node-id=77-1069`}>Figma: Combobox</a>
+      </div>
+      <form onsubmit={(event) => event.preventDefault()}>
+        <div class="grid">
+          <Combobox
+            label="Owner"
+            items={people}
+            bind:value={owner}
+            name="owner"
+            placeholder="Search people"
+            required
+            itemNoun="people"
+            loading={searching}
+          /><MultiSelect
+            label="Tags"
+            items={tagOptions}
+            bind:value={tags}
+            name="tags"
+            required
+            loading={searching}
+          />
+        </div>
+        <Button variant="tertiary" type="reset">Reset searchable choices</Button
+        >
+      </form>
+      <Switch label="Simulate searching" bind:checked={searching} />
+      <form onsubmit={(event) => event.preventDefault()}>
+        <div class="row">
+          <Slider
+            label="Confidence"
+            bind:value={confidence}
+            name="confidence"
+          /><Slider label="Disabled confidence" value={70} disabled />
+        </div>
+        <Button variant="tertiary" type="reset">Reset confidence</Button>
+      </form>
     </section>
     <section aria-labelledby="navigation">
       <div class="section-title">

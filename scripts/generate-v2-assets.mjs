@@ -14,16 +14,19 @@ for (const asset of manifest.assets) {
     throw Error(`Modified source asset ${asset.path}`);
   const name = asset.path.split('/').at(-1).replace('.svg', '');
   const symbol = `asset${imports.length}`;
+  const geometry = asset.geometry
+    ? `, geometry: ${JSON.stringify(asset.geometry)}`
+    : '';
   imports.push(`import ${symbol} from './assets/${name}.svg';`);
   web.push(
-    `  '${name}': { src: ${symbol}, width: ${asset.width}, height: ${asset.height} },`,
+    `  '${name}': { src: ${symbol}, width: ${asset.width}, height: ${asset.height}${geometry} },`,
   );
   // Rasterize the original artwork for native Image; layout retains Figma point dimensions.
   await sharp(bytes, { density: 216 })
     .png()
     .toFile(new URL(name + '.png', out).pathname);
   lines.push(
-    `  '${name}': { source: require('./assets/v2/${name}.png'), width: ${asset.width}, height: ${asset.height} },`,
+    `  '${name}': { source: require('./assets/v2/${name}.png'), width: ${asset.width}, height: ${asset.height}${geometry} },`,
   );
 }
 writeFileSync(

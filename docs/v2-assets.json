@@ -520,6 +520,334 @@
       "width": 5.0,
       "height": 5.0,
       "sha256": "d3597a8224c0c3c563a72621d873261d3ead558d23066906c9ac175b29f19c72"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/combo-down.svg",
+      "nodeId": "77:1027",
+      "slot": "Combobox closed chevron",
+      "width": 16.0,
+      "height": 16.0,
+      "sha256": "d521b4d6a7ae37f73331ad6c978a58c2dccd2940efadd30e80eac76fe920c6b2"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/combo-up.svg",
+      "nodeId": "77:1048",
+      "slot": "Combobox open chevron",
+      "width": 16.0,
+      "height": 16.0,
+      "sha256": "c7bc4cec6e16da4798ff739ff2a8f856791d12facc86833f7ba8dafa9b9b9fb4"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/combo-check.svg",
+      "nodeId": "77:1053",
+      "slot": "Combobox selected option",
+      "width": 16.0,
+      "height": 16.0,
+      "sha256": "f8808f3a1499a1a4fe6ad6f3453b875a08ac89bce0221085b2d097a24bccf8f0"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/combo-loading.svg",
+      "nodeId": "81:2076",
+      "slot": "Combobox loading status",
+      "width": 16.0,
+      "height": 16.0,
+      "sha256": "809a25473d24ad4561c651051569ee5ae68d2c0e9e114662269a1e530d34da58"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/combo-empty.svg",
+      "nodeId": "81:2096",
+      "slot": "Combobox empty status",
+      "width": 16.0,
+      "height": 16.0,
+      "sha256": "3705e6fe465bb156569e83522a2d3bb16fbf584bc4768f54833fed43cd5a0ac5"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/token-remove.svg",
+      "nodeId": "77:1075",
+      "slot": "MultiSelect token remove",
+      "width": 14.0,
+      "height": 14.0,
+      "sha256": "c42ced89ddd0b8ce7990c1d85f45963d38ff5695e43316d289175a6bcb1bebca"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/slider-default-dark-comfortable.svg",
+      "nodeId": "77:1117",
+      "slot": "Slider default thumb (Dark, Comfortable)",
+      "width": 24.0,
+      "height": 24.0,
+      "sha256": "88f24ef390aee65895dacda0c99b40371929b14d546ce9d0cae5dd3030a63c86",
+      "geometry": {
+        "offsetX": -2,
+        "offsetY": -0.5,
+        "logicalWidth": 20,
+        "logicalHeight": 20
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/slider-default-dark-compact.svg",
+      "nodeId": "77:1117",
+      "slot": "Slider default thumb (Dark, Compact)",
+      "width": 22.0,
+      "height": 22.0,
+      "sha256": "27648cb4833cdb2d6c639eb6f6d9ab1111650dfc775ab30fa7ab3c3a9e018f1b",
+      "geometry": {
+        "offsetX": -2,
+        "offsetY": -0.5,
+        "logicalWidth": 18,
+        "logicalHeight": 18
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/slider-default-light-comfortable.svg",
+      "nodeId": "77:1117",
+      "slot": "Slider default thumb (Light, Comfortable)",
+      "width": 24.0,
+      "height": 24.0,
+      "sha256": "a53d4be47d4efb6e011cdc45cbccb94a77fa8991adfa2c07a4167e3bcdcbe867",
+      "geometry": {
+        "offsetX": -2,
+        "offsetY": -0.5,
+        "logicalWidth": 20,
+        "logicalHeight": 20
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/slider-default-light-compact.svg",
+      "nodeId": "77:1117",
+      "slot": "Slider default thumb (Light, Compact)",
+      "width": 22.0,
+      "height": 22.0,
+      "sha256": "4c6e71520b6538c433f61db29addbe3f98b74fdc5607b23d553f55f43c8137b8",
+      "geometry": {
+        "offsetX": -2,
+        "offsetY": -0.5,
+        "logicalWidth": 18,
+        "logicalHeight": 18
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/slider-hover-dark-comfortable.svg",
+      "nodeId": "77:1126",
+      "slot": "Slider hover thumb (Dark, Comfortable)",
+      "width": 28.0,
+      "height": 28.0,
+      "sha256": "6529ade05672d452148ee4418f189a4af847b5e6cb3c94b546498a43e6f1768d",
+      "geometry": {
+        "offsetX": -4,
+        "offsetY": -4,
+        "logicalWidth": 20,
+        "logicalHeight": 20
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/slider-hover-dark-compact.svg",
+      "nodeId": "77:1126",
+      "slot": "Slider hover thumb (Dark, Compact)",
+      "width": 26.0,
+      "height": 26.0,
+      "sha256": "82a263c7e87b7217f6b2670bb01fc38373d622f332224634c4358ec187618bda",
+      "geometry": {
+        "offsetX": -4,
+        "offsetY": -4,
+        "logicalWidth": 18,
+        "logicalHeight": 18
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/slider-hover-light-comfortable.svg",
+      "nodeId": "77:1126",
+      "slot": "Slider hover thumb (Light, Comfortable)",
+      "width": 28.0,
+      "height": 28.0,
+      "sha256": "5be4b28390ff554e2ca2b2f575ffa9a9d1546b1f46d58dd4d7223fc103357266",
+      "geometry": {
+        "offsetX": -4,
+        "offsetY": -4,
+        "logicalWidth": 20,
+        "logicalHeight": 20
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/slider-hover-light-compact.svg",
+      "nodeId": "77:1126",
+      "slot": "Slider hover thumb (Light, Compact)",
+      "width": 26.0,
+      "height": 26.0,
+      "sha256": "09965c96acff4bb9e95bcee5b5ff66902f9b301e58793f7ec8d9ef5c6181a0cb",
+      "geometry": {
+        "offsetX": -4,
+        "offsetY": -4,
+        "logicalWidth": 18,
+        "logicalHeight": 18
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/slider-pressed-dark-comfortable.svg",
+      "nodeId": "77:1136",
+      "slot": "Slider pressed thumb (Dark, Comfortable)",
+      "width": 32.0,
+      "height": 32.0,
+      "sha256": "cea915c23e0457060fd567b693cab89032cea6a98ea2a92502813966620b38f6",
+      "geometry": {
+        "offsetX": -4,
+        "offsetY": -4,
+        "logicalWidth": 24,
+        "logicalHeight": 24
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/slider-pressed-dark-compact.svg",
+      "nodeId": "77:1136",
+      "slot": "Slider pressed thumb (Dark, Compact)",
+      "width": 30.0,
+      "height": 30.0,
+      "sha256": "63d9d763931715d4c5551bb8e05be73f973e6becb67cc418940b6622726bbef3",
+      "geometry": {
+        "offsetX": -4,
+        "offsetY": -4,
+        "logicalWidth": 22,
+        "logicalHeight": 22
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/slider-pressed-light-comfortable.svg",
+      "nodeId": "77:1136",
+      "slot": "Slider pressed thumb (Light, Comfortable)",
+      "width": 32.0,
+      "height": 32.0,
+      "sha256": "3fee9db756f3e50cc32bd833db4828fa4476d3be98667a94b91cf6ef8721677a",
+      "geometry": {
+        "offsetX": -4,
+        "offsetY": -4,
+        "logicalWidth": 24,
+        "logicalHeight": 24
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/slider-pressed-light-compact.svg",
+      "nodeId": "77:1136",
+      "slot": "Slider pressed thumb (Light, Compact)",
+      "width": 30.0,
+      "height": 30.0,
+      "sha256": "7a4b6ed45812e290dbeff958c4946d10be28b071d860ed9ee23132d360e09b14",
+      "geometry": {
+        "offsetX": -4,
+        "offsetY": -4,
+        "logicalWidth": 22,
+        "logicalHeight": 22
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/slider-focus-dark-comfortable.svg",
+      "nodeId": "77:1145",
+      "slot": "Slider focus thumb (Dark, Comfortable)",
+      "width": 28.0,
+      "height": 28.0,
+      "sha256": "9d6c9a5c3c4ed68d60083ebdc7c9b7e08f590e21343bac29bda8ac2f72e52726",
+      "geometry": {
+        "offsetX": -4,
+        "offsetY": -4,
+        "logicalWidth": 20,
+        "logicalHeight": 20
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/slider-focus-dark-compact.svg",
+      "nodeId": "77:1145",
+      "slot": "Slider focus thumb (Dark, Compact)",
+      "width": 26.0,
+      "height": 26.0,
+      "sha256": "2a96dcefcd40717dd9c61e9e17d97852d98aeb773090da7707a8ba6081d9b903",
+      "geometry": {
+        "offsetX": -4,
+        "offsetY": -4,
+        "logicalWidth": 18,
+        "logicalHeight": 18
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/slider-focus-light-comfortable.svg",
+      "nodeId": "77:1145",
+      "slot": "Slider focus thumb (Light, Comfortable)",
+      "width": 28.0,
+      "height": 28.0,
+      "sha256": "ff28f3d11c837a0272aee3591cb6da5edb6e72cbab7c5c8db3ebbcb738430772",
+      "geometry": {
+        "offsetX": -4,
+        "offsetY": -4,
+        "logicalWidth": 20,
+        "logicalHeight": 20
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/slider-focus-light-compact.svg",
+      "nodeId": "77:1145",
+      "slot": "Slider focus thumb (Light, Compact)",
+      "width": 26.0,
+      "height": 26.0,
+      "sha256": "e962334f4f134b68054b63d908e606ede903fe5e807a664099cb34ddd4fbdcaa",
+      "geometry": {
+        "offsetX": -4,
+        "offsetY": -4,
+        "logicalWidth": 18,
+        "logicalHeight": 18
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/slider-disabled-dark-comfortable.svg",
+      "nodeId": "77:1155",
+      "slot": "Slider disabled thumb (Dark, Comfortable)",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "413086a86ec429e1b66e8266b8b832ea012ca2b2d69924786a44468e817ac594",
+      "geometry": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "logicalWidth": 20,
+        "logicalHeight": 20
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/slider-disabled-dark-compact.svg",
+      "nodeId": "77:1155",
+      "slot": "Slider disabled thumb (Dark, Compact)",
+      "width": 18.0,
+      "height": 18.0,
+      "sha256": "19070c0dff4ff3b06778d9d8109ddddb5ea4bb7210500297a5c48d556b4c62f5",
+      "geometry": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "logicalWidth": 18,
+        "logicalHeight": 18
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/slider-disabled-light-comfortable.svg",
+      "nodeId": "77:1155",
+      "slot": "Slider disabled thumb (Light, Comfortable)",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "6fe87fec3bb95d3b4fff2436f11116a5d671293d599a9345abfe3338dc0c08fa",
+      "geometry": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "logicalWidth": 20,
+        "logicalHeight": 20
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/slider-disabled-light-compact.svg",
+      "nodeId": "77:1155",
+      "slot": "Slider disabled thumb (Light, Compact)",
+      "width": 18.0,
+      "height": 18.0,
+      "sha256": "675fad1278fabbb840b5b0726e597a56a2e215e0f01e7edc05df99de225a94ec",
+      "geometry": {
+        "offsetX": 0,
+        "offsetY": 0,
+        "logicalWidth": 18,
+        "logicalHeight": 18
+      }
     }
   ]
 }

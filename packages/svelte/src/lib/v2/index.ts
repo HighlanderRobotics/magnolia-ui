@@ -40,3 +40,6 @@ export { default as DayCell } from './DayCell.svelte';
 export { default as Calendar } from './Calendar.svelte';
 export { default as DateField } from './DateField.svelte';
 export { default as TimeField } from './TimeField.svelte';
+export { default as Combobox } from './Combobox.svelte';
+export { default as MultiSelect } from './MultiSelect.svelte';
+export { default as Slider } from './Slider.svelte';

@@ -64,6 +64,32 @@ import asset61 from './assets/calendar.svg';
 import asset62 from './assets/calendar-prev.svg';
 import asset63 from './assets/calendar-next.svg';
 import asset64 from './assets/today-dot.svg';
+import asset65 from './assets/combo-down.svg';
+import asset66 from './assets/combo-up.svg';
+import asset67 from './assets/combo-check.svg';
+import asset68 from './assets/combo-loading.svg';
+import asset69 from './assets/combo-empty.svg';
+import asset70 from './assets/token-remove.svg';
+import asset71 from './assets/slider-default-dark-comfortable.svg';
+import asset72 from './assets/slider-default-dark-compact.svg';
+import asset73 from './assets/slider-default-light-comfortable.svg';
+import asset74 from './assets/slider-default-light-compact.svg';
+import asset75 from './assets/slider-hover-dark-comfortable.svg';
+import asset76 from './assets/slider-hover-dark-compact.svg';
+import asset77 from './assets/slider-hover-light-comfortable.svg';
+import asset78 from './assets/slider-hover-light-compact.svg';
+import asset79 from './assets/slider-pressed-dark-comfortable.svg';
+import asset80 from './assets/slider-pressed-dark-compact.svg';
+import asset81 from './assets/slider-pressed-light-comfortable.svg';
+import asset82 from './assets/slider-pressed-light-compact.svg';
+import asset83 from './assets/slider-focus-dark-comfortable.svg';
+import asset84 from './assets/slider-focus-dark-compact.svg';
+import asset85 from './assets/slider-focus-light-comfortable.svg';
+import asset86 from './assets/slider-focus-light-compact.svg';
+import asset87 from './assets/slider-disabled-dark-comfortable.svg';
+import asset88 from './assets/slider-disabled-dark-compact.svg';
+import asset89 from './assets/slider-disabled-light-comfortable.svg';
+import asset90 from './assets/slider-disabled-light-compact.svg';
 export const glyphs = {
   'spinner-dark': { src: asset0, width: 20, height: 20 },
   'error': { src: asset1, width: 12, height: 12 },
@@ -130,5 +156,31 @@ export const glyphs = {
   'calendar-prev': { src: asset62, width: 20, height: 20 },
   'calendar-next': { src: asset63, width: 20, height: 20 },
   'today-dot': { src: asset64, width: 5, height: 5 },
+  'combo-down': { src: asset65, width: 16, height: 16 },
+  'combo-up': { src: asset66, width: 16, height: 16 },
+  'combo-check': { src: asset67, width: 16, height: 16 },
+  'combo-loading': { src: asset68, width: 16, height: 16 },
+  'combo-empty': { src: asset69, width: 16, height: 16 },
+  'token-remove': { src: asset70, width: 14, height: 14 },
+  'slider-default-dark-comfortable': { src: asset71, width: 24, height: 24, geometry: {"offsetX":-2,"offsetY":-0.5,"logicalWidth":20,"logicalHeight":20} },
+  'slider-default-dark-compact': { src: asset72, width: 22, height: 22, geometry: {"offsetX":-2,"offsetY":-0.5,"logicalWidth":18,"logicalHeight":18} },
+  'slider-default-light-comfortable': { src: asset73, width: 24, height: 24, geometry: {"offsetX":-2,"offsetY":-0.5,"logicalWidth":20,"logicalHeight":20} },
+  'slider-default-light-compact': { src: asset74, width: 22, height: 22, geometry: {"offsetX":-2,"offsetY":-0.5,"logicalWidth":18,"logicalHeight":18} },
+  'slider-hover-dark-comfortable': { src: asset75, width: 28, height: 28, geometry: {"offsetX":-4,"offsetY":-4,"logicalWidth":20,"logicalHeight":20} },
+  'slider-hover-dark-compact': { src: asset76, width: 26, height: 26, geometry: {"offsetX":-4,"offsetY":-4,"logicalWidth":18,"logicalHeight":18} },
+  'slider-hover-light-comfortable': { src: asset77, width: 28, height: 28, geometry: {"offsetX":-4,"offsetY":-4,"logicalWidth":20,"logicalHeight":20} },
+  'slider-hover-light-compact': { src: asset78, width: 26, height: 26, geometry: {"offsetX":-4,"offsetY":-4,"logicalWidth":18,"logicalHeight":18} },
+  'slider-pressed-dark-comfortable': { src: asset79, width: 32, height: 32, geometry: {"offsetX":-4,"offsetY":-4,"logicalWidth":24,"logicalHeight":24} },
+  'slider-pressed-dark-compact': { src: asset80, width: 30, height: 30, geometry: {"offsetX":-4,"offsetY":-4,"logicalWidth":22,"logicalHeight":22} },
+  'slider-pressed-light-comfortable': { src: asset81, width: 32, height: 32, geometry: {"offsetX":-4,"offsetY":-4,"logicalWidth":24,"logicalHeight":24} },
+  'slider-pressed-light-compact': { src: asset82, width: 30, height: 30, geometry: {"offsetX":-4,"offsetY":-4,"logicalWidth":22,"logicalHeight":22} },
+  'slider-focus-dark-comfortable': { src: asset83, width: 28, height: 28, geometry: {"offsetX":-4,"offsetY":-4,"logicalWidth":20,"logicalHeight":20} },
+  'slider-focus-dark-compact': { src: asset84, width: 26, height: 26, geometry: {"offsetX":-4,"offsetY":-4,"logicalWidth":18,"logicalHeight":18} },
+  'slider-focus-light-comfortable': { src: asset85, width: 28, height: 28, geometry: {"offsetX":-4,"offsetY":-4,"logicalWidth":20,"logicalHeight":20} },
+  'slider-focus-light-compact': { src: asset86, width: 26, height: 26, geometry: {"offsetX":-4,"offsetY":-4,"logicalWidth":18,"logicalHeight":18} },
+  'slider-disabled-dark-comfortable': { src: asset87, width: 20, height: 20, geometry: {"offsetX":0,"offsetY":0,"logicalWidth":20,"logicalHeight":20} },
+  'slider-disabled-dark-compact': { src: asset88, width: 18, height: 18, geometry: {"offsetX":0,"offsetY":0,"logicalWidth":18,"logicalHeight":18} },
+  'slider-disabled-light-comfortable': { src: asset89, width: 20, height: 20, geometry: {"offsetX":0,"offsetY":0,"logicalWidth":20,"logicalHeight":20} },
+  'slider-disabled-light-compact': { src: asset90, width: 18, height: 18, geometry: {"offsetX":0,"offsetY":0,"logicalWidth":18,"logicalHeight":18} },
 } as const;
 export type GlyphName = keyof typeof glyphs;
