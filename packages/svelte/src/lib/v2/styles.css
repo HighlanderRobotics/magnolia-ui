@@ -1822,3 +1822,249 @@
   width: var(--mg-v2-size-step-check);
   height: var(--mg-v2-size-step-check);
 }
+.mg2-calendar {
+  width: max-content;
+  max-width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--mg-v2-color-bg-overlay);
+  box-shadow:
+    inset 0 0 0 1px var(--mg-v2-color-border-subtle),
+    0 1px 2px #0003,
+    0 8px 20px #0005;
+}
+.mg2-calendar-header {
+  display: flex;
+  align-items: center;
+}
+.mg2-calendar-header > span {
+  flex: 1;
+  text-align: center;
+  font-weight: 500;
+  font-size: var(--mg-v2-type-label-size);
+  line-height: var(--mg-v2-type-label-line);
+}
+.mg2-calendar-week {
+  display: grid;
+  grid-template-columns: repeat(7, var(--mg-v2-size-control));
+}
+.mg2-calendar-weekdays > span {
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--mg-v2-type-caption-size);
+  line-height: var(--mg-v2-type-caption-line);
+  font-weight: 500;
+  color: var(--mg-v2-color-fg-tertiary);
+}
+.mg2-day {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--mg-v2-size-control);
+  height: var(--mg-v2-size-control);
+  padding: 0;
+  border: 0;
+  border-radius: var(--mg-v2-radius-control);
+  background: transparent;
+  color: var(--mg-v2-color-fg-primary);
+  font-family: inherit;
+  font-size: var(--mg-v2-type-body-size);
+  line-height: var(--mg-v2-type-body-line);
+  cursor: pointer;
+}
+.mg2-day:hover:enabled {
+  background: var(--mg-v2-color-bg-day-hover);
+}
+.mg2-day:active:enabled {
+  background: var(--mg-v2-color-bg-day-pressed);
+}
+.mg2-day[data-outside='true'] {
+  color: var(--mg-v2-color-fg-tertiary);
+}
+.mg2-day[data-today='true'] {
+  font-weight: 500;
+}
+.mg2-day[data-range='true'] {
+  border-radius: 0;
+  background: var(--mg-v2-color-bg-accent-subtle);
+  color: var(--mg-v2-color-fg-primary);
+}
+.mg2-day[data-range='true']:hover:enabled {
+  background: var(--mg-v2-color-bg-range-hover);
+}
+.mg2-day[data-range='true']:active:enabled {
+  background: var(--mg-v2-color-bg-range-pressed);
+}
+.mg2-day[aria-pressed='true'] {
+  font-weight: 500;
+  background: var(--mg-v2-color-bg-accent-strong);
+  color: var(--mg-v2-color-fg-on-accent);
+}
+.mg2-day[aria-pressed='true']:hover:enabled {
+  background: var(--mg-v2-color-bg-primary-hover);
+}
+.mg2-day[aria-pressed='true']:active:enabled {
+  background: var(--mg-v2-color-bg-primary-press);
+}
+.mg2-day[data-edge='start'] {
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+.mg2-day[data-edge='end'] {
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+}
+.mg2-day:disabled {
+  color: var(--mg-v2-color-fg-disabled);
+  cursor: not-allowed;
+}
+.mg2-day:disabled::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 1px;
+  background: currentColor;
+}
+.mg2-day > .mg2-glyph {
+  position: absolute;
+  bottom: 5px;
+  left: calc(50% - 2.5px);
+  color: var(--mg-v2-color-fg-accent);
+}
+.mg2-day[aria-pressed='true'] > .mg2-glyph {
+  color: var(--mg-v2-color-fg-on-accent);
+}
+.mg2-day[data-range='true'] > .mg2-glyph {
+  color: var(--mg-v2-color-fg-primary);
+}
+.mg-v2 .mg2-day:focus-visible {
+  outline-offset: -2px;
+}
+.mg2-temporal-control {
+  display: flex;
+  align-items: center;
+  gap: var(--mg-v2-gap-inline);
+  padding-inline: 12px;
+  border: 1px solid var(--mg-v2-color-border-default);
+  border-radius: var(--mg-v2-radius-control);
+  background: var(--mg-v2-color-bg-field);
+}
+.mg2-temporal-control:hover:not(:has(input:disabled)) {
+  border-color: var(--mg-v2-color-border-field-hover);
+}
+.mg2-temporal-control:focus-within,
+.mg2-temporal-control[data-open='true'] {
+  border-color: var(--mg-v2-color-border-accent);
+  box-shadow: 0 0 0 3px var(--mg-v2-color-tint-accent-18);
+}
+.mg2-temporal-control[data-error='true'] {
+  border-color: var(--mg-v2-color-border-danger);
+}
+.mg2-temporal-control > input {
+  width: 0;
+  flex: 1;
+  border: 0;
+  padding-inline: 0;
+  min-height: calc(var(--mg-v2-size-control) - 2px);
+  background: transparent;
+}
+.mg2-temporal-control > input:focus-visible {
+  outline: 0;
+}
+.mg2-temporal-control > .mg-overlay-anchor {
+  display: inline-flex;
+  align-items: center;
+}
+.mg2-temporal-trigger {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  color: var(--mg-v2-color-fg-secondary);
+  width: 18px;
+  height: calc(var(--mg-v2-size-control) - 2px);
+  padding: 0;
+  cursor: pointer;
+}
+.mg2-temporal-trigger::after {
+  content: '';
+  position: absolute;
+  width: 44px;
+  height: 44px;
+}
+.mg2-temporal-field .mg-popover {
+  position: fixed;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  max-width: calc(100vw - 16px);
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  background: transparent;
+  color: var(--mg-v2-color-fg-primary);
+  font-family: inherit;
+}
+.mg2-time-list {
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  max-height: 300px;
+  padding: 4px;
+  border: 1px solid var(--mg-v2-color-border-subtle);
+  border-radius: 12px;
+  background: var(--mg-v2-color-bg-overlay);
+  box-shadow:
+    0 1px 2px #0003,
+    0 8px 20px #0005;
+}
+.mg2-time-list button {
+  min-height: var(--mg-v2-size-control);
+  padding: 8px 12px;
+  text-align: start;
+  border: 0;
+  border-radius: var(--mg-v2-radius-control);
+  background: transparent;
+  color: var(--mg-v2-color-fg-primary);
+  font: inherit;
+  cursor: pointer;
+}
+.mg2-time-list button:hover,
+.mg2-time-list button:focus-visible {
+  background: var(--mg-v2-color-bg-list-hover);
+  outline-offset: -2px;
+}
+.mg2-time-list button[aria-selected='true'] {
+  font-weight: 500;
+  background: var(--mg-v2-color-bg-list-selected);
+}
+@media (pointer: coarse) {
+  .mg2-temporal-field .mg-popover {
+    top: auto !important;
+    left: 8px !important;
+    right: 8px;
+    bottom: 8px;
+    width: calc(100vw - 16px);
+    max-width: none;
+    max-height: 80dvh;
+    padding: 12px;
+    box-sizing: border-box;
+    border-radius: 12px;
+    background: var(--mg-v2-color-bg-overlay);
+    box-shadow: 0 0 0 100vmax #0008;
+  }
+  .mg2-temporal-field .mg-popover .mg2-calendar {
+    margin-inline: auto;
+    box-shadow: none;
+  }
+  .mg2-time-list {
+    max-height: 60dvh;
+  }
+}
+.mg-v2 .mg2-day[aria-pressed='true']:focus-visible {
+  box-shadow: inset 0 0 0 4px var(--mg-v2-color-bg-overlay);
+}

@@ -1,5 +1,119 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+test('v2 temporal popovers retain readable focus states in every theme and density', async ({
+  page,
+}, info) => {
+  test.setTimeout(60000);
+  await page.goto('/v2');
+  for (const theme of ['dark', 'light'])
+    for (const density of ['comfortable', 'compact']) {
+      await page.getByLabel('Theme', { exact: true }).selectOption(theme);
+      await page.getByLabel('Density', { exact: true }).selectOption(density);
+      await page
+        .getByRole('button', { name: 'Choose Due date', exact: true })
+        .click();
+      const calendar = page.getByRole('dialog', {
+        name: 'Choose Due date',
+        exact: true,
+      });
+      await expect(calendar).toBeVisible();
+      await calendar.screenshot({
+        path: info.outputPath(`calendar-${theme}-${density}.png`),
+      });
+      await page.keyboard.press('Escape');
+      await expect(
+        page.getByRole('button', { name: 'Choose Due date', exact: true }),
+      ).toBeFocused();
+      await page
+        .getByRole('button', { name: 'Choose Due date', exact: true })
+        .click();
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include('.mg2-temporal-field .mg-popover:popover-open')
+            .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      await page.bringToFront();
+      await page.keyboard.press('Escape');
+      await expect(calendar).not.toBeVisible();
+    }
+});
+test('v2 date/time pickers validate typing, navigate dates and restore form state', async ({
+  page,
+}) => {
+  await page.goto('/v2');
+  const controls = page.getByTestId('temporal-family'),
+    date = controls.getByRole('textbox', { name: 'Due date', exact: true });
+  await date.fill('2026-02-30');
+  await date.press('Enter');
+  await expect(date).toHaveAttribute('aria-invalid', 'true');
+  expect(await date.evaluate((el: HTMLInputElement) => el.validity.valid)).toBe(
+    false,
+  );
+  await date.fill('Oct 14, 2026');
+  await date.press('Tab');
+  await controls
+    .getByRole('button', { name: 'Choose Due date', exact: true })
+    .click();
+  const dialog = page.getByRole('dialog', {
+    name: 'Choose Due date',
+    exact: true,
+  });
+  await expect(
+    dialog.getByRole('button', { name: 'Wed, Oct 14, 2026', exact: true }),
+  ).toBeFocused();
+  await page.keyboard.press('ArrowRight');
+  await expect(
+    dialog.getByRole('button', { name: 'Thu, Oct 15, 2026', exact: true }),
+  ).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(dialog).not.toBeVisible();
+  await expect(date).toHaveValue('Thu, Oct 15, 2026');
+  await expect(controls.locator('input[name="dueDate"]')).toHaveValue(
+    '2026-10-15',
+  );
+  await controls
+    .getByRole('button', { name: 'Choose Start time', exact: true })
+    .click();
+  const times = page.getByRole('dialog', {
+    name: 'Choose Start time',
+    exact: true,
+  });
+  await expect(
+    times.getByRole('option', { name: '2:30 PM', exact: true }),
+  ).toBeFocused();
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('Enter');
+  await expect(
+    controls.getByRole('textbox', { name: 'Start time', exact: true }),
+  ).toHaveValue('2:45 PM');
+  await expect(controls.locator('input[name="startTime"]')).toHaveValue(
+    '14:45',
+  );
+  await controls
+    .getByRole('button', { name: 'Reset dates and times', exact: true })
+    .click();
+  await expect(date).toHaveValue('Wed, Oct 14, 2026');
+  await expect(
+    controls.getByRole('textbox', { name: 'Start time', exact: true }),
+  ).toHaveValue('2:30 PM');
+  const calendar = controls.getByRole('group', {
+    name: 'Date range',
+    exact: true,
+  });
+  await calendar
+    .getByRole('button', { name: 'Tue, Oct 20, 2026', exact: true })
+    .click();
+  await calendar
+    .getByRole('button', { name: 'Fri, Oct 23, 2026', exact: true })
+    .click();
+  await expect(
+    calendar.getByRole('button', { name: 'Tue, Oct 20, 2026', exact: true }),
+  ).toHaveAttribute('aria-pressed', 'true');
+  await expect(calendar.locator('[data-range="true"]')).toHaveCount(2);
+});
 test('v2 file selection validates files, preserves native form data and supports retry/remove/reset', async ({
   page,
 }) => {
@@ -284,6 +398,7 @@ test('v2 choices, search, select and textarea work with keyboards and native for
 test('v2 Figma controls retain geometry, fonts and accessibility in every theme and density', async ({
   page,
 }, info) => {
+  test.setTimeout(60000);
   const failed: string[] = [];
   page.on('response', (r) => {
     if (r.status() >= 400 && /\.(svg|woff2)/.test(r.url()))
@@ -296,6 +411,15 @@ test('v2 Figma controls retain geometry, fonts and accessibility in every theme 
       await page.getByLabel('Theme', { exact: true }).selectOption(theme);
       await page.getByLabel('Density', { exact: true }).selectOption(density);
       const root = page.locator('.mg-v2');
+      expect(
+        (await page
+          .getByRole('group', { name: 'Date range', exact: true })
+          .boundingBox())!.width,
+      ).toBe(density === 'comfortable' ? 332 : 248);
+      expect(
+        (await page.locator('.mg2-temporal-control').first().boundingBox())!
+          .height,
+      ).toBe(density === 'comfortable' ? 44 : 32);
       await expect(root).toHaveAttribute('data-density', density);
       const button = page.getByTestId('buttons').locator('button').first();
       expect((await button.boundingBox())!.height).toBe(

@@ -41,6 +41,9 @@
     Steps,
     FileField,
     Attachment,
+    Calendar,
+    DateField,
+    TimeField,
   } from '../../../packages/svelte/src/lib/v2/index';
   import Glyph from '../../../packages/svelte/src/lib/v2/Glyph.svelte';
   let theme = $state<'dark' | 'light' | 'system'>('dark');
@@ -59,6 +62,10 @@
     search = $state(''),
     note = $state('');
   let submitted = $state('');
+  let dueDate = $state<string | undefined>('2026-10-14'),
+    startTime = $state<string | undefined>('14:30'),
+    rangeStart = $state<string | undefined>('2026-10-14'),
+    rangeEnd = $state<string | undefined>('2026-10-17');
   let files = $state<File[]>([]),
     uploadFailed = $state(true),
     sampleVisible = $state(true),
@@ -376,6 +383,37 @@
             onRemove={() => (imageVisible = false)}
           />{/if}
       </div>
+    </section>
+    <section aria-labelledby="dates-and-times" data-testid="temporal-family">
+      <div class="section-title">
+        <h2 id="dates-and-times">Dates and times</h2>
+        <a href={`${source}?node-id=357-2430`}>Figma: DateField</a>
+      </div>
+      <form onsubmit={(event) => event.preventDefault()}>
+        <div class="grid">
+          <DateField
+            label="Due date"
+            name="dueDate"
+            bind:value={dueDate}
+            min="2026-10-01"
+            max="2026-11-30"
+            helper="October or November 2026"
+          /><TimeField
+            label="Start time"
+            name="startTime"
+            bind:value={startTime}
+            helper="Local time"
+          />
+        </div>
+        <Button variant="tertiary" type="reset">Reset dates and times</Button>
+      </form>
+      <Calendar
+        label="Date range"
+        range
+        bind:value={rangeStart}
+        bind:endValue={rangeEnd}
+        today="2026-10-09"
+      />
     </section>
     <section aria-labelledby="navigation">
       <div class="section-title">

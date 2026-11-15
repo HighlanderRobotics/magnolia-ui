@@ -27,7 +27,56 @@ import {
   FileField,
   Attachment,
   Steps,
+  Calendar,
+  DateField,
+  TimeField,
 } from '../../packages/react-native/src/v2';
+test('v2 native temporal controls validate typed dates and expose calendar/time choices', () => {
+  const dateChange = jest.fn(),
+    timeChange = jest.fn();
+  const { getByLabelText, getByRole, getByText } = render(
+    <MagnoliaProvider>
+      <DateField
+        label="Due date"
+        value="2026-10-14"
+        onValueChange={dateChange}
+      />
+      <TimeField label="Start time" value="14:30" onValueChange={timeChange} />
+    </MagnoliaProvider>,
+  );
+  fireEvent.changeText(getByLabelText('Due date'), '2026-02-30');
+  fireEvent(getByLabelText('Due date'), 'blur', {});
+  expect(getByText('Error: Enter a valid date.')).toBeTruthy();
+  expect(dateChange).not.toHaveBeenCalled();
+  fireEvent.press(getByRole('button', { name: 'Choose Due date' }));
+  fireEvent.press(getByRole('button', { name: 'Thu, Oct 15, 2026' }));
+  expect(dateChange).toHaveBeenCalledWith('2026-10-15');
+  fireEvent.press(getByRole('button', { name: 'Choose Start time' }));
+  fireEvent.press(getByRole('radio', { name: '2:45 PM' }));
+  expect(timeChange).toHaveBeenCalledWith('14:45');
+});
+test('v2 native calendar disables constrained days and starts a new range after completion', () => {
+  const change = jest.fn();
+  const { getByRole } = render(
+    <MagnoliaProvider>
+      <Calendar
+        value="2026-10-14"
+        endValue="2026-10-17"
+        range
+        min="2026-10-01"
+        max="2026-10-31"
+        today="2026-10-09"
+        onValueChange={change}
+      />
+    </MagnoliaProvider>,
+  );
+  expect(
+    getByRole('button', { name: 'Mon, Sep 28, 2026' }).props.accessibilityState
+      .disabled,
+  ).toBe(true);
+  fireEvent.press(getByRole('button', { name: 'Tue, Oct 20, 2026' }));
+  expect(change).toHaveBeenCalledWith('2026-10-20', undefined);
+});
 test('v2 native file controls delegate picking, expose progress and keep retry/remove independent', () => {
   const browse = jest.fn(),
     retry = jest.fn(),

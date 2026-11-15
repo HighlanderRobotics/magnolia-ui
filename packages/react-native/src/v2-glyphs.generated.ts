@@ -60,5 +60,10 @@ export const nativeGlyphs = {
   'attachment-retry': { source: require('./assets/v2/attachment-retry.png'), width: 16, height: 16 },
   'attachment-image': { source: require('./assets/v2/attachment-image.png'), width: 20, height: 20 },
   'steps-check': { source: require('./assets/v2/steps-check.png'), width: 12, height: 12 },
+  'clock': { source: require('./assets/v2/clock.png'), width: 18, height: 18 },
+  'calendar': { source: require('./assets/v2/calendar.png'), width: 18, height: 18 },
+  'calendar-prev': { source: require('./assets/v2/calendar-prev.png'), width: 20, height: 20 },
+  'calendar-next': { source: require('./assets/v2/calendar-next.png'), width: 20, height: 20 },
+  'today-dot': { source: require('./assets/v2/today-dot.png'), width: 5, height: 5 },
 } as const;
 export type NativeGlyphName = keyof typeof nativeGlyphs;

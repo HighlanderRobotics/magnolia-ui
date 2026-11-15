@@ -480,6 +480,46 @@
       "width": 12.0,
       "height": 12.0,
       "sha256": "63704f33dfda7730114be0e7798c213cf132402ff4526a96dfa759f501dc2e3a"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/clock.svg",
+      "nodeId": "92:1484",
+      "slot": "TimeField clock",
+      "width": 18.0,
+      "height": 18.0,
+      "sha256": "4b93a9385cb6b0c696c5e9c80e063c237378c3a3860cc1c5f4c93aa7b458720f"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/calendar.svg",
+      "nodeId": "357:2357",
+      "slot": "DateField calendar",
+      "width": 18.0,
+      "height": 18.0,
+      "sha256": "657b7d6329de6ada05b40c650ade18dacecb5e829a891425fa8a968afe1be73a"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/calendar-prev.svg",
+      "nodeId": "I47:1166;43:192",
+      "slot": "Calendar previous month",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "a67b966716a328d8d706e7d61233a7fdb57117e954e0b5ffa121914d0161e8bd"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/calendar-next.svg",
+      "nodeId": "I47:1170;43:192",
+      "slot": "Calendar next month",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "8253f7be023e43f195f1743f0602b47412ab3fddcb34aab72d9076192ab57b95"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/today-dot.svg",
+      "nodeId": "194:2097",
+      "slot": "DayCell today marker",
+      "width": 5.0,
+      "height": 5.0,
+      "sha256": "d3597a8224c0c3c563a72621d873261d3ead558d23066906c9ac175b29f19c72"
     }
   ]
 }

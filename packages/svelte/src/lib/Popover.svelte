@@ -8,11 +8,15 @@
     label,
     trigger,
     children,
+    initialFocus,
+    anchorElement,
   }: {
     open?: boolean;
     label: string;
     trigger: Snippet<[HTMLButtonAttributes]>;
     children?: Snippet;
+    initialFocus?: string;
+    anchorElement?: HTMLElement;
   } = $props();
   let anchor = $state<HTMLSpanElement>(null!);
   let panel = $state<HTMLDivElement>(null!);
@@ -26,11 +30,13 @@
   });
   $effect(() => {
     if (!open || !panel) return;
-    const position = positionOverlay(panel, anchor);
+    const position = positionOverlay(panel, anchorElement ?? anchor);
     (
+      (initialFocus ? panel.querySelector<HTMLElement>(initialFocus) : null) ??
       panel.querySelector<HTMLElement>(
         'button:not(:disabled), input:not(:disabled), a[href], [tabindex="0"]',
-      ) ?? panel
+      ) ??
+      panel
     ).focus();
     return () => position.destroy();
   });

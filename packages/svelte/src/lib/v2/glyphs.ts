@@ -59,6 +59,11 @@ import asset56 from './assets/attachment-remove.svg';
 import asset57 from './assets/attachment-retry.svg';
 import asset58 from './assets/attachment-image.svg';
 import asset59 from './assets/steps-check.svg';
+import asset60 from './assets/clock.svg';
+import asset61 from './assets/calendar.svg';
+import asset62 from './assets/calendar-prev.svg';
+import asset63 from './assets/calendar-next.svg';
+import asset64 from './assets/today-dot.svg';
 export const glyphs = {
   'spinner-dark': { src: asset0, width: 20, height: 20 },
   'error': { src: asset1, width: 12, height: 12 },
@@ -120,5 +125,10 @@ export const glyphs = {
   'attachment-retry': { src: asset57, width: 16, height: 16 },
   'attachment-image': { src: asset58, width: 20, height: 20 },
   'steps-check': { src: asset59, width: 12, height: 12 },
+  'clock': { src: asset60, width: 18, height: 18 },
+  'calendar': { src: asset61, width: 18, height: 18 },
+  'calendar-prev': { src: asset62, width: 20, height: 20 },
+  'calendar-next': { src: asset63, width: 20, height: 20 },
+  'today-dot': { src: asset64, width: 5, height: 5 },
 } as const;
 export type GlyphName = keyof typeof glyphs;
