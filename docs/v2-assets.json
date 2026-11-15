@@ -432,6 +432,54 @@
       "width": 7.0,
       "height": 7.0,
       "sha256": "2e8f96bc145544c28ffe70db23818492ce88fdb7542f4dd8acf65a26086cd1e7"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/upload.svg",
+      "nodeId": "77:1183",
+      "slot": "FileField upload",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "c6f61cbd0ca8db35a868737b546e6b8c1a4d94c061ef374ae4074406cc33128b"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/attachment-file.svg",
+      "nodeId": "103:1456",
+      "slot": "Attachment file thumbnail",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "12783b84e889202a1ef6ba823a0f4847438fab0adaeda5de8b3e26d97a18f05f"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/attachment-remove.svg",
+      "nodeId": "358:2367",
+      "slot": "Attachment remove",
+      "width": 21.0,
+      "height": 21.0,
+      "sha256": "4ff448569f89df752763f39769d7824f3b776417bf72511d642df8e31cc130b0"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/attachment-retry.svg",
+      "nodeId": "I103:1490;43:83",
+      "slot": "Attachment Retry icon",
+      "width": 16.0,
+      "height": 16.0,
+      "sha256": "f402a59e9f01fd4c0eb0b9ebd193908924310a1cb77b5eedccffe89f9b467055"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/attachment-image.svg",
+      "nodeId": "298:2365",
+      "slot": "Attachment image placeholder",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "e28b565f1d215171c2bf354605e86b5c8312fcdb29de9e4f0231688044390702"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/steps-check.svg",
+      "nodeId": "103:1533",
+      "slot": "Steps done check",
+      "width": 12.0,
+      "height": 12.0,
+      "sha256": "63704f33dfda7730114be0e7798c213cf132402ff4526a96dfa759f501dc2e3a"
     }
   ]
 }

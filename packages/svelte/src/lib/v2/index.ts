@@ -33,3 +33,6 @@ export { default as NumberField } from './NumberField.svelte';
 export { default as Stepper } from './Stepper.svelte';
 export { default as Link } from './Link.svelte';
 export { default as SelectableCard } from './SelectableCard.svelte';
+export { default as Steps } from './Steps.svelte';
+export { default as FileField } from './FileField.svelte';
+export { default as Attachment } from './Attachment.svelte';

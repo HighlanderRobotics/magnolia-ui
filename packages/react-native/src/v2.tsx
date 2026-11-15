@@ -28,6 +28,7 @@ import type {
 import { v2Tokens } from '@highlanderrobotics/magnolia-tokens/v2';
 import { nativeGlyphs, type NativeGlyphName } from './v2-glyphs.generated.js';
 export { NumberField, Stepper, Link, SelectableCard } from './v2-numeric.js';
+export { Steps, FileField, Attachment } from './v2-files.js';
 export {
   Badge,
   StatusIndicator,

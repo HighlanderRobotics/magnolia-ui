@@ -1,5 +1,98 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+test('v2 file selection validates files, preserves native form data and supports retry/remove/reset', async ({
+  page,
+}) => {
+  await page.goto('/v2');
+  const controls = page.getByTestId('files-family'),
+    input = controls.locator('input[type="file"]');
+  await input.setInputFiles({
+    name: 'report.txt',
+    mimeType: 'text/plain',
+    buffer: Buffer.from('bad'),
+  });
+  await expect(
+    controls.locator('.mg2-file-field').getByRole('alert'),
+  ).toContainText("report.txt isn't a supported format");
+  expect(
+    await input.evaluate((el: HTMLInputElement) => el.validity.valid),
+  ).toBe(false);
+  await input.setInputFiles([
+    { name: 'photo.png', mimeType: 'image/png', buffer: Buffer.from('image') },
+    {
+      name: 'photo2.jpg',
+      mimeType: 'image/jpeg',
+      buffer: Buffer.from('image'),
+    },
+  ]);
+  await expect(controls.getByRole('alert')).toHaveText('Upload failed');
+  await controls
+    .getByRole('button', { name: 'Remove photo.png', exact: true })
+    .click();
+  expect(
+    await input.evaluate((el: HTMLInputElement) =>
+      Array.from(el.files ?? []).map((file) => file.name),
+    ),
+  ).toEqual(['photo2.jpg']);
+  await controls
+    .getByRole('button', { name: 'Reset photos', exact: true })
+    .click();
+  await expect(
+    controls.getByRole('button', { name: 'Remove photo2.jpg', exact: true }),
+  ).toHaveCount(0);
+  expect(await input.evaluate((el: HTMLInputElement) => el.files?.length)).toBe(
+    0,
+  );
+  await controls.locator('.mg2-file-zone').evaluate((el) => {
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(
+      new File([new Uint8Array(10 * 1024 * 1024 + 1)], 'too-big.png', {
+        type: 'image/png',
+      }),
+    );
+    el.dispatchEvent(
+      new DragEvent('drop', { bubbles: true, cancelable: true, dataTransfer }),
+    );
+  });
+  await expect(
+    controls.locator('.mg2-file-field').getByRole('alert'),
+  ).toContainText('too-big.png exceeds the file size limit');
+  await controls.locator('.mg2-file-zone').evaluate((el) => {
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(
+      new File(['image'], 'dropped.png', { type: 'image/png' }),
+    );
+    el.dispatchEvent(
+      new DragEvent('drop', { bubbles: true, cancelable: true, dataTransfer }),
+    );
+  });
+  await expect(
+    controls.getByRole('button', { name: 'Remove dropped.png', exact: true }),
+  ).toBeVisible();
+  expect(
+    await input.evaluate((el: HTMLInputElement) => el.files?.[0]?.name),
+  ).toBe('dropped.png');
+  await controls.getByRole('button', { name: 'Retry', exact: true }).click();
+  await expect(controls.getByRole('alert')).toHaveCount(0);
+  await controls
+    .getByRole('button', { name: 'Remove inspection.jpg', exact: true })
+    .click();
+  await expect(
+    controls.getByText('inspection.jpg', { exact: true }),
+  ).toHaveCount(0);
+  await expect(controls.locator('li[aria-current="step"]')).toContainText(
+    'Counts',
+  );
+  await controls
+    .getByRole('button', { name: 'Next step', exact: true })
+    .click();
+  await expect(controls.locator('li[aria-current="step"]')).toContainText(
+    'Review',
+  );
+  await expect(
+    controls.getByRole('button', { name: 'Next step', exact: true }),
+  ).toBeDisabled();
+});
 test('v2 numeric and card choices retain bounds, keyboard and reset semantics', async ({
   page,
 }) => {

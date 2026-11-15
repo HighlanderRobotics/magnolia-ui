@@ -1583,3 +1583,242 @@
   width: var(--mg2-glyph-width);
   height: var(--mg2-glyph-height);
 }
+.mg2-steps {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.mg2-steps li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  color: var(--mg-v2-color-fg-tertiary);
+}
+.mg2-step-dot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--mg-v2-size-step-dot);
+  height: var(--mg-v2-size-step-dot);
+  border-radius: 999px;
+  background: var(--mg-v2-color-bg-step-track);
+  font-size: var(--mg-v2-type-step-size);
+  line-height: var(--mg-v2-type-step-line);
+  font-weight: 500;
+}
+.mg2-step-label {
+  font-size: var(--mg-v2-type-step-label-size);
+  line-height: var(--mg-v2-type-step-label-line);
+  white-space: nowrap;
+}
+.mg2-steps li[data-state='current'] {
+  color: var(--mg-v2-color-fg-primary);
+  font-weight: 500;
+}
+.mg2-steps li[data-state='current'] .mg2-step-dot {
+  background: var(--mg-v2-color-bg-accent-strong);
+  color: var(--mg-v2-color-fg-on-accent);
+}
+.mg2-steps li[data-state='done'] {
+  color: var(--mg-v2-color-fg-secondary);
+}
+.mg2-steps li[data-state='done'] .mg2-step-dot {
+  background: var(--mg-v2-color-bg-step-done-dot);
+  color: var(--mg-v2-color-fg-accent);
+}
+.mg2-step-connector {
+  margin-inline: calc(var(--mg-v2-gap-step-connector) - 8px)
+    var(--mg-v2-gap-step-circle);
+  width: var(--mg-v2-size-step-line);
+  height: 2px;
+  border-radius: 1px;
+  background: var(--mg-v2-color-bg-step-track);
+}
+.mg2-steps li[data-state='done'] .mg2-step-connector {
+  background: var(--mg-v2-color-bg-step-done);
+}
+.mg2-file-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.mg2-file-field > label {
+  font-size: var(--mg-v2-type-label-sm-size);
+  line-height: var(--mg-v2-type-label-sm-line);
+  font-weight: 500;
+}
+.mg2-file-zone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mg-v2-gap-zone-icon);
+  padding: var(--mg-v2-pad-zone);
+  border: 1px dashed var(--mg-v2-color-border-default);
+  border-radius: 12px;
+  background: var(--mg-v2-color-bg-field);
+  text-align: center;
+}
+.mg2-file-zone > input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.mg2-file-zone > :not(input) {
+  pointer-events: none;
+}
+.mg2-file-zone > .mg2-glyph {
+  color: var(--mg-v2-color-fg-secondary);
+}
+.mg2-file-zone:hover:not(:has(input:disabled)) {
+  border-color: var(--mg-v2-color-border-field-hover);
+}
+.mg2-file-zone:has(input:focus-visible) {
+  border-style: solid;
+  border-color: var(--mg-v2-color-border-accent);
+  outline: 1px solid var(--mg-v2-color-border-accent);
+}
+.mg2-file-zone[data-drag='true'] {
+  border-color: var(--mg-v2-color-border-accent);
+  outline: 1px dashed var(--mg-v2-color-border-accent);
+  background:
+    linear-gradient(
+      var(--mg-v2-color-tint-accent-10),
+      var(--mg-v2-color-tint-accent-10)
+    ),
+    var(--mg-v2-color-bg-field);
+}
+.mg2-file-zone[data-drag='true'] > .mg2-glyph {
+  color: var(--mg-v2-color-fg-accent);
+}
+.mg2-file-zone[data-error='true'],
+.mg2-file-zone[data-error='true']:has(input:focus-visible) {
+  border-color: var(--mg-v2-color-border-danger);
+  outline-color: var(--mg-v2-color-border-danger);
+}
+.mg2-file-title {
+  font-size: var(--mg-v2-type-zone-title-size);
+  line-height: var(--mg-v2-type-zone-title-line);
+}
+.mg2-file-title > span {
+  color: var(--mg-v2-color-fg-accent);
+  text-decoration: underline;
+}
+.mg2-file-caption {
+  color: var(--mg-v2-color-fg-secondary);
+  font-size: var(--mg-v2-type-helper-size);
+  line-height: var(--mg-v2-type-helper-line);
+}
+.mg2-file-field[data-disabled='true'] {
+  opacity: 0.4;
+}
+.mg2-file-field[data-disabled='true'] input {
+  cursor: not-allowed;
+}
+.mg2-attachment {
+  display: flex;
+  align-items: center;
+  gap: var(--mg-v2-gap-group);
+  min-height: var(--mg-v2-size-attachment-row);
+  padding: var(--mg-v2-pad-attachment);
+  border: 1px solid var(--mg-v2-color-border-default);
+  border-radius: var(--mg-v2-radius-control);
+  background: var(--mg-v2-color-bg-field);
+  min-width: 0;
+}
+.mg2-attachment[data-state='failed'] {
+  border-color: var(--mg-v2-color-border-danger);
+}
+.mg2-attachment-thumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: var(--mg-v2-color-bg-track);
+  border-radius: var(--mg-v2-radius-control-inner);
+  color: var(--mg-v2-color-fg-secondary);
+}
+.mg2-attachment-thumb > img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
+.mg2-attachment-text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+.mg2-attachment-name-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--mg-v2-gap-group);
+  min-width: 0;
+}
+.mg2-attachment-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--mg-v2-type-label-sm-size);
+  line-height: var(--mg-v2-type-label-sm-line);
+  font-weight: 500;
+}
+.mg2-attachment-detail,
+.mg2-attachment-error {
+  font-size: var(--mg-v2-type-helper-size);
+  line-height: var(--mg-v2-type-helper-line);
+}
+.mg2-attachment-detail {
+  color: var(--mg-v2-color-fg-secondary);
+  white-space: nowrap;
+}
+.mg2-attachment-error {
+  color: var(--mg-v2-color-fg-danger);
+}
+.mg2-attachment .mg2-progress {
+  width: 100%;
+}
+.mg2-attachment-actions {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 6px;
+}
+.mg2-attachment-remove {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  width: 12px;
+  height: 32px;
+  background: transparent;
+  color: var(--mg-v2-color-fg-secondary);
+  cursor: pointer;
+}
+.mg2-attachment-remove::after {
+  content: '';
+  position: absolute;
+  width: 44px;
+  height: 44px;
+}
+.mg-v2[data-density='compact'] .mg2-steps [data-glyph='steps-check'] {
+  width: var(--mg-v2-size-step-check);
+  height: var(--mg-v2-size-step-check);
+}

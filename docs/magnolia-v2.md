@@ -92,8 +92,10 @@ Avatars support names, dynamic photos with initials fallback, and original perso
 
 ## Source discrepancies and remaining coverage
 
+FileField (77:1216) exports a bindable web `files` array plus an optional `onFiles` callback, accepted-format/size validation, drag/drop, native form values and reset. Updating the array after removing an Attachment also updates the native file input. React Native FileField exposes `onBrowse`; applications supply their camera/library/document picker and validation so the library adds no runtime picker dependency. Attachment (103:1501) renders controlled uploading/done/failed/image states, progress, dynamic thumbnails and independent retry/remove callbacks. Steps (103:1565) takes labels plus a zero-based current index, announces each stage and scrolls on narrow screens without hiding stages.
+
 Resolved Figma variables and component renders govern implementation when prose differs. The current compact title/lg binding is 28/36 even though the Typography prose says 24/32. The rendered SegmentedControl has a subtle edge and a 3 px inset despite its older description saying no border/2 px. The Card section renders `bg/raised`, while Principles describes page-colored cards. These source discrepancies have not been edited in Figma.
 
 Selected list rows use the primary foreground for description/meta text: Figma's secondary/tertiary text on the rendered selected surface fails AA contrast (4.48:1 and 3.19:1). Other list states retain the source tokens. AvatarGroup follows the rendered 6 px overlap/1.5 px rings rather than the older 8 px/2 px prose.
 
-The full token source and the controls above are implemented. Date/Time inputs, Combo/MultiSelect, Slider, files/attachments, Steps, data/charts, and the remaining navigation/overlays still require v2 implementation and parity checks. Existing v1 controls do not count as v2 coverage. LVT-380 stays In Progress; no v1.0 or v2 release is implied, and Lovat dependencies remain unchanged.
+The full token source and the controls above are implemented. Date/Time inputs, Combo/MultiSelect, Slider, data/charts, and the remaining navigation/overlays still require v2 implementation and parity checks. Existing v1 controls do not count as v2 coverage. LVT-380 stays In Progress; no v1.0 or v2 release is implied, and Lovat dependencies remain unchanged.

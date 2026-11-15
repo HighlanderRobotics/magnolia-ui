@@ -53,6 +53,12 @@ import asset50 from './assets/external.svg';
 import asset51 from './assets/card-unselected.svg';
 import asset52 from './assets/card-selected.svg';
 import asset53 from './assets/card-dot.svg';
+import asset54 from './assets/upload.svg';
+import asset55 from './assets/attachment-file.svg';
+import asset56 from './assets/attachment-remove.svg';
+import asset57 from './assets/attachment-retry.svg';
+import asset58 from './assets/attachment-image.svg';
+import asset59 from './assets/steps-check.svg';
 export const glyphs = {
   'spinner-dark': { src: asset0, width: 20, height: 20 },
   'error': { src: asset1, width: 12, height: 12 },
@@ -108,5 +114,11 @@ export const glyphs = {
   'card-unselected': { src: asset51, width: 20, height: 22 },
   'card-selected': { src: asset52, width: 20, height: 22 },
   'card-dot': { src: asset53, width: 7, height: 7 },
+  'upload': { src: asset54, width: 20, height: 20 },
+  'attachment-file': { src: asset55, width: 20, height: 20 },
+  'attachment-remove': { src: asset56, width: 21, height: 21 },
+  'attachment-retry': { src: asset57, width: 16, height: 16 },
+  'attachment-image': { src: asset58, width: 20, height: 20 },
+  'steps-check': { src: asset59, width: 12, height: 12 },
 } as const;
 export type GlyphName = keyof typeof glyphs;

@@ -24,7 +24,45 @@ import {
   Stepper,
   SelectableCard,
   Link,
+  FileField,
+  Attachment,
+  Steps,
 } from '../../packages/react-native/src/v2';
+test('v2 native file controls delegate picking, expose progress and keep retry/remove independent', () => {
+  const browse = jest.fn(),
+    retry = jest.fn(),
+    remove = jest.fn();
+  const { getByRole, getByLabelText } = render(
+    <MagnoliaProvider>
+      <FileField label="Photos" onBrowse={browse} />
+      <Attachment
+        name="photo.jpg"
+        state="failed"
+        onRetry={retry}
+        onRemove={remove}
+      />
+      <Attachment
+        name="upload.jpg"
+        state="uploading"
+        progress={77}
+        onRemove={remove}
+      />
+      <Steps items={['Details', 'Counts', 'Review']} current={1} />
+    </MagnoliaProvider>,
+  );
+  fireEvent.press(getByRole('button', { name: 'Photos' }));
+  expect(browse).toHaveBeenCalledTimes(1);
+  fireEvent.press(getByRole('button', { name: 'Retry' }));
+  expect(retry).toHaveBeenCalledTimes(1);
+  expect(remove).not.toHaveBeenCalled();
+  fireEvent.press(getByRole('button', { name: 'Remove photo.jpg' }));
+  expect(remove).toHaveBeenCalledTimes(1);
+  expect(
+    getByRole('progressbar', { name: 'Uploading upload.jpg' }).props
+      .accessibilityValue.now,
+  ).toBe(77);
+  expect(getByLabelText('Counts: current')).toBeTruthy();
+});
 test('v2 native numeric controls preserve raw decimals and clamp stepper activation', () => {
   const change = jest.fn();
   const { getByRole, getByLabelText } = render(

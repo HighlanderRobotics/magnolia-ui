@@ -38,6 +38,9 @@
     Stepper,
     Link,
     SelectableCard,
+    Steps,
+    FileField,
+    Attachment,
   } from '../../../packages/svelte/src/lib/v2/index';
   import Glyph from '../../../packages/svelte/src/lib/v2/Glyph.svelte';
   let theme = $state<'dark' | 'light' | 'system'>('dark');
@@ -56,6 +59,12 @@
     search = $state(''),
     note = $state('');
   let submitted = $state('');
+  let files = $state<File[]>([]),
+    uploadFailed = $state(true),
+    sampleVisible = $state(true),
+    uploadVisible = $state(true),
+    imageVisible = $state(true),
+    currentStep = $state(1);
   let cycleTime = $state<number | undefined>(4.2),
     tally = $state(3),
     choice = $state<string | null>('phone');
@@ -303,6 +312,69 @@
           href="#display"
           disabled>Unavailable link</Link
         >
+      </div>
+    </section>
+    <section aria-labelledby="files-and-progress" data-testid="files-family">
+      <div class="section-title">
+        <h2 id="files-and-progress">Files and flow</h2>
+        <a href={`${source}?node-id=77-1216`}>Figma: FileField</a>
+      </div>
+      <Steps
+        label="Report progress"
+        items={['Details', 'Counts', 'Review']}
+        current={currentStep}
+      />
+      <div class="row">
+        <Button
+          variant="tertiary"
+          disabled={currentStep === 0}
+          onclick={() => currentStep--}>Previous step</Button
+        ><Button
+          variant="secondary"
+          disabled={currentStep === 2}
+          onclick={() => currentStep++}>Next step</Button
+        >
+      </div>
+      <form onsubmit={(event) => event.preventDefault()}>
+        <FileField label="Photos" name="photos" bind:files />
+        <div class="attachment-stack">
+          {#each files as file, i}<Attachment
+              name={file.name}
+              detail={`${Math.round(file.size / 1024)} KB`}
+              onRemove={() => {
+                files = files.filter((_, index) => i !== index);
+              }}
+            />{/each}
+        </div>
+        <Button type="reset" variant="tertiary">Reset photos</Button>
+      </form>
+      <div class="attachment-stack">
+        {#if uploadVisible}<Attachment
+            name="north-gate.jpg"
+            detail="2.4 of 3.1 MB"
+            state="uploading"
+            progress={77}
+            onRemove={() => (uploadVisible = false)}
+          />{/if}
+        {#if sampleVisible}<Attachment
+            name="inspection.jpg"
+            state={uploadFailed ? 'failed' : 'done'}
+            detail="3.1 MB"
+            onRetry={() => (uploadFailed = false)}
+            onRemove={() => (sampleVisible = false)}
+          />{:else}<Button
+            variant="tertiary"
+            onclick={() => {
+              sampleVisible = true;
+              uploadFailed = true;
+            }}>Restore attachment</Button
+          >{/if}
+        {#if imageVisible}<Attachment
+            name="east-stand.png"
+            state="image"
+            detail="1.2 MB"
+            onRemove={() => (imageVisible = false)}
+          />{/if}
       </div>
     </section>
     <section aria-labelledby="navigation">
@@ -631,6 +703,11 @@
     flex-direction: column;
     gap: 24px;
     margin-top: 24px;
+  }
+  .attachment-stack {
+    display: grid;
+    gap: 12px;
+    margin-block: 12px;
   }
   .wash-demo {
     position: relative;

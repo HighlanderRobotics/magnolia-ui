@@ -54,5 +54,11 @@ export const nativeGlyphs = {
   'card-unselected': { source: require('./assets/v2/card-unselected.png'), width: 20, height: 22 },
   'card-selected': { source: require('./assets/v2/card-selected.png'), width: 20, height: 22 },
   'card-dot': { source: require('./assets/v2/card-dot.png'), width: 7, height: 7 },
+  'upload': { source: require('./assets/v2/upload.png'), width: 20, height: 20 },
+  'attachment-file': { source: require('./assets/v2/attachment-file.png'), width: 20, height: 20 },
+  'attachment-remove': { source: require('./assets/v2/attachment-remove.png'), width: 21, height: 21 },
+  'attachment-retry': { source: require('./assets/v2/attachment-retry.png'), width: 16, height: 16 },
+  'attachment-image': { source: require('./assets/v2/attachment-image.png'), width: 20, height: 20 },
+  'steps-check': { source: require('./assets/v2/steps-check.png'), width: 12, height: 12 },
 } as const;
 export type NativeGlyphName = keyof typeof nativeGlyphs;
