@@ -5,6 +5,8 @@ import {
   progressValue,
   initials,
   sliderValue,
+  paginationRange,
+  paginationPages,
 } from '../packages/tokens/dist/v2.js';
 test('v2 slider steps are relative to min and do not leak floating-point tails', () => {
   assert.equal(sliderValue(0.3, 0.1, 1, 0.2), 0.3);
@@ -34,4 +36,34 @@ test('v2 initials handle whitespace, unicode and empty names', () => {
   assert.equal(initials(''), '?');
   assert.equal(initials('e\u0301mile Zola'), 'ÉZ');
   assert.equal(initials('李 明'), '李明');
+});
+
+test('v2 pagination bounds empty, fractional and stale pages without phantom rows', () => {
+  assert.deepEqual(paginationRange(99, 0, 25), {
+    current: 1,
+    total: 0,
+    pageSize: 25,
+    totalPages: 1,
+    start: 0,
+    end: 0,
+  });
+  assert.deepEqual(paginationRange(99, 312, 25), {
+    current: 13,
+    total: 312,
+    pageSize: 25,
+    totalPages: 13,
+    start: 301,
+    end: 312,
+  });
+  assert.deepEqual(paginationRange(NaN, Infinity, NaN), {
+    current: 1,
+    total: 0,
+    pageSize: 25,
+    totalPages: 1,
+    start: 0,
+    end: 0,
+  });
+  assert.equal(paginationRange(-2, 12, -1).pageSize, 1);
+  assert.deepEqual(paginationPages(3, 13), [1, 2, 3, 4, 13]);
+  assert.deepEqual(paginationPages(99, 1), [1]);
 });

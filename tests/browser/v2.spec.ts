@@ -816,3 +816,98 @@ test('v2 mobile navigation matches header and tab geometry with working actions'
     }
   }
 });
+
+test('v2 table sorting, editable cells, page bounds and bulk clearing work together', async ({
+  page,
+}, testInfo) => {
+  test.setTimeout(60000);
+  await page.goto('/v2');
+  const family = page.getByTestId('table-family'),
+    table = family.getByRole('table', { name: 'Project performance' });
+  const score = table.getByRole('columnheader', { name: 'Score' });
+  await score.getByRole('button').click();
+  await expect(score).toHaveAttribute('aria-sort', 'ascending');
+  await expect(table.locator('tbody tr').first()).toContainText('Southbank');
+  await score.getByRole('button').click();
+  await expect(table.locator('tbody tr').first()).toContainText('Northwind');
+  const edit = family.getByRole('button', {
+    name: 'Edit Northwind: Northwind',
+    exact: true,
+  });
+  await edit.click();
+  const input = family.getByRole('textbox', {
+    name: 'Edit Northwind',
+    exact: true,
+  });
+  await input.fill('Discard this');
+  await input.press('Escape');
+  await expect(edit).toBeFocused();
+  await edit.click();
+  await input.fill('Northwind West');
+  await input.press('Enter');
+  await expect(
+    family.getByRole('button', { name: 'Edit Northwind West: Northwind West' }),
+  ).toBeFocused();
+  await family.getByRole('checkbox', { name: 'Select Northwind West' }).check();
+  await family.getByRole('button', { name: 'Export', exact: true }).click();
+  await expect(family.getByText('Data action: Export')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(
+    family.getByRole('checkbox', { name: 'Select Northwind West' }),
+  ).not.toBeChecked();
+  await expect(
+    family.getByRole('checkbox', { name: 'Select Northwind West' }),
+  ).toBeFocused();
+  const footer = family.getByRole('navigation', { name: 'Table pagination' });
+  await expect(
+    footer.getByRole('button', { name: 'Previous page' }),
+  ).toBeDisabled();
+  await footer.getByRole('button', { name: 'Next page' }).click();
+  await expect(footer.getByRole('status')).toHaveText('26–50 of 312');
+  await footer.getByLabel('Rows per page').selectOption('100');
+  await expect(footer.getByRole('status')).toHaveText('1–100 of 312');
+  const pages = family.getByRole('navigation', { name: 'Choose project page' });
+  await pages.getByRole('button', { name: 'Page 13', exact: true }).click();
+  await expect(pages.getByRole('button', { name: 'Next page' })).toBeDisabled();
+  for (const theme of ['dark', 'light']) {
+    await page.getByLabel('Theme', { exact: true }).selectOption(theme);
+    for (const density of ['comfortable', 'compact']) {
+      await page.getByLabel('Density', { exact: true }).selectOption(density);
+      await family
+        .getByRole('checkbox', { name: 'Select Northwind West' })
+        .check();
+      const coarse = await page.evaluate(
+        () => matchMedia('(pointer:coarse)').matches,
+      );
+      expect(
+        (await table.locator('tbody tr').first().boundingBox())!.height,
+      ).toBe(coarse ? 45 : density === 'compact' ? 28 : 44);
+      const headerHeight = (await score.boundingBox())!.height;
+      if (coarse) {
+        expect(headerHeight).toBeGreaterThanOrEqual(44);
+        expect(headerHeight).toBeLessThanOrEqual(45);
+      } else expect(headerHeight).toBe(density === 'compact' ? 28 : 44);
+      for (const glyph of await family.locator('.mg2-table-sort').all())
+        expect((await glyph.boundingBox())!.width).toBe(14);
+      for (const glyph of await family
+        .locator('.mg2-bulk-action-bar .mg2-glyph')
+        .all())
+        expect((await glyph.boundingBox())!.width).toBe(20);
+      expect(
+        (await family.locator('.mg2-bulk-action-bar').boundingBox())!.height,
+      ).toBeGreaterThanOrEqual(62);
+      await family.screenshot({
+        path: testInfo.outputPath(`table-${theme}-${density}.png`),
+      });
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include('[data-testid="table-family"]')
+            .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      await page.bringToFront();
+    }
+  }
+});

@@ -54,6 +54,12 @@
     TabBarItem,
     TabBar,
     TopBar,
+    Table,
+    TableCell,
+    TableRow,
+    Pagination,
+    PaginationPages,
+    BulkActionBar,
   } from '../../../packages/svelte/src/lib/v2/index';
   import Glyph from '../../../packages/svelte/src/lib/v2/Glyph.svelte';
   let theme = $state<'dark' | 'light' | 'system'>('dark');
@@ -74,6 +80,22 @@
   let submitted = $state('');
   let confidence = $state(70);
   let destination = $state('Home');
+  let dataPage = $state(1),
+    dataSize = $state(25),
+    pagePicker = $state(3),
+    selectedRows = $state<string[]>([]),
+    dataAction = $state('');
+  let dataRows = $state([
+    { id: 'north', name: 'Northwind', status: 'Active', score: 1284 },
+    { id: 'south', name: 'Southbank', status: 'Paused', score: 87 },
+    { id: 'west', name: 'Westhaven', status: 'Active', score: 312 },
+  ]);
+  const dataColumns = [
+    { key: 'select', label: 'Select' },
+    { key: 'name', label: 'Name', sortable: true },
+    { key: 'status', label: 'Status', secondary: true },
+    { key: 'score', label: 'Score', sortable: true, align: 'end' as const },
+  ];
   let collapsed = $state(false),
     mobileHome = $state(true),
     headerAction = $state('');
@@ -695,6 +717,53 @@
           </div></Card
         >
       </div>
+    </section>
+    <section data-testid="table-family" aria-label="Data table components">
+      <h2>Tables and pagination</h2>
+      <Table
+        caption="Project performance"
+        columns={dataColumns}
+        rows={dataRows}
+      >
+        {#snippet rowContent(row)}
+          <TableRow
+            selectable
+            label={`Select ${row.name}`}
+            selected={selectedRows.includes(String(row.id))}
+            onselectionchange={(selected) =>
+              (selectedRows = selected
+                ? [...selectedRows, String(row.id)]
+                : selectedRows.filter((id) => id !== row.id))}
+          >
+            <TableCell
+              value={String(row.name)}
+              editable
+              label={`Edit ${row.name}`}
+              oncommit={(value) => {
+                const target = dataRows.find((r) => r.id === row.id);
+                if (target) target.name = value;
+              }}
+            />
+            <TableCell variant="secondary" value={String(row.status)} />
+            <TableCell variant="numeric" value={String(row.score)} />
+          </TableRow>
+        {/snippet}
+      </Table>
+      <Pagination bind:page={dataPage} bind:pageSize={dataSize} total={312} />
+      <PaginationPages
+        bind:page={pagePicker}
+        totalPages={13}
+        label="Choose project page"
+      />
+      <BulkActionBar
+        count={selectedRows.length}
+        floating={false}
+        onclear={() => (selectedRows = [])}
+        onassign={() => (dataAction = 'Assign')}
+        onexport={() => (dataAction = 'Export')}
+        ondelete={() => (dataAction = 'Delete')}
+      />
+      <p role="status">Data action: {dataAction}</p>
     </section>
     <section
       data-testid="mobile-navigation-family"

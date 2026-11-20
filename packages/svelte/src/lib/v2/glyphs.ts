@@ -99,6 +99,17 @@ import asset96 from './assets/tab-inbox.svg';
 import asset97 from './assets/tab-user.svg';
 import asset98 from './assets/top-back.svg';
 import asset99 from './assets/top-more.svg';
+import asset100 from './assets/table-sort.svg';
+import asset101 from './assets/table-ascending.svg';
+import asset102 from './assets/table-descending.svg';
+import asset103 from './assets/page-down.svg';
+import asset104 from './assets/page-prev-disabled.svg';
+import asset105 from './assets/page-next.svg';
+import asset106 from './assets/page-prev.svg';
+import asset107 from './assets/bulk-assign.svg';
+import asset108 from './assets/bulk-export.svg';
+import asset109 from './assets/bulk-delete.svg';
+import asset110 from './assets/bulk-clear.svg';
 export const glyphs = {
   'spinner-dark': { src: asset0, width: 20, height: 20 },
   'error': { src: asset1, width: 12, height: 12 },
@@ -200,5 +211,16 @@ export const glyphs = {
   'tab-user': { src: asset97, width: 24, height: 24 },
   'top-back': { src: asset98, width: 20, height: 20 },
   'top-more': { src: asset99, width: 20, height: 20 },
+  'table-sort': { src: asset100, width: 14, height: 14 },
+  'table-ascending': { src: asset101, width: 14, height: 14 },
+  'table-descending': { src: asset102, width: 14, height: 14 },
+  'page-down': { src: asset103, width: 16, height: 16 },
+  'page-prev-disabled': { src: asset104, width: 20, height: 20 },
+  'page-next': { src: asset105, width: 20, height: 20 },
+  'page-prev': { src: asset106, width: 20, height: 20 },
+  'bulk-assign': { src: asset107, width: 20, height: 20 },
+  'bulk-export': { src: asset108, width: 20, height: 20 },
+  'bulk-delete': { src: asset109, width: 20, height: 20 },
+  'bulk-clear': { src: asset110, width: 20, height: 20 },
 } as const;
 export type GlyphName = keyof typeof glyphs;

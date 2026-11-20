@@ -100,5 +100,16 @@ export const nativeGlyphs = {
   'tab-user': { source: require('./assets/v2/tab-user.png'), width: 24, height: 24 },
   'top-back': { source: require('./assets/v2/top-back.png'), width: 20, height: 20 },
   'top-more': { source: require('./assets/v2/top-more.png'), width: 20, height: 20 },
+  'table-sort': { source: require('./assets/v2/table-sort.png'), width: 14, height: 14 },
+  'table-ascending': { source: require('./assets/v2/table-ascending.png'), width: 14, height: 14 },
+  'table-descending': { source: require('./assets/v2/table-descending.png'), width: 14, height: 14 },
+  'page-down': { source: require('./assets/v2/page-down.png'), width: 16, height: 16 },
+  'page-prev-disabled': { source: require('./assets/v2/page-prev-disabled.png'), width: 20, height: 20 },
+  'page-next': { source: require('./assets/v2/page-next.png'), width: 20, height: 20 },
+  'page-prev': { source: require('./assets/v2/page-prev.png'), width: 20, height: 20 },
+  'bulk-assign': { source: require('./assets/v2/bulk-assign.png'), width: 20, height: 20 },
+  'bulk-export': { source: require('./assets/v2/bulk-export.png'), width: 20, height: 20 },
+  'bulk-delete': { source: require('./assets/v2/bulk-delete.png'), width: 20, height: 20 },
+  'bulk-clear': { source: require('./assets/v2/bulk-clear.png'), width: 20, height: 20 },
 } as const;
 export type NativeGlyphName = keyof typeof nativeGlyphs;

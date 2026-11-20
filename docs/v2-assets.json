@@ -920,6 +920,94 @@
       "width": 20,
       "height": 20,
       "sha256": "852d59a0cd10b43ebc9fb58f3f7a7aa43b4eccad0a5a2b8ab4052358babd207b"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/table-sort.svg",
+      "nodeId": "52:18",
+      "slot": "table-sort",
+      "width": 14,
+      "height": 14,
+      "sha256": "252368b9d2e9d3237de0f3c7dee99b8d0ad7cffbe8e3be1e4d4a4e9c58ae77a0"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/table-ascending.svg",
+      "nodeId": "52:28",
+      "slot": "table-ascending",
+      "width": 14,
+      "height": 14,
+      "sha256": "3a5fb85d8349d36026848eeefbdaeccfcb82643060982f0e55c21937b38caa82"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/table-descending.svg",
+      "nodeId": "52:38",
+      "slot": "table-descending",
+      "width": 14,
+      "height": 14,
+      "sha256": "cbc6f5bea6d2865dcfd25637c826bd03207a26037cf8e2cda03225924aa6ed09"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/page-down.svg",
+      "nodeId": "52:163",
+      "slot": "page-down",
+      "width": 16,
+      "height": 16,
+      "sha256": "d521b4d6a7ae37f73331ad6c978a58c2dccd2940efadd30e80eac76fe920c6b2"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/page-prev-disabled.svg",
+      "nodeId": "I52:165;43:209",
+      "slot": "page-prev-disabled",
+      "width": 20,
+      "height": 20,
+      "sha256": "cbd4a35131aa71ce984be77c814c429141d14468312bf5bfdb786081f2063d2d"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/page-next.svg",
+      "nodeId": "I52:170;43:192",
+      "slot": "page-next",
+      "width": 20,
+      "height": 20,
+      "sha256": "61b73570b11dadf5bc7753c9487584bc95fe46034254e977c73fd3f9ec0f2972"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/page-prev.svg",
+      "nodeId": "I78:764;43:192",
+      "slot": "page-prev",
+      "width": 20,
+      "height": 20,
+      "sha256": "9fbefbae5fcdb1992ebb76b945c8f09e2401a112607c42b278ebb237ba1e3a34"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/bulk-assign.svg",
+      "nodeId": "I52:180;43:83",
+      "slot": "bulk-assign",
+      "width": 20,
+      "height": 20,
+      "sha256": "e6aff6450ed3d187aa38b0b0b511d8fc42517d14215c08466bbc9b36ce35e3bc"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/bulk-export.svg",
+      "nodeId": "I52:186;43:83",
+      "slot": "bulk-export",
+      "width": 20,
+      "height": 20,
+      "sha256": "f1c585ade343674d56f4fc6454c35b25227aced250676c89d139550508c987ae"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/bulk-delete.svg",
+      "nodeId": "I52:191;43:83",
+      "slot": "bulk-delete",
+      "width": 20,
+      "height": 20,
+      "sha256": "e22e85bbece9b50687f239ab4440ad2913306b7ad1e2e534d1c1101c65cc4429"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/bulk-clear.svg",
+      "nodeId": "I52:196;43:192",
+      "slot": "bulk-clear",
+      "width": 20,
+      "height": 20,
+      "sha256": "655bf5b018a554a23c82fccaaf405c0ea776b660e7e772b791d0ed7d32b7d4d0"
     }
   ]
 }

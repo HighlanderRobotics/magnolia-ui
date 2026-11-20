@@ -1233,3 +1233,13 @@ export function Select({
     </View>
   );
 }
+
+export {
+  Table,
+  TableHeaderCell,
+  TableCell,
+  TableRow,
+  Pagination,
+  PaginationPages,
+  BulkActionBar,
+} from './v2-data.js';

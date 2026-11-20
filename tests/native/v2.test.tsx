@@ -40,6 +40,12 @@ import {
   TabBarItem,
   TabBar,
   TopBar,
+  Table,
+  TableCell,
+  TableRow,
+  Pagination,
+  PaginationPages,
+  BulkActionBar,
 } from '../../packages/react-native/src/v2';
 test('v2 native Slider exposes stepped accessibility adjustments and disabled state', () => {
   const change = jest.fn();
@@ -487,4 +493,78 @@ test('v2 mobile navigation exposes badge counts, header actions and collapsed he
   ).toBe(true);
   rerender(ui(true));
   expect(getAllByRole('header')).toHaveLength(1);
+});
+
+test('v2 data controls bound pagination, sort requests, cell commits and clearing', () => {
+  const change = jest.fn(),
+    size = jest.fn(),
+    sort = jest.fn(),
+    commit = jest.fn(),
+    clear = jest.fn(),
+    exportRows = jest.fn();
+  const { getByRole, getAllByRole, getByLabelText, getByText, rerender } =
+    render(
+      <MagnoliaProvider>
+        <Pagination
+          total={312}
+          page={1}
+          onPageChange={change}
+          onPageSizeChange={size}
+        />
+        <PaginationPages
+          totalPages={13}
+          page={3}
+          onPageChange={change}
+          label="Page picker"
+        />
+        <Table
+          caption="Projects"
+          columns={[{ key: 'score', label: 'Score', sortable: true }]}
+          rows={[{ score: 12 }]}
+          onSortChange={sort}
+        />
+        <TableRow selected>
+          <TableCell
+            value="Northwind"
+            editable
+            label="Edit project"
+            onCommit={commit}
+          />
+        </TableRow>
+        <BulkActionBar count={2} onClear={clear} onExport={exportRows} />
+      </MagnoliaProvider>,
+    );
+  const previous = getAllByRole('button', { name: 'Previous page' })[0];
+  expect(previous.props.accessibilityState.disabled).toBe(true);
+  fireEvent.press(getByRole('button', { name: 'Page 4' }));
+  expect(change).toHaveBeenLastCalledWith(4);
+  fireEvent.press(getByRole('button', { name: 'Score, not sorted' }));
+  expect(sort).toHaveBeenCalledWith('score', 'ascending');
+  fireEvent.press(getByRole('combobox', { name: 'Rows per page' }));
+  fireEvent.press(getByRole('radio', { name: '50' }));
+  expect(size).toHaveBeenCalledWith(50);
+  expect(change).toHaveBeenLastCalledWith(1);
+  fireEvent.press(getByRole('button', { name: 'Edit project: Northwind' }));
+  const input = getByLabelText('Edit project');
+  fireEvent.changeText(input, 'Northwind West');
+  fireEvent(input, 'submitEditing');
+  expect(commit).toHaveBeenCalledTimes(1);
+  expect(commit).toHaveBeenCalledWith('Northwind West');
+  fireEvent.press(getByRole('button', { name: 'Edit project: Northwind' }));
+  fireEvent.changeText(getByLabelText('Edit project'), 'Discard');
+  fireEvent(getByLabelText('Edit project'), 'keyPress', {
+    nativeEvent: { key: 'Escape' },
+  });
+  expect(commit).toHaveBeenCalledTimes(1);
+  expect(getByRole('button', { name: 'Edit project: Northwind' })).toBeTruthy();
+  fireEvent.press(getByRole('button', { name: 'Export' }));
+  fireEvent.press(getByRole('button', { name: 'Clear selection' }));
+  expect(exportRows).toHaveBeenCalledTimes(1);
+  expect(clear).toHaveBeenCalledTimes(1);
+  expect(getByText('2 selected')).toBeTruthy();
+  rerender(
+    <MagnoliaProvider>
+      <BulkActionBar count={0} onClear={clear} />
+    </MagnoliaProvider>,
+  );
 });
