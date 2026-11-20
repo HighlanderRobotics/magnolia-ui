@@ -65,6 +65,7 @@
     ChartTooltip,
     BarChart,
     Heatmap,
+    Distribution,
   } from '../../../packages/svelte/src/lib/v2/index';
   import Glyph from '../../../packages/svelte/src/lib/v2/Glyph.svelte';
   let theme = $state<'dark' | 'light' | 'system'>('dark');
@@ -722,6 +723,40 @@
           </div></Card
         >
       </div>
+    </section>
+    <section data-testid="distribution-family" aria-label="Distribution charts">
+      <h2>Distribution</h2>
+      <Distribution
+        label="Project distribution"
+        data={[
+          {
+            label: 'Northwind',
+            min: 12,
+            q1: 22,
+            median: 28,
+            q3: 34,
+            max: 48,
+            outliers: [54],
+          },
+          { label: 'Larkspur', min: 8, q1: 18, median: 24, q3: 29, max: 41 },
+          {
+            label: 'Halcyon',
+            min: 5,
+            q1: 11,
+            median: 16,
+            q3: 21,
+            max: 30,
+            outliers: [38],
+          },
+          { label: 'Meridian', min: 15, q1: 24, median: 31, q3: 37, max: 52 },
+        ]}
+      />
+      <Distribution
+        label="Incomplete distribution"
+        data={[
+          { label: 'Invalid', min: 10, q1: 8, median: 9, q3: 12, max: 14 },
+        ]}
+      />
     </section>
     <section data-testid="heatmap-family" aria-label="Heatmap">
       <h2>Heatmap</h2>

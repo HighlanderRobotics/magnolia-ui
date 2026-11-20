@@ -1251,3 +1251,5 @@ export {
   BarChart,
   Heatmap,
 } from './v2-charts.js';
+
+export { Distribution } from './v2-statistical-charts.js';

@@ -12,6 +12,7 @@ import {
   chartIndex,
   heatThresholds,
   heatLevel,
+  validBoxPlot,
 } from '../packages/tokens/dist/v2.js';
 test('v2 slider steps are relative to min and do not leak floating-point tails', () => {
   assert.equal(sliderValue(0.3, 0.1, 1, 0.2), 0.3);
@@ -95,4 +96,22 @@ test('v2 heatmap thresholds distinguish zero, saturation and missing values', ()
     assert.equal(heatLevel(value), undefined);
   assert.deepEqual(heatThresholds([10, 5]), [0, 5, 10, 15, 20, 25, 30]);
   assert.equal(heatLevel(30, [0, 10, 20, 30, 40, 50, 60]), 4);
+});
+
+test('v2 box plots reject unordered and nonfinite quantiles', () => {
+  const row = {
+    label: 'Northwind',
+    min: 12,
+    q1: 22,
+    median: 28,
+    q3: 34,
+    max: 48,
+  };
+  assert.equal(validBoxPlot(row), true);
+  assert.equal(validBoxPlot({ ...row, q1: 40 }), false);
+  assert.equal(validBoxPlot({ ...row, min: NaN }), false);
+  assert.equal(
+    validBoxPlot({ ...row, min: 1, q1: 1, median: 1, q3: 1, max: 1 }),
+    true,
+  );
 });

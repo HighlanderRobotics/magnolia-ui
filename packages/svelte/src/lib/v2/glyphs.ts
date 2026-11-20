@@ -118,6 +118,8 @@ import asset115 from './assets/spark-volatile-neutral.svg';
 import asset116 from './assets/spark-volatile-accent.svg';
 import asset117 from './assets/spark-flat-neutral.svg';
 import asset118 from './assets/spark-flat-accent.svg';
+import asset119 from './assets/distribution-outlier-accent.svg';
+import asset120 from './assets/distribution-outlier-neutral.svg';
 export const glyphs = {
   'spinner-dark': { src: asset0, width: 20, height: 20 },
   'error': { src: asset1, width: 12, height: 12 },
@@ -238,5 +240,7 @@ export const glyphs = {
   'spark-volatile-accent': { src: asset116, width: 96, height: 24 },
   'spark-flat-neutral': { src: asset117, width: 96, height: 24 },
   'spark-flat-accent': { src: asset118, width: 96, height: 24 },
+  'distribution-outlier-accent': { src: asset119, width: 6, height: 6 },
+  'distribution-outlier-neutral': { src: asset120, width: 6, height: 6 },
 } as const;
 export type GlyphName = keyof typeof glyphs;

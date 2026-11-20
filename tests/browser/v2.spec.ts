@@ -1105,3 +1105,83 @@ test('v2 Heatmap preserves the source matrix and supports sparse keyboard inspec
     }
   }
 });
+
+test('v2 Distribution matches quantile geometry and preserves original outlier rings', async ({
+  page,
+}, testInfo) => {
+  test.setTimeout(60000);
+  await page.goto('/v2');
+  const family = page.getByTestId('distribution-family'),
+    plot = family.locator('.mg2-distribution').first(),
+    northwind = plot.getByRole('button', { name: /^Northwind, minimum 12/ });
+  await northwind.focus();
+  await page.keyboard.press('ArrowDown');
+  await expect(
+    plot.getByRole('button', { name: /^Larkspur, minimum 8/ }),
+  ).toBeFocused();
+  await page.keyboard.press('End');
+  await expect(
+    plot.getByRole('button', { name: /^Meridian, minimum 15/ }),
+  ).toBeFocused();
+  await page.keyboard.press('Home');
+  await expect(northwind).toBeFocused();
+  await expect(
+    family.getByRole('button', { name: 'Invalid: Invalid range' }),
+  ).toBeDisabled();
+  await family
+    .getByText('View Project distribution data', { exact: true })
+    .click();
+  await expect(
+    family
+      .getByRole('table', { name: 'Project distribution' })
+      .getByRole('row', { name: 'Northwind 12 22 28 34 48 54' }),
+  ).toBeVisible();
+  await family
+    .getByText('View Project distribution data', { exact: true })
+    .click();
+  for (const theme of ['dark', 'light']) {
+    await page.getByLabel('Theme', { exact: true }).selectOption(theme);
+    for (const density of ['comfortable', 'compact']) {
+      await page.getByLabel('Density', { exact: true }).selectOption(density);
+      const coarse = await page.evaluate(
+          () => matchMedia('(pointer:coarse)').matches,
+        ),
+        box = (await plot.boundingBox())!;
+      expect(box.width).toBe(560);
+      expect(box.height).toBe(coarse ? 240 : 200);
+      const q = (await northwind
+        .locator('.mg2-distribution-box')
+        .boundingBox())!;
+      expect(q.width).toBeCloseTo(89.6, 1);
+      expect(q.height).toBe(20);
+      expect(q.x - box.x).toBeCloseTo(260.2667, 1);
+      const median = (await northwind
+        .locator('.mg2-distribution-median')
+        .boundingBox())!;
+      expect(median.width).toBe(2);
+      expect(median.x - box.x).toBeCloseTo(304.0667, 1);
+      for (const ring of await plot
+        .locator('.mg2-distribution-outlier .mg2-glyph')
+        .all()) {
+        const bounds = (await ring.boundingBox())!;
+        expect(bounds.width).toBe(6);
+        expect(bounds.height).toBe(6);
+      }
+      await page
+        .getByRole('heading', { name: 'Distribution', exact: true })
+        .click();
+      await (coarse ? plot.locator('..') : plot).screenshot({
+        path: testInfo.outputPath(`distribution-${theme}-${density}.png`),
+      });
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include('[data-testid="distribution-family"]')
+            .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      await page.bringToFront();
+    }
+  }
+});

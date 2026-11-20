@@ -119,5 +119,7 @@ export const nativeGlyphs = {
   'spark-volatile-accent': { source: require('./assets/v2/spark-volatile-accent.png'), width: 96, height: 24 },
   'spark-flat-neutral': { source: require('./assets/v2/spark-flat-neutral.png'), width: 96, height: 24 },
   'spark-flat-accent': { source: require('./assets/v2/spark-flat-accent.png'), width: 96, height: 24 },
+  'distribution-outlier-accent': { source: require('./assets/v2/distribution-outlier-accent.png'), width: 6, height: 6 },
+  'distribution-outlier-neutral': { source: require('./assets/v2/distribution-outlier-neutral.png'), width: 6, height: 6 },
 } as const;
 export type NativeGlyphName = keyof typeof nativeGlyphs;

@@ -51,6 +51,7 @@ import {
   ChartTooltip,
   BarChart,
   Heatmap,
+  Distribution,
 } from '../../packages/react-native/src/v2';
 test('v2 native Slider exposes stepped accessibility adjustments and disabled state', () => {
   const change = jest.fn();
@@ -660,4 +661,51 @@ test('v2 native Heatmap announces cells, preserves missing data and exposes its 
   expect(getByLabelText('Scale: 0, 5, 10, 15, 20, 25, 30')).toBeTruthy();
   fireEvent.press(getByRole('button', { name: 'View Weekly activity data' }));
   expect(getByText('Row: Mon, Column: W2, Value: —')).toBeTruthy();
+});
+
+test('v2 native Distribution highlights valid rows and exposes exact quantiles', () => {
+  const select = jest.fn();
+  const { getByRole, getByText } = render(
+    <MagnoliaProvider>
+      <Distribution
+        label="Project distribution"
+        data={[
+          {
+            label: 'Northwind',
+            min: 12,
+            q1: 22,
+            median: 28,
+            q3: 34,
+            max: 48,
+            outliers: [54],
+          },
+          { label: 'Invalid', min: 10, q1: 8, median: 9, q3: 12, max: 14 },
+          { label: 'Larkspur', min: 8, q1: 18, median: 24, q3: 29, max: 41 },
+        ]}
+        onHighlightChange={select}
+      />
+    </MagnoliaProvider>,
+  );
+  expect(
+    getByRole('button', { name: /^Northwind, minimum 12/ }).props
+      .accessibilityState.selected,
+  ).toBe(true);
+  expect(
+    getByRole('button', { name: 'Invalid: Invalid range' }).props
+      .accessibilityState.disabled,
+  ).toBe(true);
+  fireEvent.press(getByRole('button', { name: /^Larkspur, minimum 8/ }));
+  expect(select).toHaveBeenCalledWith(2);
+  expect(
+    getByRole('button', { name: /^Larkspur, minimum 8/ }).props
+      .accessibilityState.selected,
+  ).toBe(true);
+  fireEvent.press(
+    getByRole('button', { name: 'View Project distribution data' }),
+  );
+  expect(
+    getByText(
+      'Project: Northwind, Minimum: 12, Q1: 22, Median: 28, Q3: 34, Maximum: 48, Outliers: 54',
+    ),
+  ).toBeTruthy();
 });

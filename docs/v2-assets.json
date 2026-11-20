@@ -1072,6 +1072,22 @@
       "width": 96.0,
       "height": 24.0,
       "sha256": "665edf10677282773ca5e7972cbf6511f8be15f9f130cbb587e1ff5a3e0ec857"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/distribution-outlier-accent.svg",
+      "nodeId": "78:742",
+      "slot": "Distribution accent outlier",
+      "width": 6,
+      "height": 6,
+      "sha256": "7e09b035f5c332e9c4545fa678650ec91effae8195e36b8d543a0427c585a849"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/distribution-outlier-neutral.svg",
+      "nodeId": "78:755",
+      "slot": "Distribution neutral outlier",
+      "width": 6,
+      "height": 6,
+      "sha256": "dc8b78cd1f3875c13cb37025610842839fb4dbec832af4fc7bbe099e29af0db8"
     }
   ]
 }

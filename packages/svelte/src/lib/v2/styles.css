@@ -3287,3 +3287,115 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+.mg2-distribution {
+  --mg2-distribution-step: 38px;
+  position: relative;
+  width: 560px;
+  height: max(
+    200px,
+    calc(var(--mg2-distribution-rows) * var(--mg2-distribution-step) + 48px)
+  );
+}
+.mg2-distribution-grid {
+  position: absolute;
+  top: 0;
+  bottom: 40px;
+  width: 1px;
+  background: var(--mg-v2-color-chart-grid);
+}
+.mg2-distribution-tick {
+  bottom: 18px;
+}
+.mg2-distribution-row {
+  position: absolute;
+  left: 0;
+  top: calc(var(--mg2-distribution-row) * var(--mg2-distribution-step));
+  width: 560px;
+  height: var(--mg2-distribution-step);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--mg-v2-color-fg-secondary);
+  cursor: pointer;
+}
+.mg2-distribution-row:focus-visible {
+  outline: 2px solid var(--mg-v2-color-border-focus);
+  outline-offset: -2px;
+}
+.mg2-distribution-row[data-highlight='true'] {
+  color: var(--mg-v2-color-chart-cat-1);
+}
+.mg2-distribution-row:disabled {
+  cursor: default;
+}
+.mg2-distribution-label {
+  position: absolute;
+  left: 0;
+  top: 11px;
+  width: 90px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: start;
+  font-size: var(--mg-v2-type-body-sm-size);
+  line-height: var(--mg-v2-type-body-sm-line);
+  font-weight: 400;
+  color: var(--mg-v2-color-fg-secondary);
+  pointer-events: none;
+}
+.mg2-distribution-whisker {
+  position: absolute;
+  top: 20px;
+  height: 1px;
+  background: currentColor;
+  pointer-events: none;
+}
+.mg2-distribution-row[data-highlight='true'] .mg2-distribution-whisker {
+  top: 19.5px;
+  height: 2px;
+}
+.mg2-distribution-cap {
+  position: absolute;
+  top: 15px;
+  height: 10px;
+  width: 1px;
+  background: currentColor;
+  pointer-events: none;
+}
+.mg2-distribution-row[data-highlight='true'] .mg2-distribution-cap {
+  width: 2px;
+}
+.mg2-distribution-box {
+  position: absolute;
+  top: 10px;
+  height: 20px;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  background: var(--mg-v2-color-bg-neutral-subtle);
+  pointer-events: none;
+}
+.mg2-distribution-row[data-highlight='true'] .mg2-distribution-box {
+  background: var(--mg-v2-color-bg-accent-subtle);
+}
+.mg2-distribution-median {
+  position: absolute;
+  top: 10px;
+  width: 2px;
+  height: 20px;
+  background: var(--mg-v2-color-fg-primary);
+  pointer-events: none;
+}
+.mg2-distribution-outlier {
+  position: absolute;
+  top: 17px;
+  width: 6px;
+  height: 6px;
+  display: flex;
+  pointer-events: none;
+}
+@media (pointer: coarse) {
+  .mg2-distribution {
+    --mg2-distribution-step: 48px;
+  }
+}

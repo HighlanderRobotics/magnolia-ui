@@ -157,3 +157,22 @@ export function heatLevel(
   return level as HeatLevel;
 }
 export type HeatmapRow = { label: string; values: (number | null)[] };
+
+export type BoxPlotDatum = {
+  label: string;
+  min: number;
+  q1: number;
+  median: number;
+  q3: number;
+  max: number;
+  outliers?: readonly number[];
+};
+export function validBoxPlot(row: BoxPlotDatum): boolean {
+  return (
+    [row.min, row.q1, row.median, row.q3, row.max].every(Number.isFinite) &&
+    row.min <= row.q1 &&
+    row.q1 <= row.median &&
+    row.median <= row.q3 &&
+    row.q3 <= row.max
+  );
+}

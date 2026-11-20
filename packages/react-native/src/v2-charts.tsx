@@ -202,7 +202,7 @@ export function ChartFrame({
     </View>
   );
 }
-function ChartSurface({
+export function ChartSurface({
   width,
   height,
   children,
