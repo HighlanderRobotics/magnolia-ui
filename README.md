@@ -1,84 +1,63 @@
-# Magnolia UI
+![Magnolia UI — purple lettering with a soft purple aura](docs/assets/magnolia-ui-header.png)
 
-Highlander Robotics’ cross-platform design system. One JSON token source generates semantic CSS, typed TypeScript, Flutter Material 3 color schemes and Starlight styles.
+[![CI](https://github.com/HighlanderRobotics/magnolia-ui/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/HighlanderRobotics/magnolia-ui/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/@highlanderrobotics/magnolia-svelte?label=npm)](https://www.npmjs.com/package/@highlanderrobotics/magnolia-svelte)
+[![Figma](https://img.shields.io/badge/Figma-Magnolia%20v2-B59AFF?logo=figma&logoColor=white)](https://www.figma.com/design/cXx2mM66UtpxNVbResHxq3/Magnolia-v2--Copy-?node-id=2-225)
 
-This is the new repository for [LVT-362](https://linear.app/highlander-robotics/issue/LVT-362). **Lovat’s dependencies have not been changed.** The legacy `magnolia-ui-svelte` repository remains available. Initial npm publications have been accepted; release and consumer-validation status is recorded in [release setup](docs/releases.md).
+**Magnolia UI** is Highlander Robotics’ design system for web and native apps. Shared tokens and accessible components bring consistent forms, navigation, tables, charts and overlays to each platform.
 
-Magnolia v2 now has an [opt-in source implementation](docs/magnolia-v2.md) based on the new Figma file: complete exported foundations, initial core controls, native adapters and a [v2 preview](http://127.0.0.1:4180/v2). Full component parity remains in progress in LVT-380.
+## Use it
 
-| Package                                     | Purpose                                                      |
-| ------------------------------------------- | ------------------------------------------------------------ |
-| `@highlanderrobotics/magnolia-tokens`       | Validated JSON, CSS, typed tokens, density and FRC semantics |
-| `@highlanderrobotics/magnolia-svelte`       | Svelte 5 controls and opt-in fonts                           |
-| `@highlanderrobotics/magnolia-react-native` | Native Collection-style controls with async actions          |
-| `@highlanderrobotics/magnolia-starlight`    | Generated Astro Starlight theme mapping                      |
-| `magnolia_ui`                               | Native Flutter Material 3 theme and FRC extension            |
-
-## Develop
-
-Use Node 22.23.4 or newer and npm 11.6.2 (the pinned repository package manager). Run from the repository root:
+Install the published Svelte package:
 
 ```sh
-npm install --global npm@11.6.2
-npm ci
-npm run build
-npm run check
-npm test
-npm run test:ssr
-npm run test:native
-npx playwright install chromium
-npm run test:browser
-npm run gallery
-```
-
-The interactive gallery runs at `http://127.0.0.1:4173`. The [additional controls preview](http://127.0.0.1:4173/controls) demonstrates the pending LVT-361 additions; see [their contracts](docs/extended-controls.md). The [Figma comparison](http://127.0.0.1:4173/figma) shows the source-linked light/dark components in both densities with bundled fonts. It demonstrates every web export, themes, nested density, form errors, dialogs and action menus. `npm run gallery:build` produces a deployable gallery without requiring application secrets. No website is deployed by these commands.
-
-For Flutter, use Flutter 3.35+ and Dart 3.8+:
-
-```sh
-cd packages/flutter
-flutter pub get
-flutter analyze
-flutter test
-cd example
-flutter build web
-```
-
-Generated artifacts are committed. Change `packages/tokens/tokens.json`, run `npm run generate`, and include the resulting files. `npm run generate:check` rejects stale output. Do not edit generated CSS, TypeScript or Dart directly.
-
-## Use the packages
-
-Install a published package:
-
-```sh
-npm install --save-exact @highlanderrobotics/magnolia-svelte@0.2.0
+npm install --save-exact @highlanderrobotics/magnolia-svelte
 ```
 
 ```svelte
 <script lang="ts">
-  import {
-    MagnoliaUIRoot,
-    Button,
-    Switch,
-  } from '@highlanderrobotics/magnolia-svelte';
-  let offline = $state(false);
+  import { MagnoliaUIRoot, Button } from '@highlanderrobotics/magnolia-svelte';
 </script>
 
 <MagnoliaUIRoot theme="dark">
-  <Switch label="Offline scouting" bind:value={offline} name="offline" />
-  <Button onclick={(event) => console.log(event.currentTarget)}>Continue</Button
-  >
+  <Button onclick={() => console.log('Saved')}>Save changes</Button>
 </MagnoliaUIRoot>
 ```
 
-Fonts are application-owned. Bundle Heebo and Material Symbols for offline native use. For web you may self-host them, use system fonts, or explicitly import `@highlanderrobotics/magnolia-svelte/fonts.css` to opt into Google-hosted fonts. Magnolia performs no `document.fonts.load()` calls. Importing individual web controls without `MagnoliaUIRoot` requires both `@highlanderrobotics/magnolia-tokens/css` and `@highlanderrobotics/magnolia-svelte/styles.css`.
+Bundle fonts in your app, or import `@highlanderrobotics/magnolia-svelte/fonts.css` to use the hosted web fonts. See the [component contracts](docs/components.md) and [native example](examples/native/README.md) for platform setup.
 
-See [component contracts](docs/components.md), [tokens](docs/tokens.md), [migration and rollback](docs/migration.md), [release setup](docs/releases.md), [parity inventory](docs/parity.md), [Figma parity](docs/figma-parity.md) and [validation evidence](docs/validation.md).
+## Explore v2
 
-## Contribute and release
+Magnolia v2 adds Dark/Light themes, Comfortable/Compact densities and components matched to the new Figma source. Its source is available in this branch through the Svelte and React Native `/v2` entry points; release validation is in progress.
 
-Keep app routing, scouting logic, timers, persistence, charts and domain icons in their applications. Magnolia owns reusable visual tokens and control behavior. Add tests for behavior and accessibility, document public API changes, run `npm run format`, and add a Changeset for publishable changes. Never commit private environment files or generated dependencies.
+Use Node 22.23.4+ and npm 11.6.2, then run from the repository root:
 
-CI validates clean installs, generated artifacts, formatting, package builds, types, native interactions, browser keyboard/axe checks, Flutter widgets and consumer tarball installs. Release publishing is separately gated through the `npm` GitHub environment; npm scope ownership and trusted publishing must be configured first. Consumer migrations and legacy archival remain separate work.
+```sh
+npm ci
+npm run build
+npm run gallery
+```
 
-Legacy source reference: `HighlanderRobotics/magnolia-ui-svelte@765e43e5b2efc9bfbdb84e1b7751cae73ad7c900`. The new implementation retains its export names and visual lineage; see the documented Svelte 5 API changes before upgrading.
+Open the [v2 gallery](http://localhost:4173/v2). See the [v2 APIs and coverage](docs/magnolia-v2.md) for component examples, platform adaptations and remaining validation gates.
+
+## Packages
+
+| Package                                                              | What it provides                                        |
+| -------------------------------------------------------------------- | ------------------------------------------------------- |
+| [`@highlanderrobotics/magnolia-svelte`](packages/svelte)             | Svelte 5 components for web apps                        |
+| [`@highlanderrobotics/magnolia-react-native`](packages/react-native) | Native controls and shared interaction patterns         |
+| [`@highlanderrobotics/magnolia-tokens`](packages/tokens)             | Semantic colors, typography, spacing and density tokens |
+| [`@highlanderrobotics/magnolia-starlight`](packages/starlight)       | Astro Starlight theme styles                            |
+| [`magnolia_ui`](packages/flutter)                                    | Flutter Material 3 theme and token adapters             |
+
+## Develop
+
+```sh
+npm run check
+npm test
+npm run test:native
+```
+
+For browser checks, run `npx playwright install chromium`, then `npm run test:browser`. Generated token files are committed; edit their source and run `npm run generate`.
+
+Read the [component contracts](docs/components.md), [token guide](docs/tokens.md), [migration and rollback guide](docs/migration.md), and [release setup](docs/releases.md) for more detail.
