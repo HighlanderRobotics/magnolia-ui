@@ -204,3 +204,154 @@ export function nearestChartPoint(
   });
   return best;
 }
+
+export type LineSeries = {
+  label: string;
+  /** Fine positioning of an end label; collision avoidance still applies. */
+  labelOffsetY?: number;
+  values: readonly (number | null)[];
+  series?: 1 | 2 | 3 | 4 | 5;
+};
+export type LinePoint = { x: number; y: number; index: number; value: number };
+/** Shared web/native geometry. Missing samples break paths; values are never imputed. */
+export function lineChartLayout(
+  labels: readonly string[],
+  series: readonly LineSeries[],
+  domain?: ChartDomain,
+) {
+  const bounds = chartDomain(
+      series.flatMap((s) => s.values.slice(0, labels.length)),
+      domain,
+    ),
+    plotWidth = Math.max(504, (labels.length - 1) * 72),
+    width = plotWidth + 136,
+    x = (i: number) =>
+      40 +
+      (labels.length > 1
+        ? (i * plotWidth) / (labels.length - 1)
+        : plotWidth / 2),
+    y = (v: number) => 212 - ((v - bounds[0]) / (bounds[1] - bounds[0])) * 204;
+  const paths = series.map((s, si) => {
+    const runs: LinePoint[][] = [];
+    let run: LinePoint[] = [];
+    labels.forEach((_, index) => {
+      const value = s.values[index];
+      if (typeof value === 'number' && Number.isFinite(value))
+        run.push({ x: x(index), y: y(value), index, value });
+      else if (run.length) {
+        runs.push(run);
+        run = [];
+      }
+    });
+    if (run.length) runs.push(run);
+    return {
+      label: s.label,
+      series: s.series ?? (((si % 5) + 1) as 1 | 2 | 3 | 4 | 5),
+      dash: [[], [6, 4], [4, 3], [2, 3], [8, 3, 2, 3]][si % 5],
+      runs,
+    };
+  });
+  const ends = paths
+    .flatMap((p, i) => {
+      const last = p.runs.at(-1)?.at(-1);
+      return last && last.y >= 8 && last.y <= 212
+        ? [
+            {
+              index: i,
+              point: last,
+              y:
+                last.y +
+                (Number.isFinite(series[i].labelOffsetY)
+                  ? series[i].labelOffsetY!
+                  : 0),
+            },
+          ]
+        : [];
+    })
+    .sort((a, b) => a.y - b.y);
+  // Reserve a full label line for each endpoint, without moving the actual data.
+  ends.forEach((p, i) => {
+    p.y = Math.max(8, p.y, i ? ends[i - 1].y + 20 : 8);
+  });
+  if (ends.length && ends.at(-1)!.y > 212) {
+    ends.at(-1)!.y = 212;
+    for (let i = ends.length - 2; i >= 0; i--)
+      ends[i].y = Math.min(ends[i].y, ends[i + 1].y - 20);
+  }
+  const enabled = labels.flatMap((_, i) =>
+    series.some(
+      (s) => typeof s.values[i] === 'number' && Number.isFinite(s.values[i]),
+    )
+      ? [i]
+      : [],
+  );
+  return { bounds, width, plotWidth, paths, ends, enabled, x, y };
+}
+/** Dash segments retain phase across corners and clip at the chart boundary on native. */
+export function chartLineSegments(
+  points: readonly { x: number; y: number }[],
+  dash: readonly number[] = [],
+  bounds?: readonly [number, number, number, number],
+) {
+  const segments: { x1: number; y1: number; x2: number; y2: number }[] = [];
+  let phase = 0,
+    used = 0;
+  const pattern = dash.filter((n) => Number.isFinite(n) && n > 0);
+  function add(x1: number, y1: number, x2: number, y2: number) {
+    if (bounds) {
+      const [left, top, right, bottom] = bounds,
+        dx = x2 - x1,
+        dy = y2 - y1;
+      let a = 0,
+        b = 1;
+      for (const [p, q] of [
+        [-dx, x1 - left],
+        [dx, right - x1],
+        [-dy, y1 - top],
+        [dy, bottom - y1],
+      ]) {
+        if (p === 0) {
+          if (q < 0) return;
+        } else if (p < 0) a = Math.max(a, q / p);
+        else b = Math.min(b, q / p);
+      }
+      if (a >= b) return;
+      segments.push({
+        x1: x1 + a * dx,
+        y1: y1 + a * dy,
+        x2: x1 + b * dx,
+        y2: y1 + b * dy,
+      });
+    } else segments.push({ x1, y1, x2, y2 });
+  }
+  for (let i = 1; i < points.length; i++) {
+    const from = points[i - 1],
+      to = points[i],
+      dx = to.x - from.x,
+      dy = to.y - from.y,
+      length = Math.hypot(dx, dy);
+    if (!Number.isFinite(length) || length === 0) continue;
+    if (!pattern.length) {
+      add(from.x, from.y, to.x, to.y);
+      continue;
+    }
+    let distance = 0;
+    while (distance < length - 1e-9) {
+      const step = Math.min(length - distance, pattern[phase] - used);
+      if (phase % 2 === 0)
+        add(
+          from.x + (dx * distance) / length,
+          from.y + (dy * distance) / length,
+          from.x + (dx * (distance + step)) / length,
+          from.y + (dy * (distance + step)) / length,
+        );
+      distance += step;
+      used += step;
+      if (used >= pattern[phase] - 1e-9) {
+        phase = (phase + 1) % pattern.length;
+        used = 0;
+      }
+    }
+  }
+  return segments;
+}

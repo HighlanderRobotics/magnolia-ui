@@ -53,6 +53,7 @@ import {
   Heatmap,
   Distribution,
   Scatter,
+  LineChart,
 } from '../../packages/react-native/src/v2';
 test('v2 native Slider exposes stepped accessibility adjustments and disabled state', () => {
   const change = jest.fn();
@@ -750,6 +751,62 @@ test('v2 native Scatter adjusts through valid observations and preserves accessi
   expect(
     getByText(
       'Observation: Missing, Cycle time (days): —, Output: 20, Group: Context',
+    ),
+  ).toBeTruthy();
+});
+
+test('v2 native LineChart inspects periods, skips empty columns and exposes missing values', () => {
+  const inspect = jest.fn();
+  const { getByRole, getByText, queryByRole, rerender } = render(
+    <MagnoliaProvider>
+      <LineChart
+        label="Output"
+        labels={['W1', 'W2', 'W3', 'W4']}
+        series={[
+          { label: 'Northwind', values: [1, null, 3, 4] },
+          { label: 'Larkspur', values: [2, null, null, 5] },
+        ]}
+        onInspect={inspect}
+      />
+    </MagnoliaProvider>,
+  );
+  expect(getByRole('adjustable').props.accessibilityValue.text).toContain(
+    'W4, Northwind: 4, Larkspur: 5',
+  );
+  fireEvent(getByRole('adjustable'), 'accessibilityAction', {
+    nativeEvent: { actionName: 'decrement' },
+  });
+  expect(inspect).toHaveBeenLastCalledWith(2);
+  expect(getByRole('adjustable').props.accessibilityValue.text).toContain(
+    'W3, Northwind: 3, Larkspur: No data',
+  );
+  fireEvent(getByRole('adjustable'), 'accessibilityAction', {
+    nativeEvent: { actionName: 'decrement' },
+  });
+  expect(inspect).toHaveBeenLastCalledWith(0);
+  fireEvent.press(getByRole('button', { name: 'View Output data' }));
+  expect(getByText('Period: W2, Northwind: —, Larkspur: —')).toBeTruthy();
+  rerender(
+    <MagnoliaProvider>
+      <LineChart
+        label="Output"
+        labels={['W1']}
+        series={Array.from({ length: 6 }, (_, i) => ({
+          label: `Series ${i}`,
+          values: [i],
+        }))}
+      />
+    </MagnoliaProvider>,
+  );
+  expect(queryByRole('adjustable')).toBeNull();
+  expect(
+    getByText(
+      'LineChart supports up to five series. View all values in the data table.',
+    ),
+  ).toBeTruthy();
+  expect(
+    getByText(
+      'Period: W1, Series 0: 0, Series 1: 1, Series 2: 2, Series 3: 3, Series 4: 4, Series 5: 5',
     ),
   ).toBeTruthy();
 });

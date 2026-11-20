@@ -3443,3 +3443,71 @@
   overflow: visible;
   pointer-events: none;
 }
+
+.mg2-line-chart {
+  position: relative;
+  height: 240px;
+}
+.mg2-line-y {
+  left: 6px;
+  width: 28px;
+  text-align: end;
+}
+.mg2-line-x {
+  top: 220px;
+  white-space: nowrap;
+}
+.mg2-line-paths {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+.mg2-line-crosshair {
+  position: absolute;
+  top: 8px;
+  height: 204px;
+  width: 1px;
+  background: var(--mg-v2-color-border-default);
+  pointer-events: none;
+}
+.mg2-line-marker {
+  position: absolute;
+  pointer-events: none;
+}
+.mg2-line-end {
+  position: absolute;
+  display: block;
+  width: 72px;
+  white-space: nowrap;
+  font-size: var(--mg-v2-type-label-sm-size);
+  line-height: var(--mg-v2-type-label-sm-line);
+  font-weight: 500;
+  color: var(--mg-v2-color-fg-primary);
+}
+.mg2-line-end-text {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mg2-line-end > span:first-child {
+  position: absolute;
+  left: -16px;
+  top: 8px;
+  width: 12px;
+  height: 2px;
+}
+.mg2-line-period {
+  position: absolute;
+  top: 8px;
+  width: 44px;
+  height: 204px;
+  background: transparent;
+  padding: 0;
+  border: 0;
+  pointer-events: none;
+}
+.mg2-line-period:focus-visible {
+  outline: 2px solid var(--mg-v2-color-border-focus);
+  outline-offset: 2px;
+}

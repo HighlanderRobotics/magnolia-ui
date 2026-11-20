@@ -64,3 +64,4 @@ export { default as BarChart } from './BarChart.svelte';
 export { default as Heatmap } from './Heatmap.svelte';
 export { default as Distribution } from './Distribution.svelte';
 export { default as Scatter } from './Scatter.svelte';
+export { default as LineChart } from './LineChart.svelte';

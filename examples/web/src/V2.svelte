@@ -67,6 +67,7 @@
     Heatmap,
     Distribution,
     Scatter,
+    LineChart,
   } from '../../../packages/svelte/src/lib/v2/index';
   import Glyph from '../../../packages/svelte/src/lib/v2/Glyph.svelte';
   let theme = $state<'dark' | 'light' | 'system'>('dark');
@@ -724,6 +725,32 @@
           </div></Card
         >
       </div>
+    </section>
+    <section data-testid="line-family" aria-label="Line charts">
+      <h2>LineChart</h2>
+      <LineChart
+        label="Weekly output"
+        labels={['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8']}
+        series={[
+          { label: 'Northwind', values: [18, 22, 25, 24, 31, 42, 40, 44] },
+          {
+            label: 'Larkspur',
+            values: [20, 19, 25, 28, 27, 35, 33, 36],
+            labelOffsetY: 2,
+          },
+          { label: 'Halcyon', values: [10, 14, 13, 17, 22, 28, 26, 30] },
+        ]}
+        activeIndex={5}
+      />
+      <LineChart
+        label="Output with gaps"
+        labels={['P1', 'P2', 'P3', 'P4', 'P5']}
+        domain={[0, 10]}
+        series={[
+          { label: 'Northwind', values: [1, null, 3, NaN, 20] },
+          { label: 'Larkspur', values: [2, null, 4, null, 8] },
+        ]}
+      />
     </section>
     <section data-testid="scatter-family" aria-label="Scatter charts">
       <h2>Scatter</h2>

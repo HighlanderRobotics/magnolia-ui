@@ -1289,3 +1289,111 @@ test('v2 Scatter preserves original point artwork, nearest inspection and keyboa
     }
   }
 });
+
+test('v2 LineChart matches source geometry and inspects periods without filling data gaps', async ({
+  page,
+}, testInfo) => {
+  test.setTimeout(60000);
+  await page.goto('/v2');
+  const family = page.getByTestId('line-family'),
+    plot = family.getByRole('group', { name: 'Weekly output periods' }),
+    gaps = family.getByRole('group', { name: 'Output with gaps periods' }),
+    coarse = await page.evaluate(() => matchMedia('(pointer:coarse)').matches);
+  await plot.locator('..').scrollIntoViewIfNeeded();
+  await plot.locator('..').evaluate((el) => (el.scrollLeft = 0));
+  let box = (await plot.boundingBox())!;
+  if (coarse) await page.touchscreen.tap(box.x + 112, box.y + 120);
+  else await page.mouse.move(box.x + 112, box.y + 120);
+  await expect(family.getByRole('tooltip')).toContainText('W2');
+  await expect(family.getByRole('tooltip')).toContainText('22');
+  await page.keyboard.press('Escape');
+  await expect(family.getByRole('tooltip')).toHaveCount(0);
+  const first = plot.getByRole('button', { name: /^W1,/ });
+  await first.focus();
+  await page.keyboard.press('End');
+  await expect(plot.getByRole('button', { name: /^W8,/ })).toBeFocused();
+  const popup = (await family.getByRole('tooltip').boundingBox())!;
+  expect(popup.x).toBeGreaterThanOrEqual(8);
+  expect(popup.x + popup.width).toBeLessThanOrEqual(
+    page.viewportSize()!.width - 8,
+  );
+  await page.keyboard.press('Home');
+  await expect(first).toBeFocused();
+  await page.keyboard.press('ArrowRight');
+  await expect(plot.getByRole('button', { name: /^W2,/ })).toBeFocused();
+  const gapFirst = gaps.getByRole('button', { name: /^P1,/ });
+  await gapFirst.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(gaps.getByRole('button', { name: /^P3,/ })).toBeFocused();
+  await page.keyboard.press('End');
+  await expect(
+    gaps.getByRole('button', { name: /^P5, Northwind: 20/ }),
+  ).toBeFocused();
+  await expect(gaps.locator('.mg2-line-marker')).toHaveCount(1);
+  await expect(gaps.locator('polyline')).toHaveCount(0);
+  await expect(gaps.locator('g circle')).toHaveCount(5);
+  await family.getByText('View Output with gaps data', { exact: true }).click();
+  await expect(
+    family
+      .getByRole('table', { name: 'Output with gaps' })
+      .getByRole('row', { name: 'P2 — —' }),
+  ).toBeVisible();
+  await expect(
+    family
+      .getByRole('table', { name: 'Output with gaps' })
+      .getByRole('row', { name: 'P5 20 8' }),
+  ).toBeVisible();
+  await family.getByText('View Output with gaps data', { exact: true }).click();
+  let dark = '';
+  for (const theme of ['dark', 'light']) {
+    await page.getByLabel('Theme', { exact: true }).selectOption(theme);
+    for (const density of ['comfortable', 'compact']) {
+      await page.getByLabel('Density', { exact: true }).selectOption(density);
+      const sixth = plot.getByRole('button', { name: /^W6,/ });
+      await sixth.focus();
+      await page.keyboard.press('Escape');
+      await page
+        .getByRole('heading', { name: 'LineChart', exact: true })
+        .click();
+      await plot.locator('..').evaluate((el) => (el.scrollLeft = 0));
+      box = (await plot.boundingBox())!;
+      expect(box.width).toBe(640);
+      expect(box.height).toBe(240);
+      const cross = (await plot.locator('.mg2-line-crosshair').boundingBox())!;
+      expect(cross.x - box.x).toBe(400);
+      expect(cross.y - box.y).toBe(8);
+      expect(cross.height).toBe(204);
+      await expect(plot.locator('.mg2-line-marker')).toHaveCount(3);
+      const marker = plot.locator('.mg2-line-marker').first(),
+        rect = (await marker.boundingBox())!;
+      expect(rect.x - box.x).toBe(394);
+      expect(rect.y - box.y).toBeCloseTo(15.6, 1);
+      const src = (await marker.locator('img').getAttribute('src'))!;
+      if (theme === 'dark') dark = src;
+      else expect(src).not.toBe(dark);
+      const paths = plot.locator('g polyline');
+      await expect(paths).toHaveCount(3);
+      await expect(paths.nth(1)).toHaveAttribute('stroke-dasharray', '6 4');
+      await expect(paths.nth(2)).toHaveAttribute('stroke-dasharray', '4 3');
+      const end = (await plot.locator('.mg2-line-end').first().boundingBox())!;
+      expect(end.x - box.x).toBe(568);
+      expect(end.y - box.y).toBeCloseTo(4.533, 1);
+      const secondEnd = (await plot
+        .locator('.mg2-line-end')
+        .nth(1)
+        .boundingBox())!;
+      expect(secondEnd.y - box.y).toBeCloseTo(42.8, 1);
+      await (coarse ? plot.locator('..') : plot).screenshot({
+        path: testInfo.outputPath(`line-${theme}-${density}.png`),
+      });
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include('[data-testid="line-family"]')
+            .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+    }
+  }
+});

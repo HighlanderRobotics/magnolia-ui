@@ -15,6 +15,8 @@ import {
   validBoxPlot,
   validScatterPoint,
   nearestChartPoint,
+  lineChartLayout,
+  chartLineSegments,
 } from '../packages/tokens/dist/v2.js';
 test('v2 slider steps are relative to min and do not leak floating-point tails', () => {
   assert.equal(sliderValue(0.3, 0.1, 1, 0.2), 0.3);
@@ -155,4 +157,100 @@ test('v2 scatter inspection chooses nearest finite points with stable tie handli
     1,
   );
   assert.equal(nearestChartPoint([], 1, 0), -1);
+});
+
+test('v2 line geometry retains missing samples, source spacing and readable end labels', () => {
+  const source = lineChartLayout(
+    ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8'],
+    [
+      { label: 'Northwind', values: [18, 22, 25, 24, 31, 42, 40, 44] },
+      { label: 'Larkspur', values: [20, 19, 25, 28, 27, 35, 33, 36] },
+      { label: 'Halcyon', values: [10, 14, 13, 17, 22, 28, 26, 30] },
+    ],
+  );
+  assert.equal(source.width, 640);
+  assert.deepEqual(source.bounds, [0, 45]);
+  assert.equal(source.x(5), 400);
+  assert.equal(source.y(30), 76);
+  assert.deepEqual(
+    source.paths.map((p) => p.dash),
+    [[], [6, 4], [4, 3]],
+  );
+  const gaps = lineChartLayout(
+    ['A', 'B', 'C', 'D'],
+    [
+      { label: 'A', values: [1, null, 3, NaN] },
+      { label: 'B', values: [1, null, 3, Infinity] },
+    ],
+  );
+  assert.deepEqual(gaps.enabled, [0, 2]);
+  assert.deepEqual(
+    gaps.paths[0].runs.map((run) => run.map((p) => p.index)),
+    [[0], [2]],
+  );
+  assert.equal(gaps.ends[1].y - gaps.ends[0].y, 20);
+  const upper = lineChartLayout(
+    ['A'],
+    Array.from({ length: 5 }, (_, i) => ({ label: String(i), values: [0] })),
+    [0, 10],
+  );
+  assert.deepEqual(
+    upper.ends.map((e) => e.y),
+    [132, 152, 172, 192, 212],
+  );
+  assert.equal(upper.x(0), 292);
+  const offset = lineChartLayout(
+    ['A'],
+    [{ label: 'A', values: [5], labelOffsetY: 2 }],
+    [0, 10],
+  );
+  assert.equal(offset.ends[0].y, offset.ends[0].point.y + 2);
+  assert.deepEqual(lineChartLayout([], []).enabled, []);
+});
+
+test('v2 native chart segments preserve dash phase across corners and clip fixed domains', () => {
+  assert.deepEqual(
+    chartLineSegments(
+      [
+        { x: 0, y: 0 },
+        { x: 4, y: 0 },
+        { x: 4, y: 8 },
+      ],
+      [6, 4],
+    ),
+    [
+      { x1: 0, y1: 0, x2: 4, y2: 0 },
+      { x1: 4, y1: 0, x2: 4, y2: 2 },
+      { x1: 4, y1: 6, x2: 4, y2: 8 },
+    ],
+  );
+  assert.deepEqual(
+    chartLineSegments(
+      [
+        { x: -2, y: -2 },
+        { x: 12, y: 12 },
+      ],
+      [],
+      [0, 0, 10, 10],
+    ),
+    [{ x1: 0, y1: 0, x2: 10, y2: 10 }],
+  );
+  assert.deepEqual(
+    chartLineSegments(
+      [
+        { x: -2, y: 0 },
+        { x: -2, y: 10 },
+      ],
+      [],
+      [0, 0, 10, 10],
+    ),
+    [],
+  );
+  assert.deepEqual(
+    chartLineSegments([
+      { x: 2, y: 2 },
+      { x: 2, y: 2 },
+    ]),
+    [],
+  );
 });

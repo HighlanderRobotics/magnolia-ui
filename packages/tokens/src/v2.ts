@@ -944,6 +944,6 @@ export const v2Tokens = {
 } as const;
 export type V2Theme = keyof typeof v2Tokens.color;
 export type V2Density = keyof typeof v2Tokens.density;
-export {contextHue, progressValue, sliderValue, initials, paginationRange, paginationPages, chartDomain, chartTicks, chartIndex, heatThresholds, heatLevel, validBoxPlot, validScatterPoint, nearestChartPoint} from "./v2-utilities.js";
+export {contextHue, progressValue, sliderValue, initials, paginationRange, paginationPages, chartDomain, chartTicks, chartIndex, heatThresholds, heatLevel, validBoxPlot, validScatterPoint, nearestChartPoint, lineChartLayout, chartLineSegments} from "./v2-utilities.js";
 export {parseDate, dateObject, dateISO, localDateISO, addDays, addMonths, formatDate, monthGrid, parseTime, formatTime, quarterHours} from "./v2-temporal.js";
-export type {Tone, ContextHue, ChartSeries, ChartDatum, ChartDomain, HeatLevel, HeatmapRow, BoxPlotDatum, ScatterPoint} from "./v2-utilities.js";
+export type {Tone, ContextHue, ChartSeries, ChartDatum, ChartDomain, HeatLevel, HeatmapRow, BoxPlotDatum, ScatterPoint, LineSeries, LinePoint} from "./v2-utilities.js";
