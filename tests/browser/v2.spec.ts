@@ -1,5 +1,191 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+test('v2 ErrorSummary links every failed field, focuses after submit and keeps typing focus', async ({
+  page,
+}) => {
+  await page.goto('/v2');
+  const family = page.getByTestId('form-composition-family');
+  const location = family.getByRole('textbox', {
+    name: 'Location *',
+    exact: true,
+  });
+  const count = family.getByRole('spinbutton', {
+    name: 'Items checked',
+    exact: true,
+  });
+  await expect(family.getByRole('alert')).toHaveCount(0);
+  await family
+    .getByRole('button', { name: 'Validate review', exact: true })
+    .click();
+  const summary = family.getByRole('alert');
+  await expect(summary).toBeFocused();
+  await expect(summary).toHaveAccessibleName('Fix 2 fields to continue');
+  await expect(summary.getByRole('link')).toHaveCount(2);
+  await family
+    .getByRole('button', { name: 'Validate review', exact: true })
+    .click();
+  await expect(summary).toBeFocused();
+  await summary
+    .getByRole('link', {
+      name: 'Location — add where this happened',
+      exact: true,
+    })
+    .click();
+  await expect(location).toBeFocused();
+  await location.fill('North gate');
+  await expect(location).toBeFocused();
+  await expect(summary).toHaveAccessibleName('Fix 1 field to continue');
+  await summary
+    .getByRole('link', {
+      name: 'Items checked — must be at least 1',
+      exact: true,
+    })
+    .click();
+  await expect(count).toBeFocused();
+  await count.fill('2');
+  await expect(summary).toHaveCount(0);
+  await expect(family.getByRole('status')).toHaveText('Review is ready');
+});
+
+test('v2 composed forms and error summaries match source dimensions and four-mode accessibility', async ({
+  page,
+}, testInfo) => {
+  test.setTimeout(60000);
+  await page.goto('/v2');
+  const family = page.getByTestId('form-composition-family');
+  const mobile = testInfo.project.name === 'mobile';
+  for (const theme of ['dark', 'light']) {
+    await page.getByLabel('Theme', { exact: true }).selectOption(theme);
+    for (const density of ['comfortable', 'compact']) {
+      await page.getByLabel('Density', { exact: true }).selectOption(density);
+      await family
+        .getByRole('button', { name: 'Reset review', exact: true })
+        .click();
+      const group = family.getByRole('group', {
+        name: 'Where and when',
+        exact: true,
+      });
+      const box = (await group.boundingBox())!;
+      for (const input of await group.locator('input').all())
+        await expect(input).toHaveCSS('font-weight', '400');
+      expect(box.width).toBe(
+        Math.min(560, (await family.boundingBox())!.width),
+      );
+      expect(box.height).toBe(
+        density === 'comfortable' ? (mobile ? 340 : 237) : mobile ? 284 : 197,
+      );
+      await group.screenshot({
+        path: testInfo.outputPath(`form-${theme}-${density}.png`),
+      });
+      await family
+        .getByRole('button', { name: 'Validate review', exact: true })
+        .click();
+      const summary = family.getByRole('alert');
+      const bounds = (await summary.boundingBox())!;
+      expect(bounds.height).toBe(
+        density === 'comfortable' ? (mobile ? 152 : 108) : mobile ? 143 : 91,
+      );
+      expect(
+        (await summary.locator('[data-glyph="error-summary"]').boundingBox())!
+          .width,
+      ).toBe(density === 'comfortable' ? 20 : 16);
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include('[data-testid="form-composition-family"]')
+            .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      await summary.screenshot({
+        path: testInfo.outputPath(`error-summary-${theme}-${density}.png`),
+      });
+    }
+  }
+  const group = family.getByRole('group', {
+    name: 'Where and when',
+    exact: true,
+  });
+  await group.evaluate((node) => {
+    node.style.width = '440px';
+  });
+  const controls = await group.locator('.mg2-temporal-control').all();
+  const date = (await controls[0].boundingBox())!,
+    time = (await controls[1].boundingBox())!;
+  expect(time.x).toBe(date.x);
+  expect(time.y).toBeGreaterThan(date.y + date.height);
+});
+
+test('v2 complete NavRail and modifier-only Kbd caps preserve source geometry and labels', async ({
+  page,
+}, testInfo) => {
+  test.setTimeout(60000);
+  await page.goto('/v2');
+  const family = page.getByTestId('rail-composition-family'),
+    rail = family.getByRole('navigation', {
+      name: 'Workspace rail',
+      exact: true,
+    });
+  const caps = page.getByTestId('kbd-modifiers-family');
+  await rail.getByRole('button', { name: 'Projects', exact: true }).click();
+  await expect(family.getByRole('status')).toHaveText(
+    'Rail destination: Projects',
+  );
+  await rail.getByRole('button', { name: 'Home', exact: true }).click();
+  await expect(
+    rail.getByRole('button', { name: 'Home', exact: true }),
+  ).toHaveAttribute('aria-current', 'page');
+  for (const theme of ['dark', 'light']) {
+    await page.getByLabel('Theme', { exact: true }).selectOption(theme);
+    for (const density of ['comfortable', 'compact']) {
+      await page.getByLabel('Density', { exact: true }).selectOption(density);
+      const box = (await rail.boundingBox())!;
+      expect([box.width, box.height]).toEqual([88, 600]);
+      expect(
+        (await rail
+          .getByRole('button', { name: 'Home', exact: true })
+          .boundingBox())!.height,
+      ).toBe(56);
+      expect(
+        (await rail
+          .locator('[data-glyph="rail-house-selected"]')
+          .boundingBox())!.width,
+      ).toBe(20);
+      for (const cap of await caps
+        .locator('kbd[data-show-key="false"]')
+        .all()) {
+        const b = (await cap.boundingBox())!;
+        expect([b.width, b.height]).toEqual(
+          density === 'comfortable' ? [20, 20] : [18, 18],
+        );
+        expect(
+          (await cap.locator('.mg2-kbd-modifier').boundingBox())!.height,
+        ).toBe(density === 'comfortable' ? 9.5 : 8);
+      }
+      await expect(
+        caps.locator('kbd[data-show-key="false"]').nth(1),
+      ).toHaveText('Shift');
+      await expect(
+        caps.locator('kbd[data-show-key="false"]').nth(2),
+      ).toHaveText('Enter');
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include('[data-testid="rail-composition-family"]')
+            .include('[data-testid="kbd-modifiers-family"]')
+            .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      await rail.screenshot({
+        path: testInfo.outputPath(`rail-${theme}-${density}.png`),
+      });
+      await caps.screenshot({
+        path: testInfo.outputPath(`kbd-swaps-${theme}-${density}.png`),
+      });
+    }
+  }
+});
 test('v2 canonical Icon catalog preserves all source names, density sizes and inherited color', async ({
   page,
 }, testInfo) => {

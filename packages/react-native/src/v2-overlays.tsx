@@ -556,7 +556,7 @@ export function MenuSeparator() {
   );
 }
 
-function useOverlayFocus() {
+export function useOverlayFocus() {
   const triggerRef = React.useRef<View>(null);
   const focusFrame = React.useRef<number | undefined>(undefined);
   React.useEffect(

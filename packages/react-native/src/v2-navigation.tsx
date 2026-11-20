@@ -114,7 +114,12 @@ function Destination({
                 justifyContent: 'center',
               }}
             >
-              {icon ?? <Glyph name="nav-house" color={color} />}
+              {icon ?? (
+                <Glyph
+                  name={rail && selected ? 'rail-house-selected' : 'nav-house'}
+                  color={color}
+                />
+              )}
             </View>
             <Text
               style={{

@@ -185,6 +185,13 @@ import asset182 from './assets/command-report-compact.svg';
 import asset183 from './assets/command-new-compact.svg';
 import asset184 from './assets/command-invite-compact.svg';
 import asset185 from './assets/command-export-compact.svg';
+import asset186 from './assets/kbd-shift.svg';
+import asset187 from './assets/kbd-shift-compact.svg';
+import asset188 from './assets/kbd-enter.svg';
+import asset189 from './assets/kbd-enter-compact.svg';
+import asset190 from './assets/rail-house-selected.svg';
+import asset191 from './assets/error-summary.svg';
+import asset192 from './assets/error-summary-compact.svg';
 export const glyphs = {
   'spinner-dark': { src: asset0, width: 20, height: 20 },
   'error': { src: asset1, width: 12, height: 12 },
@@ -372,5 +379,12 @@ export const glyphs = {
   'command-new-compact': { src: asset183, width: 16, height: 16 },
   'command-invite-compact': { src: asset184, width: 16, height: 16 },
   'command-export-compact': { src: asset185, width: 16, height: 16 },
+  'kbd-shift': { src: asset186, width: 10.5975, height: 9.625 },
+  'kbd-shift-compact': { src: asset187, width: 10.5475, height: 8.16184 },
+  'kbd-enter': { src: asset188, width: 10.5, height: 9.58334 },
+  'kbd-enter-compact': { src: asset189, width: 10.5, height: 8.18337 },
+  'rail-house-selected': { src: asset190, width: 20, height: 20 },
+  'error-summary': { src: asset191, width: 20, height: 20 },
+  'error-summary-compact': { src: asset192, width: 16, height: 16 },
 } as const;
 export type GlyphName = keyof typeof glyphs;

@@ -84,6 +84,10 @@
     CommandPalette,
     Icon,
     iconNames,
+    ErrorSummary,
+    FormSection,
+    FormRow,
+    NavRail,
   } from '../../../packages/svelte/src/lib/v2/index';
   import Glyph from '../../../packages/svelte/src/lib/v2/Glyph.svelte';
   let theme = $state<'dark' | 'light' | 'system'>('dark');
@@ -115,6 +119,35 @@
     commandKeepOpen = $state(false),
     commandDisabled = $state(false),
     commandAction = $state('None');
+  let formSubmitCount = $state(0);
+  let formSubmitted = $state(false),
+    formLocation = $state(''),
+    formCount = $state<number | undefined>(0),
+    railSelected = $state('Home');
+  const formErrors = $derived(
+    !formSubmitted
+      ? []
+      : [
+          ...(!formLocation.trim()
+            ? [
+                {
+                  id: 'audit-location',
+                  label: 'Location',
+                  message: 'add where this happened',
+                },
+              ]
+            : []),
+          ...((formCount ?? 0) < 1
+            ? [
+                {
+                  id: 'audit-count',
+                  label: 'Items checked',
+                  message: 'must be at least 1',
+                },
+              ]
+            : []),
+        ],
+  );
   const commandItems = [
     {
       id: 'home',
@@ -802,6 +835,122 @@
             />
           </div></Card
         >
+      </div>
+    </section>
+    <section
+      data-testid="form-composition-family"
+      aria-label="Structured forms"
+    >
+      <h2>FormSection and ErrorSummary</h2>
+      <form
+        novalidate
+        onsubmit={(e) => {
+          e.preventDefault();
+          formSubmitted = true;
+          formSubmitCount += 1;
+        }}
+      >
+        <ErrorSummary errors={formErrors} focusKey={formSubmitCount} />
+        <FormSection
+          title="Where and when"
+          description="Fields marked * are required."
+        >
+          <TextField
+            id="audit-location"
+            label="Location *"
+            bind:value={formLocation}
+            placeholder="North gate"
+            required
+            error={formSubmitted && !formLocation.trim()
+              ? 'Add where this happened'
+              : undefined}
+          />
+          <FormRow>
+            <DateField
+              label="Review due date"
+              value="2026-10-14"
+              helper="Within the next 30 days"
+            />
+            <TimeField
+              label="Review start time"
+              value="14:30"
+              helper="Local time"
+            />
+          </FormRow>
+        </FormSection>
+        <Divider />
+        <FormSection title="Checks"
+          ><NumberField
+            id="audit-count"
+            label="Items checked"
+            bind:value={formCount}
+            min={1}
+            error={formSubmitted && (formCount ?? 0) < 1
+              ? 'Must be at least 1'
+              : undefined}
+          /></FormSection
+        >
+        <Button type="submit">Validate review</Button>
+        <Button
+          variant="tertiary"
+          onclick={() => {
+            formSubmitted = false;
+            formLocation = '';
+            formCount = 0;
+          }}>Reset review</Button
+        >
+      </form>
+      <p role="status">
+        {formSubmitted && !formErrors.length
+          ? 'Review is ready'
+          : 'Review needs validation'}
+      </p>
+    </section>
+    <section data-testid="rail-composition-family" aria-label="Tablet rail">
+      <h2>NavRail</h2>
+      <NavRail brandLabel="Acme workspace" label="Workspace rail">
+        {#each ['Home', 'Inbox', 'Projects', 'Reports', 'Search'] as destination}
+          <NavRailItem
+            label={destination}
+            selected={railSelected === destination}
+            onclick={() => (railSelected = destination)}
+          >
+            {#snippet icon()}{#if destination === 'Home'}<Glyph
+                  name={railSelected === destination
+                    ? 'rail-house-selected'
+                    : 'nav-house'}
+                />{:else}<Icon
+                  name={destination === 'Inbox'
+                    ? 'inbox'
+                    : destination === 'Projects'
+                      ? 'folder'
+                      : destination === 'Reports'
+                        ? 'chart-column'
+                        : 'search'}
+                  size={20}
+                />{/if}{/snippet}
+          </NavRailItem>
+        {/each}
+      </NavRail>
+      <p role="status">Rail destination: {railSelected}</p>
+    </section>
+    <section
+      data-testid="kbd-modifiers-family"
+      aria-label="Keyboard modifier caps"
+    >
+      <h2>Kbd modifier swaps</h2>
+      <div class="row">
+        {#each ['command', 'shift', 'enter'] as modifier}<Kbd
+            modifier={modifier as 'command' | 'shift' | 'enter'}
+            showKey={false}
+          /><Kbd
+            key="K"
+            modifier={modifier as 'command' | 'shift' | 'enter'}
+          />{/each}<Kbd key="K" modifier="shift" disabled /><Kbd
+          key="K"
+          modifier="enter"
+          variant="field"
+        />
       </div>
     </section>
     <section data-testid="icons-family" aria-label="Canonical icon catalog">

@@ -446,16 +446,18 @@ function TemporalField({
         </Pressable>
       </View>
       {!!(message || helper) && (
-        <Text
-          accessibilityLiveRegion={message ? 'polite' : 'none'}
-          style={{
-            fontSize: s['type/field-help/size'],
-            lineHeight: s['type/field-help/line'],
-            color: c[message ? 'color/fg/danger' : 'color/fg/secondary'],
-          }}
-        >
-          {message ? `Error: ${message}` : helper}
-        </Text>
+        <View style={{ minHeight: 19, justifyContent: 'flex-end' }}>
+          <Text
+            accessibilityLiveRegion={message ? 'polite' : 'none'}
+            style={{
+              fontSize: s['type/field-help/size'],
+              lineHeight: s['type/field-help/line'],
+              color: c[message ? 'color/fg/danger' : 'color/fg/secondary'],
+            }}
+          >
+            {message ? `Error: ${message}` : helper}
+          </Text>
+        </View>
       )}
       <Modal
         visible={open}

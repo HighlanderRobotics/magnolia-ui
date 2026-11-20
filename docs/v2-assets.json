@@ -5353,6 +5353,68 @@
       "iconName": "image",
       "size": 20,
       "stroke": 1.75
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/kbd-shift.svg",
+      "nodeId": "283:234",
+      "slot": "Kbd shift",
+      "mode": "Comfortable",
+      "width": 10.5975,
+      "height": 9.625,
+      "sha256": "4808d241fb563b37ffeaf992f63ceaf9c91dad9bd8d2cd2f73df1cc00945577f"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/kbd-shift-compact.svg",
+      "nodeId": "283:234",
+      "slot": "Kbd shift",
+      "mode": "Compact",
+      "width": 10.5475,
+      "height": 8.16184,
+      "sha256": "9ce1853dcb8e604e142aa4dd9732cc18bf555f8b7189adc995f02b173740102a"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/kbd-enter.svg",
+      "nodeId": "283:236",
+      "slot": "Kbd enter",
+      "mode": "Comfortable",
+      "width": 10.5,
+      "height": 9.58334,
+      "sha256": "f9d1eb52b6e5cefd379b518df0b508af6cca869ec02e26b439a658e7fe768ad5"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/kbd-enter-compact.svg",
+      "nodeId": "283:236",
+      "slot": "Kbd enter",
+      "mode": "Compact",
+      "width": 10.5,
+      "height": 8.18337,
+      "sha256": "d56511daa70db42eba9e16e8d5f4abea36968f0619f00471a69afa7eb3f01217"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/rail-house-selected.svg",
+      "nodeId": "93:980",
+      "slot": "NavRailItem selected default house icon",
+      "width": 20,
+      "height": 20,
+      "sha256": "6327e7957f4aea747bbed6cf2a3cffb31e562fe0d1905dd3f731defc2fea3a76"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/error-summary.svg",
+      "nodeId": "90:1277",
+      "slot": "error-summary",
+      "width": 20,
+      "height": 20,
+      "mode": "Comfortable",
+      "sha256": "bdeda561ab89537fb515dfe9dede77c29c428376a131b9abdd099616c6817bfd"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/error-summary-compact.svg",
+      "nodeId": "90:1277",
+      "slot": "error-summary-compact",
+      "width": 16,
+      "height": 16,
+      "mode": "Compact",
+      "sha256": "3826d0ce87e3facaae97268f8d959ff8ad21b87e336ade37e83a3ffdfa8283af"
     }
   ]
 }

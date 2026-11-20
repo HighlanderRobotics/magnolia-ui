@@ -82,3 +82,7 @@ export { default as CommandPalette } from './CommandPalette.svelte';
 export { default as Icon } from './Icon.svelte';
 export { iconNames } from './icons.generated.js';
 export type { IconName } from './icons.generated.js';
+export { default as ErrorSummary } from './ErrorSummary.svelte';
+export { default as FormSection } from './FormSection.svelte';
+export { default as FormRow } from './FormRow.svelte';
+export { default as NavRail } from './NavRail.svelte';

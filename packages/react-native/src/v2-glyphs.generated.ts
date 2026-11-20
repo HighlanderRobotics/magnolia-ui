@@ -186,5 +186,12 @@ export const nativeGlyphs = {
   'command-new-compact': { source: require('./assets/v2/command-new-compact.png'), width: 16, height: 16 },
   'command-invite-compact': { source: require('./assets/v2/command-invite-compact.png'), width: 16, height: 16 },
   'command-export-compact': { source: require('./assets/v2/command-export-compact.png'), width: 16, height: 16 },
+  'kbd-shift': { source: require('./assets/v2/kbd-shift.png'), width: 10.5975, height: 9.625 },
+  'kbd-shift-compact': { source: require('./assets/v2/kbd-shift-compact.png'), width: 10.5475, height: 8.16184 },
+  'kbd-enter': { source: require('./assets/v2/kbd-enter.png'), width: 10.5, height: 9.58334 },
+  'kbd-enter-compact': { source: require('./assets/v2/kbd-enter-compact.png'), width: 10.5, height: 8.18337 },
+  'rail-house-selected': { source: require('./assets/v2/rail-house-selected.png'), width: 20, height: 20 },
+  'error-summary': { source: require('./assets/v2/error-summary.png'), width: 20, height: 20 },
+  'error-summary-compact': { source: require('./assets/v2/error-summary-compact.png'), width: 16, height: 16 },
 } as const;
 export type NativeGlyphName = keyof typeof nativeGlyphs;

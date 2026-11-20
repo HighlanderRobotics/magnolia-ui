@@ -601,6 +601,9 @@ export function Glyph({
   const pairs: Partial<Record<NativeGlyphName, NativeGlyphName>> = {
     check: 'check-compact',
     modifier: 'modifier-compact',
+    'kbd-shift': 'kbd-shift-compact',
+    'kbd-enter': 'kbd-enter-compact',
+    'error-summary': 'error-summary-compact',
     'popover-copy': 'popover-copy-compact',
     'sheet-close': 'sheet-close-compact',
     'sheet-share': 'sheet-share-compact',
@@ -932,28 +935,54 @@ export function IconButton({
   );
 }
 export function Kbd({
-  keyName,
+  keyName = 'K',
   modifier = false,
   variant = 'cap',
   disabled = false,
+  showKey = true,
 }: {
-  keyName: string;
-  modifier?: boolean;
+  keyName?: string;
+  modifier?: boolean | 'command' | 'shift' | 'enter';
   variant?: 'cap' | 'field';
   disabled?: boolean;
+  showKey?: boolean;
 }) {
   const t = useMagnolia(),
     c = t.colors,
     s = t.sizes;
+  const mark = modifier === true ? 'command' : modifier || undefined;
+  const markLabel = mark ? mark[0].toUpperCase() + mark.slice(1) : '';
+  const glyph =
+    mark === 'shift'
+      ? 'kbd-shift'
+      : mark === 'enter'
+        ? 'kbd-enter'
+        : 'modifier';
+  const asset =
+    nativeGlyphs[
+      t.density === 'compact'
+        ? (
+            {
+              modifier: 'modifier-compact',
+              'kbd-shift': 'kbd-shift-compact',
+              'kbd-enter': 'kbd-enter-compact',
+              'error-summary': 'error-summary-compact',
+            } as const
+          )[glyph]
+        : glyph
+    ];
   return (
     <View
       accessible
-      accessibilityLabel={modifier ? `Command ${keyName}` : keyName}
+      accessibilityLabel={[markLabel, showKey ? keyName : '']
+        .filter(Boolean)
+        .join(' ')}
       style={{
         alignSelf: 'flex-start',
         minHeight: s['size/kbd'],
         minWidth: s['size/kbd'],
-        paddingHorizontal: s['pad/kbd-x'],
+        paddingHorizontal:
+          s['pad/kbd-x'] - (!showKey && variant === 'cap' ? 1 : 0),
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -970,25 +999,36 @@ export function Kbd({
         opacity: disabled ? 0.4 : 1,
       }}
     >
-      {modifier && (
+      {mark && (
         <View style={{ width: 10.5, height: s['size/kbd-glyph'] }}>
           <Glyph
-            name="modifier"
+            name={glyph}
             color={c['color/fg/secondary']}
-            style={{ position: 'absolute', left: 0, top: -0.075 }}
+            style={{
+              position: 'absolute',
+              left: 0,
+              top:
+                mark === 'shift'
+                  ? 0
+                  : mark === 'enter'
+                    ? (s['size/kbd-glyph'] - asset.height) / 2
+                    : -0.075,
+            }}
           />
         </View>
       )}
-      <Text
-        style={{
-          fontSize: s['type/kbd/size'],
-          lineHeight: s['type/kbd/line'],
-          fontWeight: '500',
-          color: c['color/fg/secondary'],
-        }}
-      >
-        {keyName}
-      </Text>
+      {showKey && (
+        <Text
+          style={{
+            fontSize: s['type/kbd/size'],
+            lineHeight: s['type/kbd/line'],
+            fontWeight: '500',
+            color: c['color/fg/secondary'],
+          }}
+        >
+          {keyName}
+        </Text>
+      )}
     </View>
   );
 }
@@ -1309,3 +1349,5 @@ export {
 export { Toast } from './v2-toast.js';
 export { Icon, iconNames } from './v2-icon.js';
 export type { IconName } from './v2-icon.js';
+export { FormSection, FormRow, ErrorSummary } from './v2-forms.js';
+export { NavRail } from './v2-nav-rail.js';

@@ -5,6 +5,9 @@
   const pairs: Partial<Record<GlyphName, GlyphName>> = {
     check: 'check-compact',
     modifier: 'modifier-compact',
+    'kbd-shift': 'kbd-shift-compact',
+    'kbd-enter': 'kbd-enter-compact',
+    'error-summary': 'error-summary-compact',
     'popover-copy': 'popover-copy-compact',
     'sheet-close': 'sheet-close-compact',
     'sheet-share': 'sheet-share-compact',

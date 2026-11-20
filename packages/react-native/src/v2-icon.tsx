@@ -13,14 +13,19 @@ export function Icon({
   style,
 }: {
   name: IconName;
-  size?: 'xs' | 'sm' | 'default';
+  size?: 'xs' | 'sm' | 'default' | 14 | 16 | 20 | 24;
   label?: string;
   color?: string;
   style?: StyleProp<ViewStyle>;
 }) {
   const t = useMagnolia();
   const sizes = { xs: [16, 14], sm: [20, 16], default: [24, 20] } as const;
-  const asset = icons[name][sizes[size][t.density === 'compact' ? 1 : 0]];
+  const asset =
+    icons[name][
+      typeof size === 'number'
+        ? size
+        : sizes[size][t.density === 'compact' ? 1 : 0]
+    ];
   return (
     <View
       accessible={!!label}

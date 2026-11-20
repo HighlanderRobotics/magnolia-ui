@@ -72,6 +72,10 @@ import {
   CommandPalette,
   Icon,
   iconNames,
+  FormSection,
+  FormRow,
+  ErrorSummary,
+  NavRail,
 } from '../../packages/react-native/src/v2';
 test('v2 native Slider exposes stepped accessibility adjustments and disabled state', () => {
   const change = jest.fn();
@@ -1285,6 +1289,86 @@ test('v2 native canonical icons expose all source names, exact density sizes and
       width: size,
       height: size,
     });
+});
+
+test('v2 native form sections preserve heading context and error summary links every target', () => {
+  const choose = jest.fn();
+  const errors = [
+    { id: 'location', label: 'Location', message: 'add where this happened' },
+    { id: 'count', label: 'Items checked', message: 'must be at least 1' },
+  ];
+  const result = render(
+    <MagnoliaProvider>
+      <FormSection
+        title="Where and when"
+        description="Fields marked * are required."
+      >
+        <FormRow>
+          <TextField label="Location" value="" />
+          <NumberField label="Items checked" value={0} />
+        </FormRow>
+      </FormSection>
+      <ErrorSummary errors={errors} onField={choose} />
+    </MagnoliaProvider>,
+  );
+  expect(result.getByRole('header', { name: 'Where and when' })).toBeTruthy();
+  expect(result.getByText('Fields marked * are required.')).toBeTruthy();
+  expect(
+    result.getByRole('alert', { name: 'Fix 2 fields to continue' }),
+  ).toBeTruthy();
+  const link = result.getByRole('link', {
+    name: 'Location — add where this happened',
+  });
+  fireEvent(link, 'focus', {});
+  expect(link.props.style.outlineWidth).toBe(2);
+  fireEvent.press(link);
+  expect(choose).toHaveBeenCalledWith(errors[0]);
+  fireEvent.press(
+    result.getByRole('link', { name: 'Items checked — must be at least 1' }),
+  );
+  expect(choose).toHaveBeenLastCalledWith(errors[1]);
+  result.rerender(
+    <MagnoliaProvider>
+      <ErrorSummary errors={[]} onField={choose} />
+    </MagnoliaProvider>,
+  );
+  expect(result.queryByRole('alert')).toBeNull();
+});
+
+test('v2 native complete NavRail preserves brand and selectable destinations', () => {
+  const choose = jest.fn();
+  const result = render(
+    <MagnoliaProvider>
+      <NavRail brandLabel="Acme workspace">
+        <NavRailItem label="Home" selected onPress={choose} />
+        <NavRailItem label="Unavailable" disabled onPress={choose} />
+      </NavRail>
+    </MagnoliaProvider>,
+  );
+  expect(result.getByRole('image', { name: 'Acme workspace' })).toBeTruthy();
+  const home = result.getByRole('button', { name: 'Home' });
+  expect(home.props.accessibilityState.selected).toBe(true);
+  fireEvent.press(home);
+  fireEvent.press(result.getByRole('button', { name: 'Unavailable' }));
+  expect(choose).toHaveBeenCalledTimes(1);
+});
+
+test('v2 native Kbd exposes modifier swaps and hides key text without changing boolean compatibility', () => {
+  const result = render(
+    <MagnoliaProvider density="compact">
+      <Kbd keyName="K" modifier />
+      <Kbd modifier="shift" showKey={false} />
+      <Kbd modifier="enter" showKey={false} />
+      <Icon name="folder" size={20} label="Fixed folder" />
+    </MagnoliaProvider>,
+  );
+  expect(result.getByLabelText('Command K')).toBeTruthy();
+  expect(result.getByLabelText('Shift').props.style.minWidth).toBe(18);
+  expect(result.getByLabelText('Enter').props.style.minHeight).toBe(18);
+  expect(result.getAllByText('K')).toHaveLength(1);
+  expect(
+    result.getByRole('image', { name: 'Fixed folder' }).props.style[0],
+  ).toMatchObject({ width: 20, height: 20 });
 });
 
 test('v2 native Sheet exposes object actions with button semantics and closes on selection', () => {

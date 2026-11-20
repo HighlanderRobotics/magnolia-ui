@@ -41,7 +41,9 @@
   }}
 >
   <span class="mg2-destination-icon"
-    >{#if icon}{@render icon()}{:else}<Glyph name="nav-house" />{/if}</span
+    >{#if icon}{@render icon()}{:else}<Glyph
+        name={rail && selected ? 'rail-house-selected' : 'nav-house'}
+      />{/if}</span
   >
   <span class="mg2-destination-label">{label}</span>
   {#if count !== undefined && !rail}<span class="mg2-destination-count"
