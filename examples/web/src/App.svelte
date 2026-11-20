@@ -44,6 +44,7 @@
       <p class="eyebrow">HIGHLANDER ROBOTICS · DESIGN SYSTEM</p>
       <h1>Magnolia UI</h1>
       <a href="/figma">Figma component reference →</a>
+      <a href="/controls">More controls →</a>
       <p>Shared foundations. Native controls. Built for the field.</p>
     </header>
     <section aria-labelledby="settings">

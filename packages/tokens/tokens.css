@@ -211,6 +211,7 @@
   --mg-controls-switch-thumb-disabled-light-opacity: 0.7;
   --mg-controls-switch-thumb-disabled-dark-opacity: 0.6;
   --mg-controls-selection-compact-dark-radius: 5px;
+  --mg-controls-tab-gap: 7px;
 }
 :root {
   --mg-spacing-xs: 4px;

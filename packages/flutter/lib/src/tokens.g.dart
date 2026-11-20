@@ -90,6 +90,7 @@ const double magnoliaControlsMenuMaxHeight = 140.0;
 const double magnoliaControlsSwitchThumbDisabledLightOpacity = 0.7;
 const double magnoliaControlsSwitchThumbDisabledDarkOpacity = 0.6;
 const double magnoliaControlsSelectionCompactDarkRadius = 5.0;
+const double magnoliaControlsTabGap = 7.0;
 const double magnoliaSpacingXs = 4.0;
 const double magnoliaSpacingSm = 8.0;
 const double magnoliaSpacingMd = 12.0;

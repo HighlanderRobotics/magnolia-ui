@@ -102,3 +102,43 @@ it('Pill supports native toggling, cancellation and disabled state', async () =>
   await rerender({ disabled: true });
   expect(pill).toBeDisabled();
 });
+
+import MultiSelect from '../packages/svelte/src/lib/MultiSelect.svelte';
+import Combobox from '../packages/svelte/src/lib/Combobox.svelte';
+it('multi-select associates errors and serializes multiple enabled values', async () => {
+  const { getByRole, getByText } = render(MultiSelect, {
+    props: {
+      label: 'Roles',
+      name: 'roles',
+      value: ['a', 'b'],
+      errorMessage: 'Review your roles',
+      items: [
+        { value: 'a', label: 'Scout' },
+        { value: 'b', label: 'Analyst' },
+        { value: 'x', label: 'Unavailable', disabled: true },
+      ],
+    },
+  });
+  const select = getByRole('listbox') as HTMLSelectElement;
+  expect(select).toHaveAttribute(
+    'aria-errormessage',
+    getByText('Review your roles').id,
+  );
+  expect(getByRole('option', { name: 'Unavailable' })).toBeDisabled();
+  const form = document.createElement('form');
+  form.append(select);
+  expect(new FormData(form).getAll('roles')).toEqual(['a', 'b']);
+});
+it('combobox validates selected IDs rather than accepting arbitrary query text', async () => {
+  const { getByRole } = render(Combobox, {
+    props: {
+      label: 'Team',
+      required: true,
+      items: [{ value: '8033', label: 'Highlander' }],
+    },
+  });
+  const input = getByRole('combobox') as HTMLInputElement;
+  await fireEvent.input(input, { target: { value: 'Unknown team' } });
+  expect(input.checkValidity()).toBe(false);
+  expect(input.validationMessage).toBe('Choose an available option.');
+});

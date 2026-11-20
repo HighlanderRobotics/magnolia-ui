@@ -33,3 +33,5 @@ Pill active swatches come from the actual shared Pill components (purple #bbaaf0
 Tests check original bytes, CSS callsites, computed asset bindings and dimensions across light/dark and both densities, plus native state changes, disabled/cancelled Pill actions, axe, keyboard behavior and browser hydration. The gallery also covers all four button states and selection/disabled combinations. Web screenshots are recorded for desktop/mobile review; this does not establish migrated consumer or native-device parity.
 
 Navigation chrome, scouting widgets, field artwork and app-specific screens from the App page remain application-owned and outside this component rewrite. Lovat dependencies and patches remain unchanged.
+
+The additional control pass inspects Team Details pill tabs (4690:202) and reuses menu/input/Pill foundations for compositions without standalone Figma definitions. See [extended controls](extended-controls.md) for the exact source mapping and accessibility differences.

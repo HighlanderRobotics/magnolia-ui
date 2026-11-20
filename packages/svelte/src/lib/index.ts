@@ -16,3 +16,12 @@ export { default as Alert } from './Alert.svelte';
 export type { ButtonProps, Variant } from './types.js';
 
 export { default as Pill } from './Pill.svelte';
+export { default as Tooltip } from './Tooltip.svelte';
+export { default as Popover } from './Popover.svelte';
+export { default as Tabs } from './Tabs.svelte';
+export { default as Toast } from './Toast.svelte';
+export { default as Accordion } from './Accordion.svelte';
+export { default as Pagination } from './Pagination.svelte';
+export { default as Table } from './Table.svelte';
+export { default as MultiSelect } from './MultiSelect.svelte';
+export { default as Combobox } from './Combobox.svelte';
