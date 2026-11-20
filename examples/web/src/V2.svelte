@@ -79,6 +79,7 @@
     SheetAction,
     SheetSeparator,
     Drawer,
+    Toast,
   } from '../../../packages/svelte/src/lib/v2/index';
   import Glyph from '../../../packages/svelte/src/lib/v2/Glyph.svelte';
   let theme = $state<'dark' | 'light' | 'system'>('dark');
@@ -102,6 +103,9 @@
     drawerOpen = $state(false),
     longDrawer = $state(false),
     edgeAction = $state('None');
+  let toastOpen = $state(false),
+    toastTone = $state<'neutral' | 'success' | 'danger'>('neutral'),
+    toastAction = $state('None');
   let decisionOpen = $state(false),
     decisionLocked = $state(false),
     overlayAction = $state('None');
@@ -745,6 +749,41 @@
           </div></Card
         >
       </div>
+    </section>
+    <section data-testid="toast-family" aria-label="Notifications">
+      <h2>Toast</h2>
+      {#each ['neutral', 'success', 'danger'] as tone}
+        <Button
+          variant="secondary"
+          onclick={() => {
+            toastTone = tone as typeof toastTone;
+            toastOpen = true;
+          }}>Show {tone} toast</Button
+        >
+      {/each}
+      <Toast
+        bind:open={toastOpen}
+        tone={toastTone}
+        message={toastTone === 'neutral'
+          ? 'Moved to archive'
+          : toastTone === 'success'
+            ? 'Changes saved'
+            : 'Could not save changes'}
+        actionLabel={toastTone === 'neutral'
+          ? 'Undo'
+          : toastTone === 'success'
+            ? 'View'
+            : 'Retry'}
+        onaction={() => {
+          toastAction =
+            toastTone === 'neutral'
+              ? 'Undo'
+              : toastTone === 'success'
+                ? 'View'
+                : 'Retry';
+        }}
+      />
+      <p>Notification action: {toastAction}</p>
     </section>
     <section data-testid="edge-panels-family" aria-label="Sheets and drawers">
       <h2>Sheet and Drawer</h2>

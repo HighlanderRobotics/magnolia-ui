@@ -162,5 +162,11 @@ export const nativeGlyphs = {
   'drawer-close-compact': { source: require('./assets/v2/drawer-close-compact.png'), width: 16, height: 16 },
   'drawer-plus': { source: require('./assets/v2/drawer-plus.png'), width: 20, height: 20 },
   'drawer-plus-compact': { source: require('./assets/v2/drawer-plus-compact.png'), width: 16, height: 16 },
+  'toast-info': { source: require('./assets/v2/toast-info.png'), width: 20, height: 20 },
+  'toast-success': { source: require('./assets/v2/toast-success.png'), width: 20, height: 20 },
+  'toast-danger': { source: require('./assets/v2/toast-danger.png'), width: 20, height: 20 },
+  'toast-info-compact': { source: require('./assets/v2/toast-info-compact.png'), width: 16, height: 16 },
+  'toast-success-compact': { source: require('./assets/v2/toast-success-compact.png'), width: 16, height: 16 },
+  'toast-danger-compact': { source: require('./assets/v2/toast-danger-compact.png'), width: 16, height: 16 },
 } as const;
 export type NativeGlyphName = keyof typeof nativeGlyphs;

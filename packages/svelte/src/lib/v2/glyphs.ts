@@ -161,6 +161,12 @@ import asset158 from './assets/drawer-close.svg';
 import asset159 from './assets/drawer-close-compact.svg';
 import asset160 from './assets/drawer-plus.svg';
 import asset161 from './assets/drawer-plus-compact.svg';
+import asset162 from './assets/toast-info.svg';
+import asset163 from './assets/toast-success.svg';
+import asset164 from './assets/toast-danger.svg';
+import asset165 from './assets/toast-info-compact.svg';
+import asset166 from './assets/toast-success-compact.svg';
+import asset167 from './assets/toast-danger-compact.svg';
 export const glyphs = {
   'spinner-dark': { src: asset0, width: 20, height: 20 },
   'error': { src: asset1, width: 12, height: 12 },
@@ -324,5 +330,11 @@ export const glyphs = {
   'drawer-close-compact': { src: asset159, width: 16, height: 16 },
   'drawer-plus': { src: asset160, width: 20, height: 20 },
   'drawer-plus-compact': { src: asset161, width: 16, height: 16 },
+  'toast-info': { src: asset162, width: 20, height: 20 },
+  'toast-success': { src: asset163, width: 20, height: 20 },
+  'toast-danger': { src: asset164, width: 20, height: 20 },
+  'toast-info-compact': { src: asset165, width: 16, height: 16 },
+  'toast-success-compact': { src: asset166, width: 16, height: 16 },
+  'toast-danger-compact': { src: asset167, width: 16, height: 16 },
 } as const;
 export type GlyphName = keyof typeof glyphs;

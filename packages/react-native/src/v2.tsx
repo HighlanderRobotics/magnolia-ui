@@ -609,6 +609,9 @@ export function Glyph({
     'drawer-open': 'drawer-open-compact',
     'drawer-close': 'drawer-close-compact',
     'drawer-plus': 'drawer-plus-compact',
+    'toast-info': 'toast-info-compact',
+    'toast-success': 'toast-success-compact',
+    'toast-danger': 'toast-danger-compact',
     'chip-check': 'chip-check-compact',
     'radio-box': 'radio-box-compact',
     'radio-dot': 'radio-dot-compact',
@@ -1293,3 +1296,4 @@ export {
   SheetSeparator,
   Drawer,
 } from './v2-overlays.js';
+export { Toast } from './v2-toast.js';

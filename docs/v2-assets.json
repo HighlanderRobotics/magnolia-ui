@@ -1537,6 +1537,60 @@
       "height": 16.0,
       "sha256": "ade7224e4ae3598925919023e1583eaceaf10287bc729e81c5f8193b2b21cbaa",
       "mode": "compact"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/toast-info.svg",
+      "nodeId": "55:417",
+      "slot": "toast-info",
+      "width": 20,
+      "height": 20,
+      "mode": "Comfortable",
+      "sha256": "ef4a727236663791fffa6e243b30acb8b171222595f5432d353c1beae90735dd"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/toast-success.svg",
+      "nodeId": "55:427",
+      "slot": "toast-success",
+      "width": 20,
+      "height": 20,
+      "mode": "Comfortable",
+      "sha256": "9c9f948b79f7ffbf72e83a807e654413f00516acf26d8e5e5d120ee79044f717"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/toast-danger.svg",
+      "nodeId": "55:436",
+      "slot": "toast-danger",
+      "width": 20,
+      "height": 20,
+      "mode": "Comfortable",
+      "sha256": "6b84823318b1ba8427fa335a2700a32659bd4ffd6687d35df78b3e5c861888f0"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/toast-info-compact.svg",
+      "nodeId": "55:417",
+      "slot": "toast-info-compact",
+      "width": 16,
+      "height": 16,
+      "mode": "Compact",
+      "sha256": "5244522626ca31f3ffc40f4e97a47c1ee31179c1a8711a84612cdfddd9307216"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/toast-success-compact.svg",
+      "nodeId": "55:427",
+      "slot": "toast-success-compact",
+      "width": 16,
+      "height": 16,
+      "mode": "Compact",
+      "sha256": "3ea2242db6e9c4c02b9607527764796ce759cabe56835ea4534442683cf6cab3"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/toast-danger-compact.svg",
+      "nodeId": "55:436",
+      "slot": "toast-danger-compact",
+      "width": 16,
+      "height": 16,
+      "mode": "Compact",
+      "sha256": "837b9f83ed46a9bb13ee2b73aff68dbdfc439eefa162dfe94dac30dcab001984"
     }
   ]
 }

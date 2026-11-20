@@ -1,5 +1,112 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+test('v2 Toast matches all source tones and densities and closes through its action', async ({
+  page,
+}, testInfo) => {
+  test.setTimeout(60000);
+  await page.goto('/v2');
+  const family = page.getByTestId('toast-family');
+  for (const theme of ['dark', 'light']) {
+    await page.getByLabel('Theme', { exact: true }).selectOption(theme);
+    for (const density of ['comfortable', 'compact']) {
+      await page.getByLabel('Density', { exact: true }).selectOption(density);
+      for (const tone of ['neutral', 'success', 'danger']) {
+        const trigger = family.getByRole('button', {
+          name: `Show ${tone} toast`,
+          exact: true,
+        });
+        await trigger.click();
+        const toast = family.locator('.mg2-toast');
+        const box = (await toast.boundingBox())!;
+        expect(box.width).toBe(
+          Math.min(360, (await family.boundingBox())!.width),
+        );
+        expect(box.height).toBe(density === 'comfortable' ? 62 : 50);
+        expect((await toast.locator('.mg2-glyph').boundingBox())!.width).toBe(
+          density === 'comfortable' ? 20 : 16,
+        );
+        await expect(
+          family.getByRole(tone === 'danger' ? 'alert' : 'status'),
+        ).toContainText(
+          tone === 'danger'
+            ? 'Could not save changes'
+            : tone === 'success'
+              ? 'Changes saved'
+              : 'Moved to archive',
+        );
+        expect(
+          (
+            await new AxeBuilder({ page })
+              .include('[data-testid="toast-family"]')
+              .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+              .analyze()
+          ).violations,
+        ).toEqual([]);
+        await page.mouse.move(1, 1);
+        await toast.screenshot({
+          path: testInfo.outputPath(`toast-${tone}-${theme}-${density}.png`),
+        });
+        const label =
+          tone === 'danger' ? 'Retry' : tone === 'success' ? 'View' : 'Undo';
+        await toast.getByRole('button', { name: label, exact: true }).click();
+        await expect(toast).toHaveCount(0);
+        await expect(trigger).toBeFocused();
+        await expect(
+          family.getByText(`Notification action: ${label}`, { exact: true }),
+        ).toBeVisible();
+      }
+    }
+  }
+});
+
+test('v2 Toast pauses remaining time on hover and focus and keeps danger messages until dismissed', async ({
+  page,
+}, testInfo) => {
+  await page.goto('/v2');
+  await page.clock.install();
+  await page.clock.pauseAt(new Date());
+  const family = page.getByTestId('toast-family'),
+    toast = family.locator('.mg2-toast');
+  const trigger = family.getByRole('button', {
+    name: 'Show neutral toast',
+    exact: true,
+  });
+  await trigger.click();
+  await page.clock.fastForward(4000);
+  await expect(toast).toBeVisible();
+  if (testInfo.project.name === 'desktop') {
+    await toast.hover();
+    await page.clock.fastForward(10000);
+    await expect(toast).toBeVisible();
+    await page.mouse.move(1, 1);
+  } else {
+    await toast.getByRole('button', { name: 'Undo', exact: true }).focus();
+    await page.clock.fastForward(10000);
+    await expect(toast).toBeVisible();
+    await trigger.focus();
+  }
+  await page.clock.fastForward(999);
+  await expect(toast).toBeVisible();
+  await page.clock.fastForward(1);
+  await expect(toast).toHaveCount(0);
+  await trigger.click();
+  await toast.getByRole('button', { name: 'Undo', exact: true }).focus();
+  await page.clock.fastForward(60000);
+  await expect(toast).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(toast).toHaveCount(0);
+  await expect(trigger).toBeFocused();
+  const danger = family.getByRole('button', {
+    name: 'Show danger toast',
+    exact: true,
+  });
+  await danger.click();
+  await page.clock.fastForward(60000);
+  await expect(toast).toBeVisible();
+  await toast.getByRole('button', { name: 'Retry', exact: true }).click();
+  await expect(toast).toHaveCount(0);
+  await expect(danger).toBeFocused();
+});
 test('v2 Sheet matches density geometry, returns focus and dismisses by action or swipe', async ({
   page,
 }, testInfo) => {

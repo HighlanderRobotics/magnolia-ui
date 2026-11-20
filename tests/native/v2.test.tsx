@@ -1,4 +1,6 @@
 import React from 'react';
+import { act } from 'react';
+import { AccessibilityInfo, AppState } from 'react-native';
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import {
   MagnoliaProvider,
@@ -65,6 +67,7 @@ import {
   SheetAction,
   SheetSeparator,
   Drawer,
+  Toast,
 } from '../../packages/react-native/src/v2';
 test('v2 native Slider exposes stepped accessibility adjustments and disabled state', () => {
   const change = jest.fn();
@@ -1035,6 +1038,154 @@ test('v2 Dialog preserves its source confirm override without recoloring surroun
       }),
     ).toHaveStyle({ backgroundColor: mode === 'dark' ? '#a8302e' : '#c43f3e' });
     unmount();
+  }
+});
+
+test('v2 native Toast pauses its remaining timer during interaction and backgrounding', async () => {
+  jest.useFakeTimers();
+  const previousState = AppState.currentState;
+  AppState.currentState = 'active';
+  const reader = jest
+    .spyOn(AccessibilityInfo, 'isScreenReaderEnabled')
+    .mockResolvedValue(false);
+  let background: (state: string) => void = () => {};
+  const appState = jest
+    .spyOn(AppState, 'addEventListener')
+    .mockImplementation((_type, listener) => {
+      background = listener;
+      return { remove: jest.fn() };
+    });
+  const dismiss = jest.fn(),
+    change = jest.fn();
+  const result = render(
+    <MagnoliaProvider>
+      <Toast
+        open
+        message="Moved to archive"
+        actionLabel="Undo"
+        onDismiss={dismiss}
+        onOpenChange={change}
+      />
+    </MagnoliaProvider>,
+  );
+  try {
+    await act(async () => {});
+    act(() => jest.advanceTimersByTime(4000));
+    const action = result.getByRole('button', { name: 'Undo' });
+    fireEvent(action, 'focus', {});
+    act(() => jest.advanceTimersByTime(10000));
+    expect(dismiss).not.toHaveBeenCalled();
+    act(() => background('background'));
+    fireEvent(action, 'blur', {});
+    act(() => jest.advanceTimersByTime(10000));
+    expect(dismiss).not.toHaveBeenCalled();
+    act(() => background('active'));
+    act(() => jest.advanceTimersByTime(999));
+    expect(dismiss).not.toHaveBeenCalled();
+    act(() => jest.advanceTimersByTime(1));
+    expect(dismiss).toHaveBeenCalledWith('timeout');
+    expect(change).toHaveBeenCalledWith(false);
+  } finally {
+    result.unmount();
+    reader.mockRestore();
+    appState.mockRestore();
+    AppState.currentState = previousState;
+    jest.useRealTimers();
+  }
+});
+
+test('v2 native Toast retains danger messages, supports retry prevention and supplies dismiss without an action', async () => {
+  jest.useFakeTimers();
+  const appState = jest
+    .spyOn(AppState, 'addEventListener')
+    .mockReturnValue({ remove: jest.fn() });
+  const reader = jest
+    .spyOn(AccessibilityInfo, 'isScreenReaderEnabled')
+    .mockResolvedValue(false);
+  const dismiss = jest.fn(),
+    action = jest.fn();
+  const result = render(
+    <MagnoliaProvider>
+      <Toast
+        open
+        tone="danger"
+        message="Could not save changes"
+        actionLabel="Retry"
+        onAction={action}
+        onDismiss={dismiss}
+      />
+    </MagnoliaProvider>,
+  );
+  try {
+    await act(async () => {});
+    act(() => jest.advanceTimersByTime(60000));
+    expect(dismiss).not.toHaveBeenCalled();
+    expect(
+      result.getByRole('alert', { name: 'Could not save changes' }),
+    ).toBeTruthy();
+    fireEvent.press(result.getByRole('button', { name: 'Retry' }), {
+      defaultPrevented: true,
+    });
+    expect(action).toHaveBeenCalledTimes(1);
+    expect(dismiss).not.toHaveBeenCalled();
+    fireEvent.press(result.getByRole('button', { name: 'Retry' }), {
+      defaultPrevented: false,
+    });
+    expect(dismiss).toHaveBeenCalledWith('action');
+    result.rerender(
+      <MagnoliaProvider>
+        <Toast
+          open
+          tone="danger"
+          message="Connection lost"
+          onDismiss={dismiss}
+        />
+      </MagnoliaProvider>,
+    );
+    fireEvent.press(result.getByRole('button', { name: 'Dismiss' }));
+    expect(dismiss).toHaveBeenLastCalledWith('dismiss');
+  } finally {
+    result.unmount();
+    reader.mockRestore();
+    appState.mockRestore();
+    jest.useRealTimers();
+  }
+});
+
+test('v2 native Toast remains available to screen readers and cancels expiry on unmount', async () => {
+  jest.useFakeTimers();
+  const reader = jest
+    .spyOn(AccessibilityInfo, 'isScreenReaderEnabled')
+    .mockResolvedValue(true);
+  const appState = jest
+    .spyOn(AppState, 'addEventListener')
+    .mockReturnValue({ remove: jest.fn() });
+  const previousState = AppState.currentState;
+  AppState.currentState = 'active';
+  const dismiss = jest.fn();
+  const result = render(
+    <MagnoliaProvider>
+      <Toast
+        open
+        message="Changes saved"
+        actionLabel="View"
+        onDismiss={dismiss}
+      />
+    </MagnoliaProvider>,
+  );
+  try {
+    await act(async () => {});
+    act(() => jest.advanceTimersByTime(60000));
+    expect(dismiss).not.toHaveBeenCalled();
+    expect(result.getByRole('button', { name: 'View' })).toBeTruthy();
+    result.unmount();
+    act(() => jest.advanceTimersByTime(60000));
+    expect(dismiss).not.toHaveBeenCalled();
+  } finally {
+    reader.mockRestore();
+    appState.mockRestore();
+    AppState.currentState = previousState;
+    jest.useRealTimers();
   }
 });
 
