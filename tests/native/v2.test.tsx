@@ -49,6 +49,7 @@ import {
   Sparkline,
   LegendItem,
   ChartTooltip,
+  BarChart,
 } from '../../packages/react-native/src/v2';
 test('v2 native Slider exposes stepped accessibility adjustments and disabled state', () => {
   const change = jest.fn();
@@ -595,4 +596,36 @@ test('v2 chart primitives retain trend names and series values in both modes', (
   rerender(content('light'));
   expect(getByText('Week 6')).toBeTruthy();
   expect(getByLabelText('Northwind: 42')).toBeTruthy();
+});
+
+test('v2 native BarChart selects real values and exposes data without inventing missing bars', () => {
+  const select = jest.fn();
+  const { getByRole, getByText } = render(
+    <MagnoliaProvider>
+      <BarChart
+        label="Weekly output"
+        data={[
+          { label: 'W1', value: 34 },
+          { label: 'Missing', value: null },
+          { label: 'W3', value: 66 },
+        ]}
+        onHighlightChange={select}
+      />
+    </MagnoliaProvider>,
+  );
+  expect(
+    getByRole('button', { name: 'W3: 66' }).props.accessibilityState.selected,
+  ).toBe(true);
+  expect(
+    getByRole('button', { name: 'Missing: No data' }).props.accessibilityState
+      .disabled,
+  ).toBe(true);
+  fireEvent.press(getByRole('button', { name: 'W1: 34' }));
+  expect(select).toHaveBeenCalledWith(0);
+  expect(
+    getByRole('button', { name: 'W1: 34' }).props.accessibilityState.selected,
+  ).toBe(true);
+  fireEvent.press(getByRole('button', { name: 'View Weekly output data' }));
+  expect(getByText('Period: Missing, Value: —')).toBeTruthy();
+  expect(getByText('Period: W1, Value: 34')).toBeTruthy();
 });

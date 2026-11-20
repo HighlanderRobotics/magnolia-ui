@@ -595,6 +595,7 @@ test('v2 Figma controls retain geometry, fonts and accessibility in every theme 
         density === 'comfortable' ? [20, 20] : [16, 16],
       );
       const iconButton = (await page
+        .getByRole('region', { name: 'Actions', exact: true })
         .getByRole('button', { name: 'More options', exact: true })
         .boundingBox())!;
       expect([iconButton.width, iconButton.height]).toEqual(
@@ -671,12 +672,15 @@ test('v2 tabs, segmented controls, inputs and loading keep their interaction con
   await expect(
     page.getByRole('heading', { name: 'Larkspur', exact: true }),
   ).toBeVisible();
+  await page.clock.install();
+  await page.clock.pauseAt(new Date());
   const save = page.getByRole('button', { name: 'Save', exact: true });
   const width = (await save.boundingBox())!.width;
   await save.click();
   await expect(save).toHaveAttribute('aria-busy', 'true');
   await expect(save).toBeDisabled();
   expect((await save.boundingBox())!.width).toBe(width);
+  await page.clock.runFor(1000);
   await expect(
     page.getByRole('status').filter({ hasText: 'Changes saved' }),
   ).toBeVisible();
@@ -947,6 +951,72 @@ test('v2 chart primitives preserve original sparkline bounds and series readouts
         (
           await new AxeBuilder({ page })
             .include('[data-testid="chart-primitives"]')
+            .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      await page.bringToFront();
+    }
+  }
+});
+
+test('v2 BarChart matches source geometry and supports keyboard selection and accessible data', async ({
+  page,
+}, testInfo) => {
+  test.setTimeout(60000);
+  await page.goto('/v2');
+  const family = page.getByTestId('bar-chart-family'),
+    plot = family.locator('.mg2-bar-chart').first(),
+    last = family.getByRole('button', { name: 'W8: 66' });
+  await expect(last).toHaveAttribute('aria-pressed', 'true');
+  await last.focus();
+  await page.keyboard.press('ArrowLeft');
+  await expect(family.getByRole('button', { name: 'W7: 58' })).toBeFocused();
+  await page.keyboard.press('Home');
+  await expect(family.getByRole('button', { name: 'W1: 34' })).toBeFocused();
+  await page.keyboard.press('End');
+  await expect(last).toBeFocused();
+  await family.getByText('View Weekly output data', { exact: true }).click();
+  await expect(
+    family
+      .getByRole('table', { name: 'Weekly output' })
+      .getByRole('row', { name: 'W1 34' }),
+  ).toBeVisible();
+  await family.getByText('View Weekly output data', { exact: true }).click();
+  await expect(family.getByText('No data', { exact: true })).toBeVisible();
+  const high = family.getByRole('button', { name: 'High: 100' });
+  await high.click();
+  await expect(high).toHaveAttribute('aria-pressed', 'true');
+  const clipped = family
+    .locator('.mg2-bar-chart')
+    .nth(2)
+    .locator('.mg2-bar')
+    .first();
+  expect((await clipped.boundingBox())!.height).toBe(184);
+  await expect(
+    family.getByRole('button', { name: 'Missing: No data' }),
+  ).toBeDisabled();
+
+  for (const theme of ['dark', 'light']) {
+    await page.getByLabel('Theme', { exact: true }).selectOption(theme);
+    for (const density of ['comfortable', 'compact']) {
+      await page.getByLabel('Density', { exact: true }).selectOption(density);
+      const box = (await plot.boundingBox())!;
+      expect(box.width).toBe(560);
+      expect(box.height).toBe(220);
+      for (const bar of await plot.locator('.mg2-bar').all())
+        expect((await bar.boundingBox())!.width).toBe(24);
+      expect(
+        (await plot.locator('.mg2-bar[data-highlight="true"]').boundingBox())!
+          .height,
+      ).toBeCloseTo((66 / 75) * 184, 1);
+      await plot.screenshot({
+        path: testInfo.outputPath(`bar-${theme}-${density}.png`),
+      });
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include('[data-testid="bar-chart-family"]')
             .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
             .analyze()
         ).violations,

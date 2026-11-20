@@ -3057,3 +3057,105 @@
   color: var(--mg-v2-color-fg-primary);
   font-variant-numeric: tabular-nums;
 }
+
+.mg2-chart-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+}
+.mg2-chart-scroll:focus-visible {
+  outline: 2px solid var(--mg-v2-color-border-focus);
+  outline-offset: 2px;
+}
+.mg2-chart-data summary {
+  cursor: pointer;
+  width: fit-content;
+  color: var(--mg-v2-color-fg-secondary);
+  font-size: var(--mg-v2-type-body-sm-size);
+  line-height: var(--mg-v2-type-body-sm-line);
+  padding-block: 8px;
+}
+.mg2-chart-data table {
+  border-collapse: collapse;
+  font-size: var(--mg-v2-type-body-sm-size);
+}
+.mg2-chart-data th,
+.mg2-chart-data td {
+  padding: 8px 12px;
+  text-align: start;
+  border-bottom: 1px solid var(--mg-v2-color-border-row);
+}
+.mg2-bar-chart {
+  position: relative;
+  height: 220px;
+}
+.mg2-chart-grid {
+  position: absolute;
+  height: 1px;
+  background: var(--mg-v2-color-chart-grid);
+}
+.mg2-chart-axis {
+  position: absolute;
+  font-size: var(--mg-v2-type-caption-size);
+  line-height: var(--mg-v2-type-caption-line);
+  color: var(--mg-v2-color-fg-secondary);
+  font-weight: 400;
+}
+.mg2-chart-y {
+  left: 6px;
+  width: 28px;
+  text-align: end;
+}
+.mg2-bar-slot {
+  position: absolute;
+  top: 8px;
+  height: 184px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.mg2-bar-slot:focus-visible {
+  outline: 2px solid var(--mg-v2-color-border-focus);
+  outline-offset: -2px;
+}
+.mg2-bar {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  border-radius: 4px 4px 0 0;
+  background: var(--mg-v2-color-chart-other);
+  pointer-events: none;
+}
+.mg2-bar[data-highlight='true'] {
+  background: var(--mg-v2-color-chart-cat-1);
+}
+.mg2-bar-value {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  font-size: var(--mg-v2-type-label-sm-size);
+  line-height: var(--mg-v2-type-label-sm-line);
+  font-weight: 500;
+  text-align: center;
+  pointer-events: none;
+}
+.mg2-bar-label {
+  left: 0;
+  top: 192px;
+  width: 100%;
+  text-align: center;
+  pointer-events: none;
+}
+.mg2-chart-empty {
+  position: absolute;
+  left: 40px;
+  top: 96px;
+  color: var(--mg-v2-color-fg-secondary);
+  font-size: var(--mg-v2-type-body-sm-size);
+}
+
+.mg2-bar-value[data-outside='true'] {
+  background: var(--mg-v2-color-bg-base);
+}

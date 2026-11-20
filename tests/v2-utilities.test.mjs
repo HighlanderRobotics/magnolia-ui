@@ -7,6 +7,9 @@ import {
   sliderValue,
   paginationRange,
   paginationPages,
+  chartDomain,
+  chartTicks,
+  chartIndex,
 } from '../packages/tokens/dist/v2.js';
 test('v2 slider steps are relative to min and do not leak floating-point tails', () => {
   assert.equal(sliderValue(0.3, 0.1, 1, 0.2), 0.3);
@@ -66,4 +69,17 @@ test('v2 pagination bounds empty, fractional and stale pages without phantom row
   assert.equal(paginationRange(-2, 12, -1).pageSize, 1);
   assert.deepEqual(paginationPages(3, 13), [1, 2, 3, 4, 13]);
   assert.deepEqual(paginationPages(99, 1), [1]);
+});
+
+test('v2 chart domains and selection preserve missing data and sensible axes', () => {
+  assert.deepEqual(chartDomain([34, 41, 38, 52, 47, 61, 58, 66]), [0, 75]);
+  assert.deepEqual(chartDomain([18, 22, 25, 24, 31, 42, 40, 44]), [0, 45]);
+  assert.deepEqual(chartDomain([null, NaN, Infinity]), [0, 1]);
+  assert.deepEqual(chartDomain([-5, 10]), [-5, 10]);
+  assert.deepEqual(chartDomain([5], [10, 20]), [10, 20]);
+  assert.deepEqual(chartTicks([-5, 10]), [-5, 0, 5, 10]);
+  assert.equal(chartIndex([null, 12, NaN, 9], 0), 1);
+  assert.equal(chartIndex([null, 12, NaN, 9], 2), 1);
+  assert.equal(chartIndex([null, 12, NaN, 9]), 3);
+  assert.equal(chartIndex([null, NaN]), -1);
 });

@@ -60,3 +60,4 @@ export { default as BulkActionBar } from './BulkActionBar.svelte';
 export { default as Sparkline } from './Sparkline.svelte';
 export { default as LegendItem } from './LegendItem.svelte';
 export { default as ChartTooltip } from './ChartTooltip.svelte';
+export { default as BarChart } from './BarChart.svelte';

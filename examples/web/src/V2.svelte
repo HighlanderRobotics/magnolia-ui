@@ -63,6 +63,7 @@
     Sparkline,
     LegendItem,
     ChartTooltip,
+    BarChart,
   } from '../../../packages/svelte/src/lib/v2/index';
   import Glyph from '../../../packages/svelte/src/lib/v2/Glyph.svelte';
   let theme = $state<'dark' | 'light' | 'system'>('dark');
@@ -720,6 +721,26 @@
           </div></Card
         >
       </div>
+    </section>
+    <section data-testid="bar-chart-family" aria-label="Bar charts">
+      <h2>Bar chart</h2>
+      <BarChart
+        label="Weekly output"
+        data={[34, 41, 38, 52, 47, 61, 58, 66].map((value, i) => ({
+          label: `W${i + 1}`,
+          value,
+        }))}
+      />
+      <BarChart label="Missing output" data={[]} />
+      <BarChart
+        label="Fixed range output"
+        domain={[0, 75]}
+        data={[
+          { label: 'High', value: 100 },
+          { label: 'Low', value: -10 },
+          { label: 'Missing', value: null },
+        ]}
+      />
     </section>
     <section data-testid="chart-primitives" aria-label="Chart primitives">
       <h2>Chart primitives</h2>

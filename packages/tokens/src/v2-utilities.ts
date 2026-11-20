@@ -74,3 +74,66 @@ export function paginationPages(current: number, total: number) {
 }
 
 export type ChartSeries = 1 | 2 | 3 | 4 | 5 | 'other';
+
+export type ChartDatum = { label: string; value: number | null };
+export type ChartDomain = readonly [number, number];
+/** Stable chart domains include zero, and never turn missing values into zero. */
+export function chartDomain(
+  values: readonly (number | null)[],
+  domain?: ChartDomain,
+  intervals = 3,
+): ChartDomain {
+  if (
+    domain &&
+    Number.isFinite(domain[0]) &&
+    Number.isFinite(domain[1]) &&
+    domain[1] > domain[0]
+  )
+    return domain;
+  const finite = values.filter(
+    (n): n is number => n !== null && Number.isFinite(n),
+  );
+  if (!finite.length) return [0, 1];
+  const lo = Math.min(0, ...finite),
+    hi = Math.max(0, ...finite);
+  if (lo === hi) return [0, 1];
+  const count = Number.isFinite(intervals)
+    ? Math.max(1, Math.floor(intervals))
+    : 3;
+  const raw = (hi - lo) / count,
+    power = 10 ** Math.floor(Math.log10(raw)),
+    fraction = raw / power;
+  const step =
+    ([1, 1.5, 2, 2.5, 3, 5, 7.5, 10].find((n) => n >= fraction) ?? 10) * power;
+  return [
+    Number((Math.floor(lo / step) * step).toPrecision(12)),
+    Number((Math.ceil(hi / step) * step).toPrecision(12)),
+  ];
+}
+export function chartTicks(domain: ChartDomain, intervals = 3): number[] {
+  const count = Number.isFinite(intervals)
+    ? Math.max(1, Math.floor(intervals))
+    : 3;
+  return Array.from({ length: count + 1 }, (_, i) =>
+    Number((domain[0] + ((domain[1] - domain[0]) * i) / count).toPrecision(12)),
+  );
+}
+export function chartIndex(
+  values: readonly (number | null)[],
+  requested?: number,
+): number {
+  const enabled = values.flatMap((value, i) =>
+    value !== null && Number.isFinite(value) ? [i] : [],
+  );
+  if (!enabled.length) return -1;
+  if (requested === undefined || !Number.isFinite(requested))
+    return enabled[enabled.length - 1];
+  const target = Math.max(
+    0,
+    Math.min(values.length - 1, Math.floor(requested)),
+  );
+  return enabled.reduce(
+    (best, i) => (Math.abs(i - target) < Math.abs(best - target) ? i : best),
+    enabled[0],
+  );
+}

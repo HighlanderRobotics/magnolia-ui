@@ -1244,4 +1244,4 @@ export {
   BulkActionBar,
 } from './v2-data.js';
 
-export { Sparkline, LegendItem, ChartTooltip } from './v2-charts.js';
+export { Sparkline, LegendItem, ChartTooltip, BarChart } from './v2-charts.js';
