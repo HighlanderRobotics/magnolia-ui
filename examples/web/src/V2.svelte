@@ -70,6 +70,9 @@
     LineChart,
     Accordion,
     Tooltip,
+    Menu,
+    MenuItem,
+    MenuSeparator,
   } from '../../../packages/svelte/src/lib/v2/index';
   import Glyph from '../../../packages/svelte/src/lib/v2/Glyph.svelte';
   let theme = $state<'dark' | 'light' | 'system'>('dark');
@@ -89,6 +92,8 @@
     note = $state('');
   let submitted = $state('');
   let confidence = $state(70);
+  let menuAction = $state('None'),
+    menuView = $state('Detailed');
   let destination = $state('Home');
   let dataPage = $state(1),
     dataSize = $state(25),
@@ -727,6 +732,67 @@
           </div></Card
         >
       </div>
+    </section>
+    <section data-testid="menu-family" aria-label="Action menus">
+      <h2>Menu</h2>
+      <Menu label="Project actions">
+        {#snippet trigger(attrs)}<Button {...attrs} variant="secondary"
+            >Project actions</Button
+          >{/snippet}
+        <MenuItem
+          label="Open full page"
+          shortcut="O"
+          onclick={() => (menuAction = 'Open')}
+          >{#snippet icon()}<Glyph name="menu-open" />{/snippet}</MenuItem
+        >
+        <MenuItem
+          label="Edit"
+          shortcut="E"
+          onclick={() => (menuAction = 'Edit')}
+        />
+        <MenuItem
+          label="Duplicate"
+          shortcut="D"
+          onclick={() => (menuAction = 'Duplicate')}
+          >{#snippet icon()}<Glyph name="menu-copy" />{/snippet}</MenuItem
+        >
+        <MenuItem
+          label="Export"
+          shortcut="X"
+          onclick={() => (menuAction = 'Export')}
+          >{#snippet icon()}<Glyph name="menu-download" />{/snippet}</MenuItem
+        >
+        <MenuSeparator />
+        <MenuItem
+          label="Delete"
+          tone="destructive"
+          onclick={() => (menuAction = 'Delete')}
+          >{#snippet icon()}<Glyph name="menu-trash" />{/snippet}</MenuItem
+        >
+      </Menu>
+      <Menu label="View options">
+        {#snippet trigger(attrs)}<Button {...attrs} variant="secondary"
+            >View options</Button
+          >{/snippet}
+        <MenuItem
+          label="Detailed"
+          checked={menuView === 'Detailed'}
+          onclick={(event) => {
+            event.preventDefault();
+            menuView = 'Detailed';
+          }}
+        />
+        <MenuItem
+          label="Compact"
+          checked={menuView === 'Compact'}
+          onclick={(event) => {
+            event.preventDefault();
+            menuView = 'Compact';
+          }}
+        />
+        <MenuItem label="Unavailable view" disabled checked={false} />
+      </Menu>
+      <p role="status">Menu action: {menuAction}; view: {menuView}</p>
     </section>
     <section data-testid="tooltip-family" aria-label="Tooltips">
       <h2>Tooltip</h2>

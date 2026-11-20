@@ -67,3 +67,6 @@ export { default as Scatter } from './Scatter.svelte';
 export { default as LineChart } from './LineChart.svelte';
 export { default as Accordion } from './Accordion.svelte';
 export { default as Tooltip } from './Tooltip.svelte';
+export { default as Menu } from './Menu.svelte';
+export { default as MenuItem } from './MenuItem.svelte';
+export { default as MenuSeparator } from './MenuSeparator.svelte';

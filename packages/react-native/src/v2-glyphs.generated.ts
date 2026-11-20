@@ -138,5 +138,11 @@ export const nativeGlyphs = {
   'accordion-down': { source: require('./assets/v2/accordion-down.png'), width: 20, height: 20 },
   'accordion-up': { source: require('./assets/v2/accordion-up.png'), width: 20, height: 20 },
   'modifier-compact': { source: require('./assets/v2/modifier-compact.png'), width: 11, height: 9 },
+  'menu-open': { source: require('./assets/v2/menu-open.png'), width: 20, height: 20 },
+  'menu-pencil': { source: require('./assets/v2/menu-pencil.png'), width: 20, height: 20 },
+  'menu-copy': { source: require('./assets/v2/menu-copy.png'), width: 20, height: 20 },
+  'menu-download': { source: require('./assets/v2/menu-download.png'), width: 20, height: 20 },
+  'menu-trash': { source: require('./assets/v2/menu-trash.png'), width: 20, height: 20 },
+  'menu-check': { source: require('./assets/v2/menu-check.png'), width: 16, height: 16 },
 } as const;
 export type NativeGlyphName = keyof typeof nativeGlyphs;

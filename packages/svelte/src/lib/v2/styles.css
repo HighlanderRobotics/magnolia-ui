@@ -3616,3 +3616,102 @@
   left: 0;
   top: -0.075px;
 }
+
+.mg2-menu-anchor {
+  display: inline-block;
+}
+.mg2-menu {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  width: 248px;
+  max-width: calc(100vw - 16px);
+  max-height: calc(100dvh - 16px);
+  overflow: auto;
+  padding: 4px;
+  border: 1px solid var(--mg-v2-color-border-subtle);
+  border-radius: 12px;
+  background: var(--mg-v2-color-bg-overlay);
+  color: var(--mg-v2-color-fg-primary);
+  box-shadow:
+    0 1px 2px #0003,
+    0 8px 20px #0000004d;
+}
+.mg2-menu-item {
+  display: flex;
+  width: 232px;
+  max-width: 100%;
+  min-height: var(--mg-v2-size-control-sm);
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: var(--mg-v2-type-body-size);
+  line-height: var(--mg-v2-type-body-line);
+  font-weight: 400;
+  text-align: start;
+  outline: none;
+}
+.mg2-menu-item > .mg2-button-content {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  gap: 12px;
+  justify-content: flex-start;
+}
+.mg2-menu-label {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.mg2-menu-item[data-variant] {
+  color: var(--mg-v2-color-fg-primary);
+  background: transparent;
+}
+.mg2-menu-item[data-tone='destructive'] {
+  color: var(--mg-v2-color-fg-danger);
+}
+.mg2-menu-item[data-variant]:disabled {
+  color: var(--mg-v2-color-fg-disabled);
+  opacity: 1;
+}
+.mg2-menu-item > .mg2-button-content > .mg2-glyph,
+.mg2-menu-item .mg2-kbd {
+  flex: none;
+}
+.mg2-menu-separator {
+  width: 240px;
+  max-width: 100%;
+  height: 9px;
+  display: flex;
+  align-items: center;
+}
+.mg2-menu-separator > .mg2-divider {
+  flex: 1;
+  max-width: 224px;
+  margin: 0;
+  margin-inline-start: 8px;
+}
+@media (pointer: coarse) {
+  .mg2-menu-item {
+    min-height: 44px;
+  }
+}
+
+.mg2-menu-item[data-variant]:is(:hover, :active):enabled {
+  background: transparent;
+}
+.mg2-menu-item[data-variant]:focus:enabled {
+  outline: none;
+  background: var(--mg-v2-color-bg-ghost-hover);
+}
+.mg2-menu-item[data-variant][data-tone='destructive']:focus:enabled {
+  background: var(--mg-v2-color-bg-danger-subtle);
+}
+
+.mg2-menu-item[data-icon] {
+  padding-inline-start: 8px;
+}
+.mg2-menu-item .mg2-button-icon {
+  width: 20px;
+  height: 20px;
+  flex: none;
+}

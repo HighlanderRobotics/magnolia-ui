@@ -1327,6 +1327,54 @@
       "height": 9.0,
       "sha256": "7c4dad89716b94af96756e48e015b9cd92fa82d9d1f1da2631cdeae8925154be",
       "mode": "compact"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/menu-open.svg",
+      "nodeId": "I55:292;55:233",
+      "slot": "Menu open",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "ff522b9e3c287d89ad6f356865468f455c6b994942dbcac7f39af2aeb438acb6"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/menu-pencil.svg",
+      "nodeId": "55:221",
+      "slot": "Menu pencil",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "432b152bdb0a328e2f7222f9677478db34a3ac79660eebcf9a04ed8d2a65e401"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/menu-copy.svg",
+      "nodeId": "I55:316;55:221",
+      "slot": "Menu copy",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "aa06ef636001e789106c74519ceeb506a3ac035a966f52ccf91fd53f5376144c"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/menu-download.svg",
+      "nodeId": "I55:327;55:221",
+      "slot": "Menu download",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "650b17cb1f343c10ed073ef18cd4f48208c945f9749e70cf2158171f80e3250a"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/menu-trash.svg",
+      "nodeId": "I55:340;55:255",
+      "slot": "Menu trash",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "f27735a4dc432c40ce2063869493b2a015d62c6e3ddc2a980b638161d6a03b8f"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/menu-check.svg",
+      "nodeId": "55:224",
+      "slot": "Menu check",
+      "width": 16.0,
+      "height": 16.0,
+      "sha256": "0a9b88d10763a6928fb0c04ba713b82668335b5b212254e4899c1708fdad4296"
     }
   ]
 }

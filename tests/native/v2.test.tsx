@@ -56,6 +56,9 @@ import {
   LineChart,
   Accordion,
   Tooltip,
+  Menu,
+  MenuItem,
+  MenuSeparator,
 } from '../../packages/react-native/src/v2';
 test('v2 native Slider exposes stepped accessibility adjustments and disabled state', () => {
   const change = jest.fn();
@@ -878,4 +881,54 @@ test('v2 native Tooltip supplies a hint and supports long-press and escape dismi
   fireEvent(trigger, 'longPress');
   fireEvent.press(getByRole('button', { name: 'Dismiss Search tooltip' }));
   expect(queryByLabelText('Dismiss Search tooltip')).toBeNull();
+});
+
+test('v2 native Menu supports actions, disabled choices and cancellable selection', () => {
+  const action = jest.fn();
+  function Example() {
+    const [checked, setChecked] = React.useState(false);
+    return (
+      <MagnoliaProvider>
+        <Menu
+          label="Actions"
+          trigger={(props) => <Button {...props}>Open actions</Button>}
+        >
+          <MenuItem label="Edit" onPress={action} />
+          <MenuItem label="Unavailable" disabled onPress={action} />
+          <MenuSeparator />
+          <MenuItem
+            label="Detailed"
+            checked={checked}
+            onPress={(e) => {
+              e.preventDefault();
+              setChecked(true);
+            }}
+          />
+        </Menu>
+      </MagnoliaProvider>
+    );
+  }
+  const { getByRole, queryByRole } = render(<Example />);
+  const trigger = getByRole('button', { name: 'Open actions' });
+  fireEvent.press(trigger);
+  expect(getByRole('button', { name: 'Dismiss Actions menu' })).toBeTruthy();
+  fireEvent.press(getByRole('menuitem', { name: 'Unavailable' }));
+  expect(action).not.toHaveBeenCalled();
+  const event = {
+    defaultPrevented: false,
+    preventDefault() {
+      this.defaultPrevented = true;
+    },
+  };
+  fireEvent.press(getByRole('radio', { name: 'Detailed' }), event);
+  expect(
+    getByRole('radio', { name: 'Detailed' }).props.accessibilityState.checked,
+  ).toBe(true);
+  expect(getByRole('menuitem', { name: 'Edit' })).toBeTruthy();
+  fireEvent.press(getByRole('menuitem', { name: 'Edit' }));
+  expect(action).toHaveBeenCalledTimes(1);
+  expect(queryByRole('menuitem', { name: 'Edit' })).toBeNull();
+  fireEvent.press(trigger);
+  fireEvent.press(getByRole('button', { name: 'Dismiss Actions menu' }));
+  expect(queryByRole('menuitem', { name: 'Edit' })).toBeNull();
 });

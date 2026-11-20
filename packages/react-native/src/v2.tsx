@@ -1263,4 +1263,10 @@ export {
 
 export { Distribution, Scatter, LineChart } from './v2-statistical-charts.js';
 
-export { Accordion, Tooltip } from './v2-overlays.js';
+export {
+  Accordion,
+  Tooltip,
+  Menu,
+  MenuItem,
+  MenuSeparator,
+} from './v2-overlays.js';

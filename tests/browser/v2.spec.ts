@@ -1566,3 +1566,153 @@ test('v2 Tooltip uses source artwork, focus and delayed hover without moving foc
     }
   }
 });
+
+test('v2 Menu matches source geometry, maintains one highlight and supports keyboard choices', async ({
+  page,
+}, testInfo) => {
+  test.setTimeout(60000);
+  await page.goto('/v2');
+  const family = page.getByTestId('menu-family'),
+    trigger = family.getByRole('button', {
+      name: 'Project actions',
+      exact: true,
+    }),
+    menu = family.getByRole('menu', { name: 'Project actions', exact: true }),
+    coarse = await page.evaluate(() => matchMedia('(pointer:coarse)').matches);
+  await trigger.focus();
+  await page.keyboard.press('ArrowUp');
+  await expect(
+    menu.getByRole('menuitem', { name: 'Delete', exact: true }),
+  ).toBeFocused();
+  await page.keyboard.press('Home');
+  const first = menu.getByRole('menuitem', {
+    name: 'Open full page',
+    exact: true,
+  });
+  await expect(first).toBeFocused();
+  await page.keyboard.press('e');
+  await expect(
+    menu.getByRole('menuitem', { name: 'Edit', exact: true }),
+  ).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(menu).toHaveCount(0);
+  await expect(trigger).toBeFocused();
+  await page.keyboard.press('ArrowDown');
+  await expect(first).toBeFocused();
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('Enter');
+  await expect(family.getByRole('status')).toContainText('Menu action: Edit');
+  await expect(menu).toHaveCount(0);
+  await expect(trigger).toBeFocused();
+  const choicesTrigger = family.getByRole('button', {
+      name: 'View options',
+      exact: true,
+    }),
+    choices = family.getByRole('menu', { name: 'View options', exact: true });
+  await choicesTrigger.click();
+  const detailed = choices.getByRole('menuitemradio', {
+    name: 'Detailed',
+    exact: true,
+  });
+  await expect(detailed).toBeFocused();
+  await expect(detailed).toHaveAttribute('aria-checked', 'true');
+  await page.keyboard.press('ArrowDown');
+  const compact = choices.getByRole('menuitemradio', {
+    name: 'Compact',
+    exact: true,
+  });
+  await expect(compact).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(choices).toBeVisible();
+  await expect(compact).toHaveAttribute('aria-checked', 'true');
+  await page.keyboard.press('ArrowDown');
+  await expect(detailed).toBeFocused();
+  await expect(
+    choices.getByRole('menuitemradio', { name: 'Unavailable view' }),
+  ).toBeDisabled();
+  await page.keyboard.press('Escape');
+  await expect(choicesTrigger).toBeFocused();
+  await trigger.click();
+  await page.keyboard.press('Tab');
+  await expect(menu).toHaveCount(0);
+  await expect(choicesTrigger).toBeFocused();
+  await trigger.click();
+  await choicesTrigger.click();
+  await expect(menu).toHaveCount(0);
+  await expect(choices).toBeVisible();
+  await page.keyboard.press('Escape');
+  for (const theme of ['dark', 'light']) {
+    await page.getByLabel('Theme', { exact: true }).selectOption(theme);
+    for (const density of ['comfortable', 'compact']) {
+      await page.getByLabel('Density', { exact: true }).selectOption(density);
+      await trigger.click();
+      await expect(first).toBeFocused();
+      const box = (await menu.boundingBox())!,
+        rowHeight = coarse ? 44 : density === 'comfortable' ? 36 : 28;
+      expect(box.width).toBe(248);
+      expect(box.height).toBe(5 * rowHeight + 19);
+      const row = (await first.boundingBox())!;
+      expect(row.width).toBe(232);
+      expect(row.height).toBe(rowHeight);
+      expect(row.x - box.x).toBe(5);
+      expect(row.y - box.y).toBe(5);
+      const iconSlot = (await first.locator('.mg2-button-icon').boundingBox())!;
+      const itemLabel = first.locator('.mg2-menu-label');
+      expect(iconSlot.width).toBe(20);
+      expect(iconSlot.height).toBe(20);
+      expect(iconSlot.x - box.x).toBe(13);
+      expect((await itemLabel.boundingBox())!.x - box.x).toBe(45);
+      await expect(itemLabel).toHaveCSS('font-weight', '400');
+      expect(
+        await itemLabel.evaluate((el) => getComputedStyle(el).fontFamily),
+      ).toContain('Roboto');
+
+      const separator = (await menu.locator('.mg2-divider').boundingBox())!;
+      expect(separator.width).toBe(224);
+      expect(separator.height).toBe(1);
+      for (const asset of await menu
+        .locator('.mg2-button-icon .mg2-glyph')
+        .all()) {
+        const r = (await asset.boundingBox())!;
+        expect(r.width).toBe(20);
+        expect(r.height).toBe(20);
+      }
+      if (!coarse) {
+        await menu.getByRole('menuitem', { name: 'Edit', exact: true }).hover();
+        await page.keyboard.press('ArrowDown');
+        await expect(
+          menu.getByRole('menuitem', { name: 'Duplicate', exact: true }),
+        ).toBeFocused();
+        const fills = await menu
+          .locator('.mg2-menu-item')
+          .evaluateAll((nodes) =>
+            nodes.map((el) => getComputedStyle(el).backgroundColor),
+          );
+        expect(
+          fills.filter(
+            (color) => color !== 'rgba(0, 0, 0, 0)' && color !== 'transparent',
+          ),
+        ).toHaveLength(1);
+        await page.keyboard.press('Home');
+      }
+      await menu.screenshot({
+        path: testInfo.outputPath(`menu-${theme}-${density}.png`),
+      });
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include('[data-testid="menu-family"]')
+            .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      const bounds = (await menu.boundingBox())!,
+        viewport = page.viewportSize()!;
+      expect(bounds.x).toBeGreaterThanOrEqual(8);
+      expect(bounds.x + bounds.width).toBeLessThanOrEqual(viewport.width - 8);
+      expect(bounds.y + bounds.height).toBeLessThanOrEqual(viewport.height - 8);
+      await page.keyboard.press('Escape');
+      await expect(trigger).toBeFocused();
+    }
+  }
+});

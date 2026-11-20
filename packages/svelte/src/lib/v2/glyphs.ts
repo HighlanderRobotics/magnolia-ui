@@ -137,6 +137,12 @@ import asset134 from './assets/line-point-5-light.svg';
 import asset135 from './assets/accordion-down.svg';
 import asset136 from './assets/accordion-up.svg';
 import asset137 from './assets/modifier-compact.svg';
+import asset138 from './assets/menu-open.svg';
+import asset139 from './assets/menu-pencil.svg';
+import asset140 from './assets/menu-copy.svg';
+import asset141 from './assets/menu-download.svg';
+import asset142 from './assets/menu-trash.svg';
+import asset143 from './assets/menu-check.svg';
 export const glyphs = {
   'spinner-dark': { src: asset0, width: 20, height: 20 },
   'error': { src: asset1, width: 12, height: 12 },
@@ -276,5 +282,11 @@ export const glyphs = {
   'accordion-down': { src: asset135, width: 20, height: 20 },
   'accordion-up': { src: asset136, width: 20, height: 20 },
   'modifier-compact': { src: asset137, width: 11, height: 9 },
+  'menu-open': { src: asset138, width: 20, height: 20 },
+  'menu-pencil': { src: asset139, width: 20, height: 20 },
+  'menu-copy': { src: asset140, width: 20, height: 20 },
+  'menu-download': { src: asset141, width: 20, height: 20 },
+  'menu-trash': { src: asset142, width: 20, height: 20 },
+  'menu-check': { src: asset143, width: 16, height: 16 },
 } as const;
 export type GlyphName = keyof typeof glyphs;
