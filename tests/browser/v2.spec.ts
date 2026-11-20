@@ -1,5 +1,136 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+test('v2 CommandPalette searches, navigates enabled results, opens panels and returns focus', async ({
+  page,
+}) => {
+  await page.goto('/v2');
+  const family = page.getByTestId('commands-family'),
+    trigger = family.getByRole('button', {
+      name: 'Open commands',
+      exact: true,
+    });
+  await family
+    .getByRole('checkbox', { name: 'Include unavailable command' })
+    .check();
+  await trigger.click();
+  const palette = family.getByRole('dialog', { name: 'Commands', exact: true });
+  const input = palette.getByRole('combobox', {
+    name: 'Commands',
+    exact: true,
+  });
+  await expect(input).toBeFocused();
+  await expect(
+    palette.getByRole('option', { name: 'Home', exact: true }),
+  ).toHaveAttribute('aria-selected', 'true');
+  await input.press('ArrowDown');
+  await expect(
+    palette.getByRole('option', { name: 'Inbox 3 unread', exact: true }),
+  ).toHaveAttribute('aria-selected', 'true');
+  await input.press('End');
+  await expect(
+    palette.getByRole('option', { name: 'Export view', exact: true }),
+  ).toHaveAttribute('aria-selected', 'true');
+  await expect(
+    palette.getByRole('option', { name: 'Unavailable', exact: true }),
+  ).toBeDisabled();
+  await input.fill('csv');
+  await expect(palette.getByRole('option')).toHaveCount(1);
+  await input.press('Control+Enter');
+  await expect(palette).toHaveCount(0);
+  await expect(trigger).toBeFocused();
+  await expect(family.getByRole('status')).toHaveText(
+    'Command action: Export view in panel',
+  );
+  await page.keyboard.press('Control+k');
+  await expect(input).toBeFocused();
+  await expect(input).toHaveValue('');
+  await input.fill('zzzz');
+  await expect(palette.getByRole('status')).toHaveText('No matching commands');
+  await expect(input).not.toHaveAttribute('aria-activedescendant');
+  await input.press('Enter');
+  await expect(palette).toBeVisible();
+  await input.press('Escape');
+  await expect(trigger).toBeFocused();
+  await family
+    .getByRole('checkbox', { name: 'Keep command palette open' })
+    .check();
+  await trigger.click();
+  await input.fill('start');
+  await input.press('Enter');
+  await expect(palette).toBeVisible();
+  await expect(input).toBeFocused();
+  await input.press('Escape');
+  await family
+    .getByRole('checkbox', { name: 'Simulate command search' })
+    .check();
+  await trigger.click();
+  await expect(palette.getByRole('listbox')).toHaveAttribute(
+    'aria-busy',
+    'true',
+  );
+  await expect(palette.getByRole('option')).toHaveCount(0);
+  await expect(palette.getByRole('status')).toHaveText('Searching…');
+});
+
+test('v2 command rows and palette match source density geometry and mobile fullscreen behavior', async ({
+  page,
+}, testInfo) => {
+  test.setTimeout(60000);
+  await page.goto('/v2');
+  const family = page.getByTestId('commands-family'),
+    trigger = family.getByRole('button', {
+      name: 'Open commands',
+      exact: true,
+    });
+  const mobile = testInfo.project.name === 'mobile';
+  for (const theme of ['dark', 'light']) {
+    await page.getByLabel('Theme', { exact: true }).selectOption(theme);
+    for (const density of ['comfortable', 'compact']) {
+      await page.getByLabel('Density', { exact: true }).selectOption(density);
+      const row = family.locator(':scope > .mg2-command-item').first();
+      expect((await row.boundingBox())!.height).toBe(
+        mobile ? 44 : density === 'comfortable' ? 36 : 28,
+      );
+      await trigger.click();
+      const palette = family.getByRole('dialog', {
+        name: 'Commands',
+        exact: true,
+      });
+      const box = (await palette.boundingBox())!;
+      expect(box.width).toBe(mobile ? page.viewportSize()!.width : 560);
+      expect(box.height).toBe(
+        mobile
+          ? page.viewportSize()!.height
+          : density === 'comfortable'
+            ? 383
+            : 335,
+      );
+      expect(
+        (await palette.locator('[data-glyph="command-search"]').boundingBox())!
+          .width,
+      ).toBe(density === 'comfortable' ? 20 : 16);
+      await expect(palette.getByRole('combobox')).toBeFocused();
+      await page.mouse.move(1, 1);
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include('.mg2-command-palette')
+            .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      await palette.screenshot({
+        path: testInfo.outputPath(`commands-${theme}-${density}.png`),
+      });
+      if (mobile)
+        await palette
+          .getByRole('button', { name: 'Close commands', exact: true })
+          .click();
+      else await page.keyboard.press('Escape');
+      await expect(trigger).toBeFocused();
+    }
+  }
+});
 test('v2 Toast matches all source tones and densities and closes through its action', async ({
   page,
 }, testInfo) => {

@@ -18,7 +18,37 @@ import {
   lineChartLayout,
   chartLineSegments,
   sheetSwipe,
+  commandResults,
 } from '../packages/tokens/dist/v2.js';
+test('v2 command search matches all query words across labels, groups, metadata and aliases in stable order', () => {
+  const items = [
+    {
+      id: 'one',
+      label: 'Café reports',
+      group: 'Views',
+      meta: '3 unread',
+      keywords: ['charts'],
+    },
+    { id: 'two', label: 'Export CSV', group: 'Actions', disabled: true },
+    { id: 'three', label: 'Weekly reports', group: 'Views' },
+  ];
+  assert.deepEqual(
+    commandResults(items, '  CAFE views  ').map((x) => x.id),
+    ['one'],
+  );
+  assert.deepEqual(
+    commandResults(items, 'charts unread').map((x) => x.id),
+    ['one'],
+  );
+  assert.deepEqual(
+    commandResults(items, 'reports').map((x) => x.id),
+    ['one', 'three'],
+  );
+  assert.deepEqual(commandResults(items, 'CSV'), [items[1]]);
+  assert.deepEqual(commandResults(items, 'zzzz'), []);
+  assert.deepEqual(commandResults(items, ''), items);
+  assert.equal(items[0].label, 'Café reports');
+});
 test('v2 slider steps are relative to min and do not leak floating-point tails', () => {
   assert.equal(sliderValue(0.3, 0.1, 1, 0.2), 0.3);
   assert.equal(sliderValue(0.4, 0.1, 1, 0.2), 0.5);

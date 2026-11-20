@@ -68,6 +68,8 @@ import {
   SheetSeparator,
   Drawer,
   Toast,
+  CommandItem,
+  CommandPalette,
 } from '../../packages/react-native/src/v2';
 test('v2 native Slider exposes stepped accessibility adjustments and disabled state', () => {
   const change = jest.fn();
@@ -1187,6 +1189,69 @@ test('v2 native Toast remains available to screen readers and cancels expiry on 
     AppState.currentState = previousState;
     jest.useRealTimers();
   }
+});
+
+test('v2 native commands search aliases, skip disabled navigation and open panel actions once', () => {
+  const select = jest.fn();
+  const items = [
+    { id: 'home', label: 'Home', group: 'Go to' },
+    { id: 'locked', label: 'Unavailable', group: 'Go to', disabled: true },
+    { id: 'export', label: 'Export view', group: 'Actions', keywords: ['csv'] },
+  ];
+  const result = render(
+    <MagnoliaProvider>
+      <CommandPalette
+        items={items}
+        trigger={(props) => <Button {...props}>Open commands</Button>}
+        onSelect={select}
+      />
+    </MagnoliaProvider>,
+  );
+  fireEvent.press(result.getByRole('button', { name: 'Open commands' }));
+  const input = result.getByRole('combobox', { name: 'Commands' });
+  fireEvent(input, 'keyPress', { nativeEvent: { key: 'ArrowDown' } });
+  expect(
+    result.getByRole('button', { name: 'Export view' }).props.accessibilityState
+      .selected,
+  ).toBe(true);
+  fireEvent.press(result.getByRole('button', { name: 'Unavailable' }));
+  expect(select).not.toHaveBeenCalled();
+  fireEvent.changeText(input, 'csv');
+  expect(result.queryByRole('button', { name: 'Home' })).toBeNull();
+  fireEvent(result.getByRole('button', { name: 'Export view' }), 'longPress');
+  expect(select).toHaveBeenCalledTimes(1);
+  expect(select).toHaveBeenCalledWith(
+    expect.objectContaining({ id: 'export' }),
+    { panel: true },
+  );
+  expect(result.queryByRole('combobox')).toBeNull();
+});
+
+test('v2 native commands expose empty/loading states and honor prevented selection', () => {
+  const select = jest.fn(() => false);
+  const items = [{ id: 'home', label: 'Home' }];
+  const result = render(
+    <MagnoliaProvider>
+      <CommandPalette open items={items} onSelect={select} />
+    </MagnoliaProvider>,
+  );
+  const input = result.getByRole('combobox', { name: 'Commands' });
+  fireEvent.changeText(input, 'zzzz');
+  expect(result.getByText('No matching commands')).toBeTruthy();
+  fireEvent(input, 'submitEditing');
+  expect(select).not.toHaveBeenCalled();
+  fireEvent.changeText(input, 'home');
+  fireEvent(input, 'submitEditing');
+  expect(select).toHaveBeenCalledTimes(1);
+  expect(result.getByRole('combobox')).toBeTruthy();
+  result.rerender(
+    <MagnoliaProvider>
+      <CommandPalette open items={items} loading onSelect={select} />
+    </MagnoliaProvider>,
+  );
+  expect(result.getByText('Searching…')).toBeTruthy();
+  expect(result.queryByRole('button', { name: 'Home' })).toBeNull();
+  expect(result.getByRole('combobox').props.accessibilityState.busy).toBe(true);
 });
 
 test('v2 native Sheet exposes object actions with button semantics and closes on selection', () => {

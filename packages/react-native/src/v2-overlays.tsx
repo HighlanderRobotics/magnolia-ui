@@ -30,7 +30,7 @@ import {
   Stat,
 } from './v2.js';
 
-type NativeFocusTarget = View | TextInput;
+export type NativeFocusTarget = View | TextInput;
 
 export function Accordion({
   title,
@@ -891,7 +891,7 @@ type PanelTrigger = (
     'onPress' | 'accessibilityState' | 'accessibilityHint'
   > & { ref: React.Ref<View> },
 ) => ReactNode;
-function usePanelDisclosure(
+export function usePanelDisclosure(
   open: boolean | undefined,
   onOpenChange: ((open: boolean) => void) | undefined,
   onClose: (() => void) | undefined,

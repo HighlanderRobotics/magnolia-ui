@@ -1591,6 +1591,168 @@
       "height": 16,
       "mode": "Compact",
       "sha256": "837b9f83ed46a9bb13ee2b73aff68dbdfc439eefa162dfe94dac30dcab001984"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/command-search.svg",
+      "nodeId": "55:478",
+      "slot": "command-search",
+      "width": 20,
+      "height": 20,
+      "mode": "Comfortable",
+      "sha256": "e8a463c42679f7a0f629a7811b491bfc640d98f59d7f97ddf7f315b9d028305e"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/command-home.svg",
+      "nodeId": "I55:488;55:461",
+      "slot": "command-home",
+      "width": 20,
+      "height": 20,
+      "mode": "Comfortable",
+      "sha256": "a022657c635ab86223d552c3e8edec607010682a208199873be4fabc59789c15"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/command-inbox.svg",
+      "nodeId": "I55:503;55:446",
+      "slot": "command-inbox",
+      "width": 20,
+      "height": 20,
+      "mode": "Comfortable",
+      "sha256": "04fef750ed443d66a01eec30a313215d81dfe8f440de56508d8129c76db45cf1"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/command-report.svg",
+      "nodeId": "I55:518;55:446",
+      "slot": "command-report",
+      "width": 20,
+      "height": 20,
+      "mode": "Comfortable",
+      "sha256": "80b29a8c05f37bc43f0384f31be303a8106bfefb571d493bf7a74d677a89ab36"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/command-new.svg",
+      "nodeId": "I55:535;55:446",
+      "slot": "command-new",
+      "width": 20,
+      "height": 20,
+      "mode": "Comfortable",
+      "sha256": "0f8e53fbe16f545904fae02422405636200a4ec561f293bf557fa478039edf5d"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/command-invite.svg",
+      "nodeId": "I55:550;55:446",
+      "slot": "command-invite",
+      "width": 20,
+      "height": 20,
+      "mode": "Comfortable",
+      "sha256": "528049bc85c7020554d8866ef8767ace8b45018a182b54fa78b2a0ff9ac48e8e"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/command-export.svg",
+      "nodeId": "I55:565;55:446",
+      "slot": "command-export",
+      "width": 20,
+      "height": 20,
+      "mode": "Comfortable",
+      "sha256": "3dd39123c47a36a528974930342a8862066bc179f67bf39910085bd37e5e345a"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/command-file.svg",
+      "nodeId": "55:446",
+      "slot": "command-file",
+      "width": 20,
+      "height": 20,
+      "mode": "Comfortable",
+      "sha256": "eb627d9f0e595dab18d976bfbd381cf5de7699defda99ba3c5de037527da9da1"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/command-up.svg",
+      "nodeId": "55:582",
+      "slot": "command-up",
+      "width": 12,
+      "height": 12,
+      "mode": "Comfortable",
+      "sha256": "da154d6b2627a143917a254285970f1a93f01f8b5f276a6cc21d7b1e6addc3c5"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/command-down.svg",
+      "nodeId": "55:585",
+      "slot": "command-down",
+      "width": 12,
+      "height": 12,
+      "mode": "Comfortable",
+      "sha256": "2579a12023a3e6cb8c56a4a2c91152b92c08f1342376941538b347f71bf1e44f"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/command-file-compact.svg",
+      "nodeId": "55:446",
+      "slot": "command-file-compact",
+      "width": 16,
+      "height": 16,
+      "mode": "Compact",
+      "sha256": "87ea8e8d7991eb52566c913f01ea47f9a229e709ed19614d57022416475078ff"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/command-search-compact.svg",
+      "nodeId": "55:478",
+      "slot": "command-search-compact",
+      "width": 16,
+      "height": 16,
+      "mode": "Compact",
+      "sha256": "88e4d870f251d52e80633fa9501b7db5c7bb2c77c181055841de2ef76bdf54a5"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/command-home-compact.svg",
+      "nodeId": "I55:488;55:461",
+      "slot": "command-home-compact",
+      "width": 16,
+      "height": 16,
+      "mode": "Compact",
+      "sha256": "d67177c64baf299db5b869d4c4904037b11ea4884b20562508dfecf53de36473"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/command-inbox-compact.svg",
+      "nodeId": "I55:503;55:446",
+      "slot": "command-inbox-compact",
+      "width": 16,
+      "height": 16,
+      "mode": "Compact",
+      "sha256": "f3a9d2191fc68b81c048cbe0c8bb9e64862ed3226879a0da87706b6a6339dc45"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/command-report-compact.svg",
+      "nodeId": "I55:518;55:446",
+      "slot": "command-report-compact",
+      "width": 16,
+      "height": 16,
+      "mode": "Compact",
+      "sha256": "1c66f9691af8030b9689313a279329cb374cab880955849e047cec61931d57ef"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/command-new-compact.svg",
+      "nodeId": "I55:535;55:446",
+      "slot": "command-new-compact",
+      "width": 16,
+      "height": 16,
+      "mode": "Compact",
+      "sha256": "b545120ecf666b70ac227775c644782514b3535adfcb6c35ec977edda343f613"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/command-invite-compact.svg",
+      "nodeId": "I55:550;55:446",
+      "slot": "command-invite-compact",
+      "width": 16,
+      "height": 16,
+      "mode": "Compact",
+      "sha256": "f39752619fa9d52bcae0c559eaa55dee92e53b859445b1fab4e3b2fa5820684c"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/command-export-compact.svg",
+      "nodeId": "I55:565;55:446",
+      "slot": "command-export-compact",
+      "width": 16,
+      "height": 16,
+      "mode": "Compact",
+      "sha256": "07d2f7d55b78d53f8f92b86b04f07a7d8b8f42bea30f8d3714251ee8f34dca0f"
     }
   ]
 }

@@ -167,6 +167,24 @@ import asset164 from './assets/toast-danger.svg';
 import asset165 from './assets/toast-info-compact.svg';
 import asset166 from './assets/toast-success-compact.svg';
 import asset167 from './assets/toast-danger-compact.svg';
+import asset168 from './assets/command-search.svg';
+import asset169 from './assets/command-home.svg';
+import asset170 from './assets/command-inbox.svg';
+import asset171 from './assets/command-report.svg';
+import asset172 from './assets/command-new.svg';
+import asset173 from './assets/command-invite.svg';
+import asset174 from './assets/command-export.svg';
+import asset175 from './assets/command-file.svg';
+import asset176 from './assets/command-up.svg';
+import asset177 from './assets/command-down.svg';
+import asset178 from './assets/command-file-compact.svg';
+import asset179 from './assets/command-search-compact.svg';
+import asset180 from './assets/command-home-compact.svg';
+import asset181 from './assets/command-inbox-compact.svg';
+import asset182 from './assets/command-report-compact.svg';
+import asset183 from './assets/command-new-compact.svg';
+import asset184 from './assets/command-invite-compact.svg';
+import asset185 from './assets/command-export-compact.svg';
 export const glyphs = {
   'spinner-dark': { src: asset0, width: 20, height: 20 },
   'error': { src: asset1, width: 12, height: 12 },
@@ -336,5 +354,23 @@ export const glyphs = {
   'toast-info-compact': { src: asset165, width: 16, height: 16 },
   'toast-success-compact': { src: asset166, width: 16, height: 16 },
   'toast-danger-compact': { src: asset167, width: 16, height: 16 },
+  'command-search': { src: asset168, width: 20, height: 20 },
+  'command-home': { src: asset169, width: 20, height: 20 },
+  'command-inbox': { src: asset170, width: 20, height: 20 },
+  'command-report': { src: asset171, width: 20, height: 20 },
+  'command-new': { src: asset172, width: 20, height: 20 },
+  'command-invite': { src: asset173, width: 20, height: 20 },
+  'command-export': { src: asset174, width: 20, height: 20 },
+  'command-file': { src: asset175, width: 20, height: 20 },
+  'command-up': { src: asset176, width: 12, height: 12 },
+  'command-down': { src: asset177, width: 12, height: 12 },
+  'command-file-compact': { src: asset178, width: 16, height: 16 },
+  'command-search-compact': { src: asset179, width: 16, height: 16 },
+  'command-home-compact': { src: asset180, width: 16, height: 16 },
+  'command-inbox-compact': { src: asset181, width: 16, height: 16 },
+  'command-report-compact': { src: asset182, width: 16, height: 16 },
+  'command-new-compact': { src: asset183, width: 16, height: 16 },
+  'command-invite-compact': { src: asset184, width: 16, height: 16 },
+  'command-export-compact': { src: asset185, width: 16, height: 16 },
 } as const;
 export type GlyphName = keyof typeof glyphs;

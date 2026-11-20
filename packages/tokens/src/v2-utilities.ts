@@ -365,3 +365,33 @@ export function sheetSwipe(dx: number, dy: number): boolean {
     dy > Math.abs(dx) * 1.5
   );
 }
+
+export type CommandData = {
+  id: string;
+  label: string;
+  group?: string;
+  meta?: string;
+  keywords?: readonly string[];
+  shortcut?: readonly string[];
+  disabled?: boolean;
+};
+/** Stable, all-word matching across visible command text and supplied aliases. */
+export function commandResults<T extends CommandData>(
+  items: readonly T[],
+  query: string,
+): T[] {
+  const fold = (value: string) =>
+    value.normalize('NFKD').replace(/\p{M}/gu, '').toLowerCase();
+  const words = fold(query).trim().split(/\s+/).filter(Boolean);
+  return items.filter((item) => {
+    const text = fold(
+      [
+        item.label,
+        item.group ?? '',
+        item.meta ?? '',
+        ...(item.keywords ?? []),
+      ].join(' '),
+    );
+    return words.every((word) => text.includes(word));
+  });
+}

@@ -1,3 +1,4 @@
+export { CommandItem, CommandPalette } from './v2-command.js';
 import React, {
   createContext,
   useContext,
@@ -612,6 +613,15 @@ export function Glyph({
     'toast-info': 'toast-info-compact',
     'toast-success': 'toast-success-compact',
     'toast-danger': 'toast-danger-compact',
+    'command-search': 'command-search-compact',
+    'command-home': 'command-home-compact',
+    'command-inbox': 'command-inbox-compact',
+    'command-report': 'command-report-compact',
+    'command-new': 'command-new-compact',
+    'command-invite': 'command-invite-compact',
+    'command-export': 'command-export-compact',
+    'command-file': 'command-file-compact',
+
     'chip-check': 'chip-check-compact',
     'radio-box': 'radio-box-compact',
     'radio-dot': 'radio-dot-compact',

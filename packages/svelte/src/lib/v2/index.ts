@@ -77,3 +77,5 @@ export { default as SheetAction } from './SheetAction.svelte';
 export { default as SheetSeparator } from './SheetSeparator.svelte';
 export { default as Drawer } from './Drawer.svelte';
 export { default as Toast } from './Toast.svelte';
+export { default as CommandItem } from './CommandItem.svelte';
+export { default as CommandPalette } from './CommandPalette.svelte';

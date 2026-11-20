@@ -80,6 +80,8 @@
     SheetSeparator,
     Drawer,
     Toast,
+    CommandItem,
+    CommandPalette,
   } from '../../../packages/svelte/src/lib/v2/index';
   import Glyph from '../../../packages/svelte/src/lib/v2/Glyph.svelte';
   let theme = $state<'dark' | 'light' | 'system'>('dark');
@@ -106,6 +108,56 @@
   let toastOpen = $state(false),
     toastTone = $state<'neutral' | 'success' | 'danger'>('neutral'),
     toastAction = $state('None');
+  let commandOpen = $state(false),
+    commandLoading = $state(false),
+    commandKeepOpen = $state(false),
+    commandDisabled = $state(false),
+    commandAction = $state('None');
+  const commandItems = [
+    {
+      id: 'home',
+      label: 'Home',
+      group: 'Go to',
+      icon: 'command-home',
+      shortcut: ['G', 'H'],
+      keywords: ['start'],
+    },
+    {
+      id: 'inbox',
+      label: 'Inbox',
+      group: 'Go to',
+      meta: '3 unread',
+      icon: 'command-inbox',
+      shortcut: ['G', 'I'],
+    },
+    {
+      id: 'reports',
+      label: 'Reports',
+      group: 'Go to',
+      icon: 'command-report',
+      shortcut: ['G', 'R'],
+    },
+    {
+      id: 'new',
+      label: 'New item',
+      group: 'Actions',
+      icon: 'command-new',
+      shortcut: ['C', 'H'],
+    },
+    {
+      id: 'invite',
+      label: 'Invite member',
+      group: 'Actions',
+      icon: 'command-invite',
+    },
+    {
+      id: 'export',
+      label: 'Export view',
+      group: 'Actions',
+      icon: 'command-export',
+      keywords: ['csv', 'download'],
+    },
+  ] as const;
   let decisionOpen = $state(false),
     decisionLocked = $state(false),
     overlayAction = $state('None');
@@ -749,6 +801,43 @@
           </div></Card
         >
       </div>
+    </section>
+    <section data-testid="commands-family" aria-label="Command search">
+      <h2>CommandItem and CommandPalette</h2>
+      <CommandItem label="Command" meta="Meta" shortcut={['G', 'H']} />
+      <CommandItem label="Command" meta="Meta" shortcut={['G', 'H']} active />
+      <Button variant="secondary" onclick={() => (commandOpen = true)}
+        >Open commands</Button
+      >
+      <Checkbox label="Simulate command search" bind:checked={commandLoading} />
+      <Checkbox
+        label="Keep command palette open"
+        bind:checked={commandKeepOpen}
+      />
+      <Checkbox
+        label="Include unavailable command"
+        bind:checked={commandDisabled}
+      />
+      <CommandPalette
+        bind:open={commandOpen}
+        loading={commandLoading}
+        items={commandDisabled
+          ? [
+              ...commandItems,
+              {
+                id: 'disabled',
+                label: 'Unavailable',
+                group: 'Actions',
+                disabled: true,
+              },
+            ]
+          : commandItems}
+        onselect={(item, options) => {
+          commandAction = `${item.label}${options.panel ? ' in panel' : ''}`;
+          return !commandKeepOpen;
+        }}
+      />
+      <p role="status">Command action: {commandAction}</p>
     </section>
     <section data-testid="toast-family" aria-label="Notifications">
       <h2>Toast</h2>
