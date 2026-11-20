@@ -35,9 +35,10 @@ jobs:
       - uses: actions/setup-node@v7.1.0
         with:
           node-version: 22
-          registry-url: https://registry.npmjs.org
-          cache: npm
-      - run: npm install --global npm@11.6.2
+          # The public registry is npm's default. Avoid generating an npmrc
+          # with a token entry so npm can negotiate trusted publishing itself.
+          package-manager-cache: false
+      - run: npm install --global npm@11.20.0
       - run: npm ci
       - run: npm run release
         env:
