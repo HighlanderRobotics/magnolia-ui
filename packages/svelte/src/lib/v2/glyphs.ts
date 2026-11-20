@@ -90,6 +90,15 @@ import asset87 from './assets/slider-disabled-dark-comfortable.svg';
 import asset88 from './assets/slider-disabled-dark-compact.svg';
 import asset89 from './assets/slider-disabled-light-comfortable.svg';
 import asset90 from './assets/slider-disabled-light-compact.svg';
+import asset91 from './assets/nav-house.svg';
+import asset92 from './assets/breadcrumb-separator.svg';
+import asset93 from './assets/tab-house.svg';
+import asset94 from './assets/tab-house-selected.svg';
+import asset95 from './assets/tab-search.svg';
+import asset96 from './assets/tab-inbox.svg';
+import asset97 from './assets/tab-user.svg';
+import asset98 from './assets/top-back.svg';
+import asset99 from './assets/top-more.svg';
 export const glyphs = {
   'spinner-dark': { src: asset0, width: 20, height: 20 },
   'error': { src: asset1, width: 12, height: 12 },
@@ -182,5 +191,14 @@ export const glyphs = {
   'slider-disabled-dark-compact': { src: asset88, width: 18, height: 18, geometry: {"offsetX":0,"offsetY":0,"logicalWidth":18,"logicalHeight":18} },
   'slider-disabled-light-comfortable': { src: asset89, width: 20, height: 20, geometry: {"offsetX":0,"offsetY":0,"logicalWidth":20,"logicalHeight":20} },
   'slider-disabled-light-compact': { src: asset90, width: 18, height: 18, geometry: {"offsetX":0,"offsetY":0,"logicalWidth":18,"logicalHeight":18} },
+  'nav-house': { src: asset91, width: 20, height: 20 },
+  'breadcrumb-separator': { src: asset92, width: 14, height: 14 },
+  'tab-house': { src: asset93, width: 24, height: 24 },
+  'tab-house-selected': { src: asset94, width: 24, height: 24 },
+  'tab-search': { src: asset95, width: 24, height: 24 },
+  'tab-inbox': { src: asset96, width: 24, height: 24 },
+  'tab-user': { src: asset97, width: 24, height: 24 },
+  'top-back': { src: asset98, width: 20, height: 20 },
+  'top-more': { src: asset99, width: 20, height: 20 },
 } as const;
 export type GlyphName = keyof typeof glyphs;

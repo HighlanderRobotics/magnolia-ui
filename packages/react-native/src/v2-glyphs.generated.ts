@@ -91,5 +91,14 @@ export const nativeGlyphs = {
   'slider-disabled-dark-compact': { source: require('./assets/v2/slider-disabled-dark-compact.png'), width: 18, height: 18, geometry: {"offsetX":0,"offsetY":0,"logicalWidth":18,"logicalHeight":18} },
   'slider-disabled-light-comfortable': { source: require('./assets/v2/slider-disabled-light-comfortable.png'), width: 20, height: 20, geometry: {"offsetX":0,"offsetY":0,"logicalWidth":20,"logicalHeight":20} },
   'slider-disabled-light-compact': { source: require('./assets/v2/slider-disabled-light-compact.png'), width: 18, height: 18, geometry: {"offsetX":0,"offsetY":0,"logicalWidth":18,"logicalHeight":18} },
+  'nav-house': { source: require('./assets/v2/nav-house.png'), width: 20, height: 20 },
+  'breadcrumb-separator': { source: require('./assets/v2/breadcrumb-separator.png'), width: 14, height: 14 },
+  'tab-house': { source: require('./assets/v2/tab-house.png'), width: 24, height: 24 },
+  'tab-house-selected': { source: require('./assets/v2/tab-house-selected.png'), width: 24, height: 24 },
+  'tab-search': { source: require('./assets/v2/tab-search.png'), width: 24, height: 24 },
+  'tab-inbox': { source: require('./assets/v2/tab-inbox.png'), width: 24, height: 24 },
+  'tab-user': { source: require('./assets/v2/tab-user.png'), width: 24, height: 24 },
+  'top-back': { source: require('./assets/v2/top-back.png'), width: 20, height: 20 },
+  'top-more': { source: require('./assets/v2/top-more.png'), width: 20, height: 20 },
 } as const;
 export type NativeGlyphName = keyof typeof nativeGlyphs;

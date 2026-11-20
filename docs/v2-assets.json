@@ -848,6 +848,78 @@
         "logicalWidth": 18,
         "logicalHeight": 18
       }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/nav-house.svg",
+      "nodeId": "54:15",
+      "slot": "nav-house",
+      "width": 20,
+      "height": 20,
+      "sha256": "d5670ca010f3029ea8b83e452dc7e9c3458ba3cc0b0745d7fd4964ca51ca4acb"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/breadcrumb-separator.svg",
+      "nodeId": "54:181",
+      "slot": "breadcrumb-separator",
+      "width": 14,
+      "height": 14,
+      "sha256": "e1213639df36e22fcafac9ecffcbfbcdb8654d550017d5eeb50d801ef3d48a6a"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/tab-house.svg",
+      "nodeId": "54:97",
+      "slot": "tab-house",
+      "width": 24,
+      "height": 24,
+      "sha256": "07e477c7ae335718da6ef5fa39e7031925706fc7481868081c94c0ab38bc358c"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/tab-house-selected.svg",
+      "nodeId": "54:113",
+      "slot": "tab-house-selected",
+      "width": 24,
+      "height": 24,
+      "sha256": "7b3a2556fbe07ea73dd00288be0d60adf41fd9e9cbc41d2dc99b2a256b1a4dd0"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/tab-search.svg",
+      "nodeId": "I54:135;54:97",
+      "slot": "tab-search",
+      "width": 24,
+      "height": 24,
+      "sha256": "fe1022fa9690c958e79111ecab4c65529777925699351abdbfaf942451d4eb0a"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/tab-inbox.svg",
+      "nodeId": "I54:140;54:97",
+      "slot": "tab-inbox",
+      "width": 24,
+      "height": 24,
+      "sha256": "0278a6d57d5e1e4bb2a205d79bf63b8e48bfbcc84a75bebe325857468fad9b01"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/tab-user.svg",
+      "nodeId": "I54:145;54:97",
+      "slot": "tab-user",
+      "width": 24,
+      "height": 24,
+      "sha256": "25f8d3bf89e503344bb55481ecab5221964ac1f00353f961e640028ad08af04c"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/top-back.svg",
+      "nodeId": "I54:153;43:192",
+      "slot": "top-back",
+      "width": 20,
+      "height": 20,
+      "sha256": "9fbefbae5fcdb1992ebb76b945c8f09e2401a112607c42b278ebb237ba1e3a34"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/top-more.svg",
+      "nodeId": "I54:159;43:192",
+      "slot": "top-more",
+      "width": 20,
+      "height": 20,
+      "sha256": "852d59a0cd10b43ebc9fb58f3f7a7aa43b4eccad0a5a2b8ab4052358babd207b"
     }
   ]
 }

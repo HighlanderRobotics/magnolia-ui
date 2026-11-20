@@ -47,6 +47,13 @@
     Combobox,
     MultiSelect,
     Slider,
+    NavItem,
+    NavSection,
+    NavRailItem,
+    Breadcrumb,
+    TabBarItem,
+    TabBar,
+    TopBar,
   } from '../../../packages/svelte/src/lib/v2/index';
   import Glyph from '../../../packages/svelte/src/lib/v2/Glyph.svelte';
   let theme = $state<'dark' | 'light' | 'system'>('dark');
@@ -66,6 +73,10 @@
     note = $state('');
   let submitted = $state('');
   let confidence = $state(70);
+  let destination = $state('Home');
+  let collapsed = $state(false),
+    mobileHome = $state(true),
+    headerAction = $state('');
   let owner = $state<string | null>('priya'),
     tags = $state(['damaged', 'followup']),
     searching = $state(false);
@@ -684,6 +695,89 @@
           </div></Card
         >
       </div>
+    </section>
+    <section
+      data-testid="mobile-navigation-family"
+      aria-label="Mobile navigation components"
+    >
+      <h2>Mobile navigation</h2>
+      <TopBar
+        title="Project settings"
+        onback={() => (headerAction = 'Back')}
+        onaction={() => (headerAction = 'More options')}
+      />
+      <TopBar
+        title="Northwind"
+        variant="large"
+        {collapsed}
+        onback={() => (headerAction = 'Back')}
+        onaction={() => (headerAction = 'More options')}
+      />
+      <Button variant="tertiary" onclick={() => (collapsed = !collapsed)}
+        >Toggle header collapse</Button
+      >
+      <div style="margin-top:16px">
+        <TabBar label="Mobile destinations">
+          <TabBarItem
+            label="Home"
+            selected={mobileHome}
+            onclick={() => (mobileHome = !mobileHome)}
+          />
+          <TabBarItem label="Search" href="#mobile-search"
+            >{#snippet icon()}<Glyph name="tab-search" />{/snippet}</TabBarItem
+          >
+          <TabBarItem label="Inbox" href="#mobile-inbox" badge={4}
+            >{#snippet icon()}<Glyph name="tab-inbox" />{/snippet}</TabBarItem
+          >
+          <TabBarItem label="Profile" href="#mobile-profile"
+            >{#snippet icon()}<Glyph name="tab-user" />{/snippet}</TabBarItem
+          >
+        </TabBar>
+      </div>
+      <p role="status">Header action: {headerAction}</p>
+      <span id="mobile-search">Search destination</span> ·
+      <span id="mobile-inbox">Inbox destination</span>
+      · <span id="mobile-profile">Profile destination</span>
+    </section>
+    <section data-testid="navigation-family" aria-label="Navigation components">
+      <h2>Navigation</h2>
+      <Breadcrumb
+        items={[
+          { label: 'Projects', onclick: () => (destination = 'Projects') },
+          { label: 'Northwind', href: '#navigation-current' },
+          { label: 'Settings' },
+        ]}
+      />
+      <div
+        style="display:flex;gap:24px;flex-wrap:wrap;margin-top:16px;align-items:flex-start"
+      >
+        <nav aria-label="Workspace" style="max-width:100%">
+          <NavSection label="Workspace" />
+          {#each ['Home', 'Projects'] as label}
+            <NavItem
+              {label}
+              count={label === 'Projects' ? 3 : undefined}
+              selected={destination === label}
+              onclick={() => (destination = label)}
+            />
+          {/each}
+          <NavItem label="Unavailable" href="#unavailable" disabled count={0} />
+        </nav>
+        <nav aria-label="Tablet" style="display:flex;gap:4px">
+          <NavRailItem
+            label="Home"
+            selected={destination === 'Home'}
+            onclick={() => (destination = 'Home')}
+          />
+          <NavRailItem
+            label="Projects"
+            selected={destination === 'Projects'}
+            onclick={() => (destination = 'Projects')}
+          />
+          <NavRailItem label="Locked" disabled />
+        </nav>
+      </div>
+      <p id="navigation-current" role="status">Destination: {destination}</p>
     </section>
   </main>
 </MagnoliaUIRoot>

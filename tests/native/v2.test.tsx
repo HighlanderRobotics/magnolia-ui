@@ -33,6 +33,13 @@ import {
   Combobox,
   MultiSelect,
   Slider,
+  NavItem,
+  NavRailItem,
+  NavSection,
+  Breadcrumb,
+  TabBarItem,
+  TabBar,
+  TopBar,
 } from '../../packages/react-native/src/v2';
 test('v2 native Slider exposes stepped accessibility adjustments and disabled state', () => {
   const change = jest.fn();
@@ -416,4 +423,68 @@ test('v2 native fields announce errors and tabs preserve disabled states', () =>
   fireEvent.press(getByRole('tab', { name: 'Notes' }));
   expect(change).not.toHaveBeenCalled();
   expect(getByText('—')).toBeTruthy();
+});
+
+test('v2 navigation announces current destinations and suppresses disabled actions', () => {
+  const navigate = jest.fn();
+  const { getByRole, getByLabelText, getByText } = render(
+    <MagnoliaProvider density="compact">
+      <NavSection label="Workspace" />
+      <NavItem label="Projects" count={0} selected onPress={navigate} />
+      <NavItem label="Locked" disabled onPress={navigate} />
+      <NavRailItem label="Home" onPress={navigate} />
+      <Breadcrumb
+        items={[
+          { label: 'Projects root', onPress: navigate },
+          { label: 'Settings', onPress: navigate },
+        ]}
+      />
+    </MagnoliaProvider>,
+  );
+  const selected = getByRole('button', { name: 'Projects, 0' });
+  expect(selected.props.accessibilityState.selected).toBe(true);
+  fireEvent.press(selected);
+  fireEvent.press(getByRole('button', { name: 'Locked' }));
+  expect(navigate).toHaveBeenCalledTimes(1);
+  fireEvent.press(getByRole('button', { name: 'Home' }));
+  fireEvent.press(getByRole('button', { name: 'Projects root' }));
+  expect(navigate).toHaveBeenCalledTimes(3);
+  expect(getByLabelText('Settings, current page')).toBeTruthy();
+  expect(getByText('Workspace')).toBeTruthy();
+});
+
+test('v2 mobile navigation exposes badge counts, header actions and collapsed headings', () => {
+  const back = jest.fn(),
+    action = jest.fn(),
+    choose = jest.fn();
+  const ui = (collapsed: boolean) => (
+    <MagnoliaProvider density="compact">
+      <TopBar
+        title="Northwind"
+        variant="large"
+        collapsed={collapsed}
+        onBack={back}
+        onAction={action}
+      />
+      <TabBar>
+        <TabBarItem label="Home" selected onPress={choose} />
+        <TabBarItem label="Inbox" badge={0} disabled onPress={choose} />
+      </TabBar>
+    </MagnoliaProvider>
+  );
+  const { getByRole, getAllByRole, rerender } = render(ui(false));
+  expect(getAllByRole('header')).toHaveLength(1);
+  expect(getByRole('header').props.children).toBe('Northwind');
+  fireEvent.press(getByRole('button', { name: 'Back' }));
+  fireEvent.press(getByRole('button', { name: 'More options' }));
+  fireEvent.press(getByRole('button', { name: 'Home' }));
+  fireEvent.press(getByRole('button', { name: 'Inbox, 0 unread' }));
+  expect(back).toHaveBeenCalledTimes(1);
+  expect(action).toHaveBeenCalledTimes(1);
+  expect(choose).toHaveBeenCalledTimes(1);
+  expect(
+    getByRole('button', { name: 'Home' }).props.accessibilityState.selected,
+  ).toBe(true);
+  rerender(ui(true));
+  expect(getAllByRole('header')).toHaveLength(1);
 });

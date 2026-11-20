@@ -682,3 +682,137 @@ test('v2 tabs, segmented controls, inputs and loading keep their interaction con
   ).toBeVisible();
   await expect(save).toBeEnabled();
 });
+
+test('v2 navigation supports keyboard destinations and source geometry in all modes', async ({
+  page,
+}, testInfo) => {
+  test.setTimeout(60000);
+  await page.goto('/v2');
+  const family = page.getByTestId('navigation-family');
+  const workspace = family.getByRole('navigation', { name: 'Workspace' });
+  const home = workspace.getByRole('button', { name: 'Home', exact: true });
+  const projects = workspace.getByRole('button', {
+    name: 'Projects 3',
+    exact: true,
+  });
+  await projects.focus();
+  await page.keyboard.press('Enter');
+  await expect(projects).toHaveAttribute('aria-current', 'page');
+  await expect(home).not.toHaveAttribute('aria-current');
+  await expect(family.getByRole('status')).toHaveText('Destination: Projects');
+  const locked = workspace.getByRole('link', { name: 'Unavailable 0' });
+  await expect(locked).not.toHaveAttribute('href');
+  await expect(locked).toHaveAttribute('aria-disabled', 'true');
+  await expect(locked).toHaveAttribute('tabindex', '-1');
+  await family
+    .getByRole('navigation', { name: 'Breadcrumb' })
+    .getByRole('button', { name: 'Projects', exact: true })
+    .click();
+  await family
+    .getByRole('navigation', { name: 'Tablet' })
+    .getByRole('button', { name: 'Home', exact: true })
+    .click();
+  await expect(home).toHaveAttribute('aria-current', 'page');
+  for (const theme of ['dark', 'light']) {
+    await page.getByLabel('Theme', { exact: true }).selectOption(theme);
+    for (const density of ['comfortable', 'compact']) {
+      await page.getByLabel('Density', { exact: true }).selectOption(density);
+      const coarse = await page.evaluate(
+        () => matchMedia('(pointer:coarse)').matches,
+      );
+      expect((await home.boundingBox())!.height).toBe(
+        coarse ? 44 : density === 'compact' ? 28 : 36,
+      );
+      expect((await home.boundingBox())!.width).toBe(224);
+      const rail = family
+        .getByRole('navigation', { name: 'Tablet' })
+        .getByRole('button', { name: 'Home', exact: true });
+      expect((await rail.boundingBox())!.height).toBe(56);
+      expect((await rail.boundingBox())!.width).toBe(72);
+      await projects.focus();
+      await page.keyboard.press('Shift+Tab');
+      await page.keyboard.press('Tab');
+      expect(
+        await projects.evaluate((el) => getComputedStyle(el).outlineWidth),
+      ).toBe('2px');
+      await family.screenshot({
+        path: testInfo.outputPath(`navigation-${theme}-${density}.png`),
+      });
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include('[data-testid="navigation-family"]')
+            .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      await page.bringToFront();
+    }
+  }
+});
+
+test('v2 mobile navigation matches header and tab geometry with working actions', async ({
+  page,
+}, testInfo) => {
+  test.setTimeout(60000);
+  await page.goto('/v2');
+  const family = page.getByTestId('mobile-navigation-family');
+  await family
+    .getByRole('button', { name: 'Back', exact: true })
+    .first()
+    .click();
+  await expect(family.getByRole('status')).toHaveText('Header action: Back');
+  await family
+    .getByRole('button', { name: 'More options', exact: true })
+    .first()
+    .click();
+  await expect(family.getByRole('status')).toHaveText(
+    'Header action: More options',
+  );
+  const home = family.getByRole('button', { name: 'Home', exact: true });
+  await home.focus();
+  await page.keyboard.press('Enter');
+  await expect(home).not.toHaveAttribute('aria-current');
+  await page.keyboard.press('Enter');
+  await expect(home).toHaveAttribute('aria-current', 'page');
+  await expect(
+    family.getByRole('link', { name: 'Inbox , 4 unread' }),
+  ).toBeVisible();
+  await family.getByRole('button', { name: 'Toggle header collapse' }).click();
+  expect(
+    (await family.locator('.mg2-top-bar').nth(1).boundingBox())!.height,
+  ).toBe(44);
+  await family.getByRole('button', { name: 'Toggle header collapse' }).click();
+  for (const theme of ['dark', 'light']) {
+    await page.getByLabel('Theme', { exact: true }).selectOption(theme);
+    for (const density of ['comfortable', 'compact']) {
+      await page.getByLabel('Density', { exact: true }).selectOption(density);
+      const headers = family.locator('.mg2-top-bar');
+      expect((await headers.first().boundingBox())!.height).toBe(44);
+      expect((await headers.nth(1).boundingBox())!.height).toBe(88);
+      expect((await home.boundingBox())!.height).toBe(52);
+      expect((await home.boundingBox())!.width).toBe(80);
+      expect(
+        (await family.locator('.mg2-tab-bar-badge').boundingBox())!.height,
+      ).toBe(16);
+      for (const glyph of await family
+        .locator('.mg2-tab-bar-icon .mg2-glyph')
+        .all())
+        expect((await glyph.boundingBox())!.width).toBe(24);
+      for (const glyph of await family.locator('.mg2-top-bar .mg2-glyph').all())
+        expect((await glyph.boundingBox())!.width).toBe(20);
+      await family.screenshot({
+        path: testInfo.outputPath(`mobile-navigation-${theme}-${density}.png`),
+      });
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include('[data-testid="mobile-navigation-family"]')
+            .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      await page.bringToFront();
+    }
+  }
+});

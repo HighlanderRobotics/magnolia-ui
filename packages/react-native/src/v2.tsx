@@ -33,6 +33,15 @@ export { DayCell, Calendar, DateField, TimeField } from './v2-temporal.js';
 export { Combobox, MultiSelect } from './v2-combo.js';
 export { Slider } from './v2-slider.js';
 export {
+  NavItem,
+  NavRailItem,
+  NavSection,
+  Breadcrumb,
+  TabBarItem,
+  TabBar,
+  TopBar,
+} from './v2-navigation.js';
+export {
   Badge,
   StatusIndicator,
   Trend,
@@ -167,10 +176,10 @@ export function Button({
       style={[
         {
           alignSelf: 'flex-start',
-          padding: 2,
-          borderWidth: 2,
-          borderRadius: s['radius/control-ring'],
-          borderColor: focus ? c['color/border/focus'] : 'transparent',
+          outlineWidth: focus ? 2 : 0,
+          outlineOffset: 2,
+          borderRadius: s['radius/control'],
+          outlineColor: c['color/border/focus'],
         },
         style,
       ]}
