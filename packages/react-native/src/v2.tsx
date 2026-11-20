@@ -1307,3 +1307,5 @@ export {
   Drawer,
 } from './v2-overlays.js';
 export { Toast } from './v2-toast.js';
+export { Icon, iconNames } from './v2-icon.js';
+export type { IconName } from './v2-icon.js';

@@ -82,6 +82,8 @@
     Toast,
     CommandItem,
     CommandPalette,
+    Icon,
+    iconNames,
   } from '../../../packages/svelte/src/lib/v2/index';
   import Glyph from '../../../packages/svelte/src/lib/v2/Glyph.svelte';
   let theme = $state<'dark' | 'light' | 'system'>('dark');
@@ -802,6 +804,28 @@
         >
       </div>
     </section>
+    <section data-testid="icons-family" aria-label="Canonical icon catalog">
+      <h2>Icon</h2>
+      <p>{iconNames.length} source icons · xs / sm / default sizes</p>
+      <Icon name="folder" label="Project folder" />
+      <Button variant="secondary"
+        >{#snippet icon()}<Icon
+            name="folder"
+            size="sm"
+          />{/snippet}Projects</Button
+      >
+      <div class="v2-icon-catalog">
+        {#each iconNames as iconName}<div class="v2-icon-tile">
+            <div>
+              {#each ['xs', 'sm', 'default'] as size}<Icon
+                  name={iconName}
+                  size={size as 'xs' | 'sm' | 'default'}
+                />{/each}
+            </div>
+            <span>{iconName}</span>
+          </div>{/each}
+      </div>
+    </section>
     <section data-testid="commands-family" aria-label="Command search">
       <h2>CommandItem and CommandPalette</h2>
       <CommandItem label="Command" meta="Meta" shortcut={['G', 'H']} />
@@ -1428,6 +1452,30 @@
 </MagnoliaUIRoot>
 
 <style>
+  .v2-icon-catalog {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(124px, 1fr));
+    gap: 8px;
+  }
+  .v2-icon-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 8px;
+    background: var(--mg-v2-color-bg-sunken);
+    border-radius: 8px;
+  }
+  .v2-icon-tile > div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .v2-icon-tile > span {
+    color: var(--mg-v2-color-fg-secondary);
+    font-size: var(--mg-v2-type-caption-size);
+    line-height: var(--mg-v2-type-caption-line);
+  }
   :global(body) {
     margin: 0;
   }

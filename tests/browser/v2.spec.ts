@@ -1,5 +1,77 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+test('v2 canonical Icon catalog preserves all source names, density sizes and inherited color', async ({
+  page,
+}, testInfo) => {
+  test.setTimeout(60000);
+  await page.goto('/v2');
+  const family = page.getByTestId('icons-family');
+  const tiles = family.locator('.v2-icon-tile');
+  await expect(tiles).toHaveCount(75);
+  await expect(
+    family.getByRole('img', { name: 'Project folder' }),
+  ).toBeVisible();
+  for (const theme of ['dark', 'light']) {
+    await page.getByLabel('Theme', { exact: true }).selectOption(theme);
+    for (const density of ['comfortable', 'compact']) {
+      await page.getByLabel('Density', { exact: true }).selectOption(density);
+      const results = await tiles.locator('[data-icon]').evaluateAll((nodes) =>
+        nodes.map((node) => {
+          const box = node.getBoundingClientRect(),
+            style = getComputedStyle(node);
+          return {
+            size: node.getAttribute('data-size'),
+            width: box.width,
+            height: box.height,
+            mask: style.maskImage,
+            normal: style.getPropertyValue('--mg2-icon-image').trim(),
+            compact: style.getPropertyValue('--mg2-icon-compact-image').trim(),
+            hidden: node.getAttribute('aria-hidden'),
+          };
+        }),
+      );
+      expect(results).toHaveLength(225);
+      for (const icon of results) {
+        const size =
+          density === 'comfortable'
+            ? { xs: 16, sm: 20, default: 24 }[icon.size!]
+            : { xs: 14, sm: 16, default: 20 }[icon.size!];
+        expect(icon.width).toBe(size);
+        expect(icon.height).toBe(size);
+        expect(icon.mask).toBe(
+          density === 'compact' ? icon.compact : icon.normal,
+        );
+        expect(icon.hidden).toBe('true');
+      }
+      const button = family.getByRole('button', {
+        name: 'Projects',
+        exact: true,
+      });
+      const ink = await button.evaluate((node) => ({
+        text: getComputedStyle(node).color,
+        icon: getComputedStyle(node.querySelector('.mg2-icon')!)
+          .backgroundColor,
+      }));
+      expect(ink.icon).toBe(ink.text);
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include('[data-testid="icons-family"]')
+            .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      if (testInfo.project.name === 'desktop')
+        await family.screenshot({
+          path: testInfo.outputPath(`icons-${theme}-${density}.png`),
+        });
+      else
+        await tiles.first().screenshot({
+          path: testInfo.outputPath(`icon-sizes-${theme}-${density}.png`),
+        });
+    }
+  }
+});
 test('v2 CommandPalette searches, navigates enabled results, opens panels and returns focus', async ({
   page,
 }) => {
@@ -1034,10 +1106,12 @@ test('v2 Figma controls retain geometry, fonts and accessibility in every theme 
             .analyze()
         ).violations,
       ).toEqual([]);
-      await page.screenshot({
-        path: info.outputPath(`v2-${theme}-${density}.png`),
-        fullPage: true,
-      });
+      for (const name of ['Actions', 'Form controls'])
+        await page.getByRole('region', { name, exact: true }).screenshot({
+          path: info.outputPath(
+            `v2-${theme}-${density}-${name.replaceAll(' ', '-')}.png`,
+          ),
+        });
     }
   expect(failed).toEqual([]);
 });

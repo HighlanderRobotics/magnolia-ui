@@ -70,6 +70,8 @@ import {
   Toast,
   CommandItem,
   CommandPalette,
+  Icon,
+  iconNames,
 } from '../../packages/react-native/src/v2';
 test('v2 native Slider exposes stepped accessibility adjustments and disabled state', () => {
   const change = jest.fn();
@@ -1252,6 +1254,37 @@ test('v2 native commands expose empty/loading states and honor prevented selecti
   expect(result.getByText('Searching…')).toBeTruthy();
   expect(result.queryByRole('button', { name: 'Home' })).toBeNull();
   expect(result.getByRole('combobox').props.accessibilityState.busy).toBe(true);
+});
+
+test('v2 native canonical icons expose all source names, exact density sizes and optional image labels', () => {
+  expect(iconNames).toHaveLength(75);
+  const result = render(
+    <MagnoliaProvider density="comfortable">
+      <Icon name="folder" label="Project folder" />
+      <Icon name="check" size="xs" />
+      <Icon name="plus" size="sm" />
+    </MagnoliaProvider>,
+  );
+  expect(
+    result.getByRole('image', { name: 'Project folder' }).props.style[0],
+  ).toMatchObject({ width: 24, height: 24 });
+  expect(result.getAllByRole('image')).toHaveLength(1);
+  result.rerender(
+    <MagnoliaProvider density="compact">
+      <Icon name="folder" size="xs" label="Small folder" />
+      <Icon name="folder" size="sm" label="Medium folder" />
+      <Icon name="folder" label="Large folder" />
+    </MagnoliaProvider>,
+  );
+  for (const [name, size] of [
+    ['Small folder', 14],
+    ['Medium folder', 16],
+    ['Large folder', 20],
+  ] as const)
+    expect(result.getByRole('image', { name }).props.style[0]).toMatchObject({
+      width: size,
+      height: size,
+    });
 });
 
 test('v2 native Sheet exposes object actions with button semantics and closes on selection', () => {

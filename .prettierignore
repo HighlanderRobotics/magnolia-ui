@@ -14,5 +14,8 @@ packages/svelte/src/lib/v2/assets/
 packages/tokens/src/v2.ts
 packages/react-native/src/v2-glyphs.generated.ts
 packages/svelte/src/lib/v2/glyphs.ts
+packages/svelte/src/lib/v2/icons.generated.ts
+packages/react-native/src/v2-icons.generated.ts
+tests/fixtures/v2/*.svg
 packages/tokens/v2/tokens.css
 packages/tokens/v2/tokens.json

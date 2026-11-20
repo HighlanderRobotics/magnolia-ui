@@ -79,3 +79,6 @@ export { default as Drawer } from './Drawer.svelte';
 export { default as Toast } from './Toast.svelte';
 export { default as CommandItem } from './CommandItem.svelte';
 export { default as CommandPalette } from './CommandPalette.svelte';
+export { default as Icon } from './Icon.svelte';
+export { iconNames } from './icons.generated.js';
+export type { IconName } from './icons.generated.js';

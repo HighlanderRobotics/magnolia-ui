@@ -4248,3 +4248,17 @@
     outline: 2px solid var(--mg-v2-color-border-focus);
   }
 }
+.mg2-icon {
+  display: inline-block;
+  flex: none;
+  width: var(--mg2-icon-size);
+  height: var(--mg2-icon-size);
+  vertical-align: middle;
+  background-color: currentColor;
+  mask: var(--mg2-icon-image) center / contain no-repeat;
+}
+.mg-v2[data-density='compact'] .mg2-icon {
+  width: var(--mg2-icon-compact-size);
+  height: var(--mg2-icon-compact-size);
+  mask-image: var(--mg2-icon-compact-image);
+}

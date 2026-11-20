@@ -2,6 +2,49 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
+test('16 px canonical folder export matches the original Figma sizing example pixel for pixel', async () => {
+  const { default: sharp } = await import('sharp');
+  // Original source instance 67:5260, exported unchanged through Figma MCP.
+  const reference = await sharp(
+    new URL('./fixtures/v2/icon-folder-16.svg', import.meta.url).pathname,
+    { density: 216 },
+  )
+    .ensureAlpha()
+    .raw()
+    .toBuffer();
+  const icon = await sharp(
+    new URL(
+      '../packages/react-native/src/assets/v2/icon-folder-16.png',
+      import.meta.url,
+    ).pathname,
+  )
+    .ensureAlpha()
+    .raw()
+    .toBuffer();
+  assert.deepEqual(icon, reference);
+});
+test('v2 canonical catalog covers all 75 source names at four exact export sizes', () => {
+  const manifest = JSON.parse(
+    readFileSync(new URL('../docs/v2-assets.json', import.meta.url)),
+  );
+  const icons = manifest.assets.filter((asset) => asset.catalog === 'icons');
+  const names = [...new Set(icons.map((asset) => asset.iconName))];
+  assert.equal(names.length, 75);
+  assert.equal(icons.length, 300);
+  for (const name of names) {
+    const family = icons.filter((asset) => asset.iconName === name);
+    assert.deepEqual(
+      family.map((asset) => asset.size).sort((a, b) => a - b),
+      [14, 16, 20, 24],
+    );
+    assert.equal(new Set(family.map((asset) => asset.nodeId)).size, 1);
+    for (const asset of family) {
+      assert.equal(asset.width, asset.size);
+      assert.equal(asset.height, asset.size);
+      assert.equal(asset.stroke, asset.size <= 16 ? 1.5 : 1.75);
+    }
+  }
+});
 test('v2 original Figma assets retain their bytes, dimensions and component slots', () => {
   const manifest = JSON.parse(
     readFileSync(new URL('../docs/v2-assets.json', import.meta.url)),
