@@ -55,6 +55,7 @@ import {
   Scatter,
   LineChart,
   Accordion,
+  Tooltip,
 } from '../../packages/react-native/src/v2';
 test('v2 native Slider exposes stepped accessibility adjustments and disabled state', () => {
   const change = jest.fn();
@@ -854,4 +855,27 @@ test('v2 native Accordion announces expanded state and keeps disabled content re
   expect(getByText('Readable content.')).toBeTruthy();
   fireEvent.press(getByRole('button', { name: 'Section title' }));
   expect(queryByText('Revealed content.')).toBeNull();
+});
+
+test('v2 native Tooltip supplies a hint and supports long-press and escape dismissal', () => {
+  const { getByRole, getByLabelText, queryByLabelText } = render(
+    <MagnoliaProvider>
+      <Tooltip
+        label="Search"
+        shortcut="K"
+        modifier
+        trigger={(props) => <IconButton {...props} label="Open search" />}
+      />
+    </MagnoliaProvider>,
+  );
+  const trigger = getByRole('button', { name: 'Open search' });
+  expect(trigger.props.accessibilityHint).toBe('Search, Command K');
+  expect(queryByLabelText('Dismiss Search tooltip')).toBeNull();
+  fireEvent(trigger, 'longPress');
+  expect(getByRole('button', { name: 'Dismiss Search tooltip' })).toBeTruthy();
+  fireEvent(getByLabelText('Search, Command K'), 'accessibilityEscape');
+  expect(queryByLabelText('Dismiss Search tooltip')).toBeNull();
+  fireEvent(trigger, 'longPress');
+  fireEvent.press(getByRole('button', { name: 'Dismiss Search tooltip' }));
+  expect(queryByLabelText('Dismiss Search tooltip')).toBeNull();
 });

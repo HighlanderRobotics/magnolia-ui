@@ -14,7 +14,7 @@
 </script>
 
 <kbd class="mg2-kbd" data-variant={variant} data-disabled={disabled}
-  >{#if modifier}<span class="mg2-sr-only">Command </span><Glyph
-      name="modifier"
-    />{/if}{key}</kbd
+  >{#if modifier}<span class="mg2-sr-only">Command </span><span
+      class="mg2-kbd-modifier"><Glyph name="modifier" /></span
+    >{/if}{key}</kbd
 >

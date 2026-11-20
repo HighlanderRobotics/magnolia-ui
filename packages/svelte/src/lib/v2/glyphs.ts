@@ -136,6 +136,7 @@ import asset133 from './assets/line-point-5-dark.svg';
 import asset134 from './assets/line-point-5-light.svg';
 import asset135 from './assets/accordion-down.svg';
 import asset136 from './assets/accordion-up.svg';
+import asset137 from './assets/modifier-compact.svg';
 export const glyphs = {
   'spinner-dark': { src: asset0, width: 20, height: 20 },
   'error': { src: asset1, width: 12, height: 12 },
@@ -274,5 +275,6 @@ export const glyphs = {
   'line-point-5-light': { src: asset134, width: 12, height: 12, geometry: {"offsetX":-2,"offsetY":-2,"logicalWidth":8,"logicalHeight":8} },
   'accordion-down': { src: asset135, width: 20, height: 20 },
   'accordion-up': { src: asset136, width: 20, height: 20 },
+  'modifier-compact': { src: asset137, width: 11, height: 9 },
 } as const;
 export type GlyphName = keyof typeof glyphs;

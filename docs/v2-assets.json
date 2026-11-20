@@ -1318,6 +1318,15 @@
       "width": 20.0,
       "height": 20.0,
       "sha256": "4071eacc6d39d0710f9c6b1d9f2fc36778e61303fef1f20f7b42e5d7947c259f"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/modifier-compact.svg",
+      "nodeId": "I55:356;46:365",
+      "slot": "Kbd/Tooltip Compact modifier",
+      "width": 11.0,
+      "height": 9.0,
+      "sha256": "7c4dad89716b94af96756e48e015b9cd92fa82d9d1f1da2631cdeae8925154be",
+      "mode": "compact"
     }
   ]
 }

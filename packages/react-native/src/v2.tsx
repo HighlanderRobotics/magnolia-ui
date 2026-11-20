@@ -591,6 +591,7 @@ export function Glyph({
   const t = useMagnolia();
   const pairs: Partial<Record<NativeGlyphName, NativeGlyphName>> = {
     check: 'check-compact',
+    modifier: 'modifier-compact',
     'chip-check': 'chip-check-compact',
     'radio-box': 'radio-box-compact',
     'radio-dot': 'radio-dot-compact',
@@ -920,7 +921,7 @@ export function Kbd({
       accessibilityLabel={modifier ? `Command ${keyName}` : keyName}
       style={{
         alignSelf: 'flex-start',
-        height: s['size/kbd'],
+        minHeight: s['size/kbd'],
         minWidth: s['size/kbd'],
         paddingHorizontal: s['pad/kbd-x'],
         flexDirection: 'row',
@@ -939,7 +940,15 @@ export function Kbd({
         opacity: disabled ? 0.4 : 1,
       }}
     >
-      {modifier && <Glyph name="modifier" color={c['color/fg/secondary']} />}
+      {modifier && (
+        <View style={{ width: 10.5, height: s['size/kbd-glyph'] }}>
+          <Glyph
+            name="modifier"
+            color={c['color/fg/secondary']}
+            style={{ position: 'absolute', left: 0, top: -0.075 }}
+          />
+        </View>
+      )}
       <Text
         style={{
           fontSize: s['type/kbd/size'],
@@ -1254,4 +1263,4 @@ export {
 
 export { Distribution, Scatter, LineChart } from './v2-statistical-charts.js';
 
-export { Accordion } from './v2-overlays.js';
+export { Accordion, Tooltip } from './v2-overlays.js';

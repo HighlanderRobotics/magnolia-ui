@@ -1480,3 +1480,89 @@ test('v2 Accordion preserves source geometry, native keyboard groups and disable
     }
   }
 });
+
+test('v2 Tooltip uses source artwork, focus and delayed hover without moving focus', async ({
+  page,
+}, testInfo) => {
+  test.setTimeout(60000);
+  await page.goto('/v2');
+  const family = page.getByTestId('tooltip-family'),
+    trigger = family.getByRole('button', { name: 'Open search' }),
+    popup = family.getByRole('tooltip').filter({ hasText: /^Search/ });
+  await trigger.focus();
+  await expect(popup).toBeVisible();
+  await expect(trigger).toHaveAccessibleDescription('Search Command K');
+  await expect(trigger).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(popup).toBeHidden();
+  await expect(trigger).toBeFocused();
+  const other = family.getByRole('button', { name: 'Long tooltip' });
+  await other.focus();
+  const long = family
+    .getByRole('tooltip')
+    .filter({ hasText: /^A longer explanation/ });
+  await expect(long).toBeVisible();
+  const viewport = page.viewportSize()!,
+    box = (await long.boundingBox())!;
+  expect(box.x).toBeGreaterThanOrEqual(8);
+  expect(box.x + box.width).toBeLessThanOrEqual(viewport.width - 8);
+  expect(box.y + box.height).toBeLessThanOrEqual(viewport.height - 8);
+  await page.keyboard.press('Escape');
+  await page.getByRole('heading', { name: 'Tooltip', exact: true }).click();
+  const coarse = await page.evaluate(
+    () => matchMedia('(pointer:coarse)').matches,
+  );
+  if (!coarse) {
+    await page.clock.install();
+    await page.clock.pauseAt(new Date());
+    await trigger.hover();
+    await page.clock.runFor(499);
+    await expect(popup).toBeHidden();
+    await page.clock.runFor(1);
+    await expect(popup).toBeVisible();
+    await page.clock.resume();
+    await popup.hover();
+    await expect(popup).toBeVisible();
+    await page.getByRole('heading', { name: 'Tooltip', exact: true }).hover();
+    await expect(popup).toBeHidden();
+  }
+  for (const theme of ['dark', 'light']) {
+    await page.getByLabel('Theme', { exact: true }).selectOption(theme);
+    for (const density of ['comfortable', 'compact']) {
+      await page.getByLabel('Density', { exact: true }).focus();
+      await page.getByLabel('Density', { exact: true }).selectOption(density);
+      await trigger.focus();
+      await expect(popup).toBeVisible();
+      const rect = (await popup.boundingBox())!;
+      expect(rect.height).toBe(density === 'comfortable' ? 34 : 32);
+      expect(
+        Math.abs(rect.width - (density === 'comfortable' ? 96.5 : 89.75)),
+      ).toBeLessThanOrEqual(1);
+      await expect(popup.locator('[data-glyph="modifier"]')).toHaveCount(1);
+      const glyph = (await popup
+        .locator('[data-glyph="modifier"]')
+        .boundingBox())!;
+      expect(
+        Math.abs(glyph.width - (density === 'comfortable' ? 10.575 : 11)),
+      ).toBeLessThanOrEqual(1 / 64);
+      expect(
+        Math.abs(glyph.height - (density === 'comfortable' ? 9.65 : 9)),
+      ).toBeLessThanOrEqual(1 / 64);
+      const slot = (await popup.locator('.mg2-kbd-modifier').boundingBox())!;
+      expect(slot.width).toBe(10.5);
+      expect(slot.height).toBe(density === 'comfortable' ? 9.5 : 8);
+      await popup.screenshot({
+        path: testInfo.outputPath(`tooltip-${theme}-${density}.png`),
+      });
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include('[data-testid="tooltip-family"]')
+            .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      await page.keyboard.press('Escape');
+    }
+  }
+});

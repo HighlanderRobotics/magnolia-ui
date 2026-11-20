@@ -69,6 +69,7 @@
     Scatter,
     LineChart,
     Accordion,
+    Tooltip,
   } from '../../../packages/svelte/src/lib/v2/index';
   import Glyph from '../../../packages/svelte/src/lib/v2/Glyph.svelte';
   let theme = $state<'dark' | 'light' | 'system'>('dark');
@@ -726,6 +727,26 @@
           </div></Card
         >
       </div>
+    </section>
+    <section data-testid="tooltip-family" aria-label="Tooltips">
+      <h2>Tooltip</h2>
+      <Tooltip label="Search" shortcut="K" modifier>
+        {#snippet trigger(attrs)}<IconButton
+            {...attrs}
+            label="Open search"
+            variant="tertiary"
+            >{#snippet icon()}<Glyph name="search" />{/snippet}</IconButton
+          >{/snippet}
+      </Tooltip>
+      <Tooltip
+        label="A longer explanation that wraps inside the available viewport without hiding the shortcut"
+        shortcut="K"
+        modifier
+      >
+        {#snippet trigger(attrs)}<Button {...attrs} variant="secondary"
+            >Long tooltip</Button
+          >{/snippet}
+      </Tooltip>
     </section>
     <section
       data-testid="disclosure-family"

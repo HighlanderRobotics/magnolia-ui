@@ -4,6 +4,7 @@
     $props();
   const pairs: Partial<Record<GlyphName, GlyphName>> = {
     check: 'check-compact',
+    modifier: 'modifier-compact',
     'chip-check': 'chip-check-compact',
     'radio-box': 'radio-box-compact',
     'radio-dot': 'radio-dot-compact',

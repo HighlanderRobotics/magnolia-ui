@@ -3568,3 +3568,51 @@
 .mg2-accordion[data-disabled='true'] > summary > .mg2-glyph {
   color: var(--mg-v2-color-fg-disabled);
 }
+
+.mg2-tooltip {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  width: max-content;
+  max-width: calc(100vw - 16px);
+  max-height: calc(100dvh - 16px);
+  overflow: auto;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border: 1px solid var(--mg-v2-color-border-subtle);
+  border-radius: 8px;
+  background: var(--mg-v2-color-bg-overlay);
+  color: var(--mg-v2-color-fg-primary);
+  font-family: var(--mg-v2-font-family);
+  font-size: var(--mg-v2-type-label-sm-size);
+  line-height: var(--mg-v2-type-label-sm-line);
+  font-weight: 500;
+  box-shadow:
+    0 1px 2px #0003,
+    0 8px 20px #0000004d;
+  pointer-events: auto;
+}
+.mg2-tooltip:popover-open {
+  display: flex;
+}
+.mg2-tooltip > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.mg2-tooltip > .mg2-kbd {
+  flex: none;
+}
+
+.mg2-kbd-modifier {
+  position: relative;
+  display: block;
+  width: 10.5px;
+  height: var(--mg-v2-size-kbd-glyph);
+  flex: none;
+}
+.mg2-kbd-modifier > .mg2-glyph {
+  position: absolute;
+  left: 0;
+  top: -0.075px;
+}
