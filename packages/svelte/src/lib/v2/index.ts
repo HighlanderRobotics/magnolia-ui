@@ -72,3 +72,7 @@ export { default as MenuItem } from './MenuItem.svelte';
 export { default as MenuSeparator } from './MenuSeparator.svelte';
 export { default as Popover } from './Popover.svelte';
 export { default as Dialog } from './Dialog.svelte';
+export { default as Sheet } from './Sheet.svelte';
+export { default as SheetAction } from './SheetAction.svelte';
+export { default as SheetSeparator } from './SheetSeparator.svelte';
+export { default as Drawer } from './Drawer.svelte';

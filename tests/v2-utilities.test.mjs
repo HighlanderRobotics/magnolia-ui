@@ -17,6 +17,7 @@ import {
   nearestChartPoint,
   lineChartLayout,
   chartLineSegments,
+  sheetSwipe,
 } from '../packages/tokens/dist/v2.js';
 test('v2 slider steps are relative to min and do not leak floating-point tails', () => {
   assert.equal(sliderValue(0.3, 0.1, 1, 0.2), 0.3);
@@ -253,4 +254,19 @@ test('v2 native chart segments preserve dash phase across corners and clip fixed
     ]),
     [],
   );
+});
+
+test('v2 sheet swipe requires a finite, predominantly downward drag', () => {
+  assert.equal(sheetSwipe(0, 64), true);
+  assert.equal(sheetSwipe(12, 80), true);
+  for (const [x, y] of [
+    [0, 63],
+    [0, -80],
+    [70, 80],
+    [-70, 80],
+    [Infinity, 80],
+    [0, Infinity],
+    [NaN, 80],
+  ])
+    assert.equal(sheetSwipe(x, y), false);
 });

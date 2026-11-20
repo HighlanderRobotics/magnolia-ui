@@ -32,10 +32,10 @@
   {...rest}
   variant="tertiary"
   class={`mg2-menu-item ${rest.class ?? ''}`}
-  role={checked === undefined ? 'menuitem' : 'menuitemradio'}
+  role={rest.role ?? (checked === undefined ? 'menuitem' : 'menuitemradio')}
   aria-label={label}
   aria-checked={checked}
-  tabindex={-1}
+  tabindex={rest.tabindex ?? -1}
   {disabled}
   data-tone={tone}
   onpointerenter={(event) => {

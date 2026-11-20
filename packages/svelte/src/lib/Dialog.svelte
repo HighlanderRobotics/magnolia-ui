@@ -13,6 +13,7 @@
     onclose,
     initialFocus,
     class: className = '',
+    style,
   }: {
     open?: boolean;
     canClose?: boolean;
@@ -24,6 +25,7 @@
     onclose?: () => void;
     initialFocus?: string;
     class?: string;
+    style?: string;
   } = $props();
   let dialog = $state<HTMLDialogElement>(null!);
   let pointerStartedOutside = false;
@@ -87,6 +89,7 @@
   <dialog
     bind:this={dialog}
     class="mg-dialog {className}"
+    {style}
     aria-label={ariaLabel}
     aria-labelledby={labelledby ?? (title ? uid : undefined)}
     aria-describedby={describedby}

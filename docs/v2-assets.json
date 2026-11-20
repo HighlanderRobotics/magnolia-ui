@@ -1393,6 +1393,150 @@
       "height": 16.0,
       "sha256": "024d04e55f896d0cee20310f52c05c70332b6981de526c098f04641508731d84",
       "mode": "compact"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/sheet-close.svg",
+      "nodeId": "I55:393;43:192",
+      "slot": "sheet-close comfortable",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "655bf5b018a554a23c82fccaaf405c0ea776b660e7e772b791d0ed7d32b7d4d0",
+      "mode": "comfortable"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/sheet-close-compact.svg",
+      "nodeId": "I55:393;43:192",
+      "slot": "sheet-close compact",
+      "width": 16.0,
+      "height": 16.0,
+      "sha256": "bf14afa1b10ffd83fb12906a6be4e61aad21d7e91998fb86da00ce1972897947",
+      "mode": "compact"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/sheet-share.svg",
+      "nodeId": "55:400",
+      "slot": "sheet-share comfortable",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "69a7a00bcee998a614572f1bf88313ce9bb62ee1de8d9b38e72bf916cc271697",
+      "mode": "comfortable"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/sheet-share-compact.svg",
+      "nodeId": "55:400",
+      "slot": "sheet-share compact",
+      "width": 16.0,
+      "height": 16.0,
+      "sha256": "f5b462f7a2fbacb588f86796707a401ef0a95e2407d6b24a4a0094f675ccf58c",
+      "mode": "compact"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/sheet-copy.svg",
+      "nodeId": "55:404",
+      "slot": "sheet-copy comfortable",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "09d14bc890b2aebd4a0207c6f8deb9c4b99bb98011ffdbbd4d5341f087937e6d",
+      "mode": "comfortable"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/sheet-copy-compact.svg",
+      "nodeId": "55:404",
+      "slot": "sheet-copy compact",
+      "width": 16.0,
+      "height": 16.0,
+      "sha256": "3086ca5ac614715fab09c506f8424dab82e8853ad3e6e26203a0ab493a96d054",
+      "mode": "compact"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/sheet-download.svg",
+      "nodeId": "55:408",
+      "slot": "sheet-download comfortable",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "40518705ca60cf1d198430b767e4ae330ee1091c38ab728b3e8a66385cd8c02e",
+      "mode": "comfortable"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/sheet-download-compact.svg",
+      "nodeId": "55:408",
+      "slot": "sheet-download compact",
+      "width": 16.0,
+      "height": 16.0,
+      "sha256": "0085e23edad20520d4387cf513cca6dc8c2e0494af26a4e4d9a0003389f7032a",
+      "mode": "compact"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/sheet-trash.svg",
+      "nodeId": "55:412",
+      "slot": "sheet-trash comfortable",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "f27735a4dc432c40ce2063869493b2a015d62c6e3ddc2a980b638161d6a03b8f",
+      "mode": "comfortable"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/sheet-trash-compact.svg",
+      "nodeId": "55:412",
+      "slot": "sheet-trash compact",
+      "width": 16.0,
+      "height": 16.0,
+      "sha256": "c0e67bc437e161652a0b5697a4e13867ee070a2adc251df320252d4362182094",
+      "mode": "compact"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/drawer-open.svg",
+      "nodeId": "I93:916;43:192",
+      "slot": "drawer-open comfortable",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "13645b8b81ff5f7e917ae82658badd399d6b37bdbfbf3941505ebf0a9dd5d2ac",
+      "mode": "comfortable"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/drawer-open-compact.svg",
+      "nodeId": "I93:916;43:192",
+      "slot": "drawer-open compact",
+      "width": 16.0,
+      "height": 16.0,
+      "sha256": "966e4a68339878da240e176613714d0f027b7913c437fd3060de073983ef0ef5",
+      "mode": "compact"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/drawer-close.svg",
+      "nodeId": "I93:920;43:192",
+      "slot": "drawer-close comfortable",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "655bf5b018a554a23c82fccaaf405c0ea776b660e7e772b791d0ed7d32b7d4d0",
+      "mode": "comfortable"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/drawer-close-compact.svg",
+      "nodeId": "I93:920;43:192",
+      "slot": "drawer-close compact",
+      "width": 16.0,
+      "height": 16.0,
+      "sha256": "bf14afa1b10ffd83fb12906a6be4e61aad21d7e91998fb86da00ce1972897947",
+      "mode": "compact"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/drawer-plus.svg",
+      "nodeId": "I93:962;43:17",
+      "slot": "drawer-plus comfortable",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "86713ecafbaaa4e9b704b43a4fdb5b499d8c98feb550288d5bae2786a18912d7",
+      "mode": "comfortable"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/drawer-plus-compact.svg",
+      "nodeId": "I93:962;43:17",
+      "slot": "drawer-plus compact",
+      "width": 16.0,
+      "height": 16.0,
+      "sha256": "ade7224e4ae3598925919023e1583eaceaf10287bc729e81c5f8193b2b21cbaa",
+      "mode": "compact"
     }
   ]
 }

@@ -355,3 +355,13 @@ export function chartLineSegments(
   }
   return segments;
 }
+
+/** A deliberate downward drag dismisses a sheet; horizontal/upward drags do not. */
+export function sheetSwipe(dx: number, dy: number): boolean {
+  return (
+    Number.isFinite(dx) &&
+    Number.isFinite(dy) &&
+    dy >= 64 &&
+    dy > Math.abs(dx) * 1.5
+  );
+}

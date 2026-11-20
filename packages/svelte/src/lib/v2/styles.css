@@ -3806,3 +3806,197 @@
 .mg2-dialog-actions {
   --mg-v2-color-bg-danger-strong: #a8302e;
 }
+
+.mg2-sheet {
+  position: fixed;
+  inset: auto 0 0;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  width: 390px;
+  max-width: 100vw;
+  max-height: 100dvh;
+  padding: 0 0
+    max(var(--mg2-sheet-bottom, 34px), env(safe-area-inset-bottom, 0px));
+  border: 0;
+  border-radius: 16px 16px 0 0;
+  background: var(--mg-v2-color-bg-overlay);
+  color: var(--mg-v2-color-fg-primary);
+  font-family: var(--mg-v2-font-family);
+  box-shadow:
+    0 1px 2px #0003,
+    0 8px 20px #0000004d;
+  overflow: hidden;
+  transform: translateY(var(--mg2-sheet-drag, 0px));
+}
+.mg2-sheet::backdrop,
+.mg2-drawer::backdrop {
+  background: var(--mg-v2-color-bg-scrim);
+}
+.mg2-sheet-drag {
+  touch-action: none;
+  flex: none;
+}
+.mg2-sheet-grabber {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0 4px;
+}
+.mg2-sheet-grabber > span {
+  width: 36px;
+  height: 4px;
+  border-radius: 3px;
+  background: var(--mg-v2-color-border-default);
+}
+.mg2-sheet-header {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+}
+.mg2-panel-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+.mg2-panel-titles > h2 {
+  margin: 0;
+  font-size: var(--mg-v2-type-title-sm-size);
+  line-height: var(--mg-v2-type-title-sm-line);
+  font-weight: 500;
+  overflow-wrap: anywhere;
+  outline: none;
+}
+.mg2-panel-titles > p {
+  margin: 0;
+  color: var(--mg-v2-color-fg-secondary);
+  font-size: var(--mg-v2-type-body-sm-size);
+  line-height: var(--mg-v2-type-body-sm-line);
+  font-weight: 400;
+  overflow-wrap: anywhere;
+}
+.mg2-sheet-content {
+  min-height: 0;
+  overflow: auto;
+  padding: 0 8px;
+}
+.mg2-sheet-action {
+  width: 100%;
+  min-height: var(--mg-v2-size-row);
+}
+.mg2-sheet-action .mg2-button-icon {
+  width: var(--mg-v2-size-icon-sm);
+  height: var(--mg-v2-size-icon-sm);
+}
+.mg2-sheet-separator {
+  display: flex;
+  align-items: center;
+  height: 9px;
+  padding-inline: 8px;
+}
+.mg2-sheet-separator > .mg2-divider {
+  margin: 0;
+  width: 100%;
+}
+@media (pointer: coarse) {
+  .mg2-sheet-action {
+    min-height: max(44px, var(--mg-v2-size-row));
+  }
+  .mg2-sheet-header .mg2-icon-button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+.mg2-drawer {
+  position: fixed;
+  inset: 0 0 auto auto;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  width: var(--mg-v2-size-drawer);
+  max-width: 100vw;
+  max-height: 100dvh;
+  padding: 0;
+  border: 0;
+  border-inline-start: 1px solid var(--mg-v2-color-border-subtle);
+  border-radius: 0;
+  overflow: hidden;
+  background: var(--mg-v2-color-bg-overlay);
+  color: var(--mg-v2-color-fg-primary);
+  font-family: var(--mg-v2-font-family);
+  box-shadow:
+    0 1px 2px #0003,
+    0 8px 20px #0000004d;
+}
+.mg2-drawer-header {
+  display: flex;
+  flex: none;
+  gap: 8px;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid var(--mg-v2-color-border-subtle);
+}
+.mg2-drawer-content {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+}
+.mg2-drawer-stats {
+  display: flex;
+  flex: none;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--mg-v2-color-border-subtle);
+}
+.mg2-drawer-stats > div {
+  flex: 1;
+  min-width: 0;
+  padding-inline: 12px;
+}
+.mg2-drawer-stats > div:first-child {
+  padding-inline-start: 0;
+}
+.mg2-drawer-stats > div + div {
+  border-inline-start: 1px solid var(--mg-v2-color-border-subtle);
+}
+.mg2-drawer-stats .mg2-stat {
+  max-width: 100%;
+}
+.mg2-drawer-details {
+  margin: 0;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: 16px;
+  font-size: var(--mg-v2-type-body-sm-size);
+  line-height: var(--mg-v2-type-body-sm-line);
+  font-weight: 400;
+}
+.mg2-drawer-details > div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.mg2-drawer-details dt {
+  flex: 1;
+  color: var(--mg-v2-color-fg-secondary);
+}
+.mg2-drawer-details dd {
+  margin: 0;
+  text-align: end;
+  overflow-wrap: anywhere;
+}
+.mg2-drawer-footer {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 16px;
+  border-top: 1px solid var(--mg-v2-color-border-subtle);
+}

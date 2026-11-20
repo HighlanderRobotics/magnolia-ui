@@ -4,6 +4,7 @@ import {
   Modal,
   KeyboardAvoidingView,
   Platform,
+  PanResponder,
   Pressable,
   ScrollView,
   View,
@@ -17,8 +18,17 @@ import type {
   ViewStyle,
   TextInput,
 } from 'react-native';
+import { sheetSwipe, v2Tokens } from '@highlanderrobotics/magnolia-tokens/v2';
 import { ButtonIdleSurface } from './v2-button-surface.js';
-import { Text, Glyph, Kbd, Divider, useMagnolia } from './v2.js';
+import {
+  Text,
+  Glyph,
+  Kbd,
+  Divider,
+  useMagnolia,
+  IconButton,
+  Stat,
+} from './v2.js';
 
 type NativeFocusTarget = View | TextInput;
 
@@ -445,7 +455,9 @@ export function MenuItem({
       {...rest}
       ref={ref}
       disabled={disabled}
-      accessibilityRole={checked === undefined ? 'menuitem' : 'radio'}
+      accessibilityRole={
+        rest.accessibilityRole ?? (checked === undefined ? 'menuitem' : 'radio')
+      }
       accessibilityLabel={label}
       accessibilityHint={
         shortcut ? `${modifier ? 'Command ' : ''}${shortcut}` : undefined
@@ -866,6 +878,526 @@ export function Dialog({
                 </View>
               )}
             </ScrollView>
+          </View>
+        </KeyboardAvoidingView>
+      </Modal>
+    </>
+  );
+}
+
+type PanelTrigger = (
+  props: Pick<
+    PressableProps,
+    'onPress' | 'accessibilityState' | 'accessibilityHint'
+  > & { ref: React.Ref<View> },
+) => ReactNode;
+function usePanelDisclosure(
+  open: boolean | undefined,
+  onOpenChange: ((open: boolean) => void) | undefined,
+  onClose: (() => void) | undefined,
+  returnFocusRef: React.RefObject<NativeFocusTarget | null> | undefined,
+) {
+  const [internal, setInternal] = React.useState(false),
+    visible = open ?? internal,
+    focus = useOverlayFocus(),
+    previous = React.useRef(false);
+  function change(next: boolean) {
+    if (open === undefined) setInternal(next);
+    onOpenChange?.(next);
+  }
+  function close() {
+    change(false);
+  }
+  React.useEffect(() => {
+    if (previous.current && !visible) {
+      onClose?.();
+      focus.focusElement(
+        () => returnFocusRef?.current ?? focus.triggerRef.current,
+      );
+    }
+    previous.current = visible;
+  }, [visible, onClose, returnFocusRef, focus.focusElement]);
+  return { visible, change, close, focus };
+}
+const ignoreMenuRegistration = () => {};
+
+export function Sheet({
+  title,
+  subtitle,
+  open,
+  onOpenChange,
+  trigger,
+  children,
+  canClose = true,
+  bottomInset = 34,
+  onClose,
+  returnFocusRef,
+}: {
+  title: string;
+  subtitle?: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  trigger?: PanelTrigger;
+  children?: ReactNode;
+  canClose?: boolean;
+  bottomInset?: number;
+  onClose?: () => void;
+  returnFocusRef?: React.RefObject<NativeFocusTarget | null>;
+}) {
+  const t = useMagnolia(),
+    panel = usePanelDisclosure(open, onOpenChange, onClose, returnFocusRef),
+    heading = React.useRef<View>(null),
+    [drag, setDrag] = React.useState(0),
+    [highlighted, setHighlighted] = React.useState<string>();
+  function dismiss() {
+    if (canClose) panel.close();
+  }
+  const release = React.useRef<(dx: number, dy: number) => void>(() => {});
+  release.current = (dx, dy) => {
+    setDrag(0);
+    if (canClose && sheetSwipe(dx, dy)) panel.close();
+  };
+  const responder = React.useMemo(
+    () =>
+      PanResponder.create({
+        onStartShouldSetPanResponder: () => false,
+        onMoveShouldSetPanResponder: (_, g) =>
+          g.numberActiveTouches === 1 && g.dy > 6 && g.dy > Math.abs(g.dx),
+        onPanResponderMove: (_, g) => setDrag(Math.max(0, g.dy)),
+        onPanResponderRelease: (_, g) => release.current(g.dx, g.dy),
+        onPanResponderTerminate: () => setDrag(0),
+        onPanResponderTerminationRequest: () => false,
+      }),
+    [],
+  );
+  React.useEffect(() => {
+    if (!panel.visible) setDrag(0);
+  }, [panel.visible]);
+  return (
+    <>
+      {trigger?.({
+        ref: panel.focus.triggerRef,
+        accessibilityState: { expanded: panel.visible },
+        accessibilityHint: `Opens ${title}`,
+        onPress: () => panel.change(true),
+      })}
+      <Modal
+        visible={panel.visible}
+        transparent
+        animationType="none"
+        onRequestClose={dismiss}
+        onShow={() => panel.focus.focusElement(() => heading.current)}
+      >
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          accessibilityViewIsModal
+          style={{
+            flex: 1,
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            backgroundColor: t.colors['color/bg/scrim'],
+          }}
+        >
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={`Dismiss ${title} sheet`}
+            disabled={!canClose}
+            onPress={dismiss}
+            style={{ position: 'absolute', inset: 0 }}
+          />
+          <View
+            onAccessibilityEscape={dismiss}
+            style={{
+              width: 390,
+              maxWidth: '100%',
+              maxHeight: '100%',
+              flexShrink: 1,
+              paddingBottom: Number.isFinite(bottomInset)
+                ? Math.max(0, bottomInset)
+                : 34,
+              borderTopLeftRadius: 16,
+              borderTopRightRadius: 16,
+              backgroundColor: t.colors['color/bg/overlay'],
+              boxShadow: '0 1px 2px #0003, 0 8px 20px #0000004d',
+              overflow: 'hidden',
+              transform: [{ translateY: drag }],
+            }}
+          >
+            <View {...responder.panHandlers}>
+              <View
+                accessibilityElementsHidden
+                importantForAccessibility="no-hide-descendants"
+                style={{
+                  paddingTop: 8,
+                  paddingBottom: 4,
+                  alignItems: 'center',
+                }}
+              >
+                <View
+                  style={{
+                    width: 36,
+                    height: 4,
+                    borderRadius: 3,
+                    backgroundColor: t.colors['color/border/default'],
+                  }}
+                />
+              </View>
+              <View
+                style={{
+                  paddingHorizontal: 16,
+                  paddingVertical: 8,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
+                <View style={{ flex: 1, minWidth: 0, gap: 2 }}>
+                  <View
+                    ref={heading}
+                    accessible
+                    accessibilityRole="header"
+                    accessibilityLabel={title}
+                  >
+                    <Text
+                      style={{
+                        fontSize: t.sizes['type/title/sm/size'],
+                        lineHeight: t.sizes['type/title/sm/line'],
+                        fontWeight: '500',
+                      }}
+                    >
+                      {title}
+                    </Text>
+                  </View>
+                  {subtitle && (
+                    <Text
+                      style={{
+                        fontSize: t.sizes['type/body/sm/size'],
+                        lineHeight: t.sizes['type/body/sm/line'],
+                        color: t.colors['color/fg/secondary'],
+                      }}
+                    >
+                      {subtitle}
+                    </Text>
+                  )}
+                </View>
+                <Tooltip
+                  label={`Close ${title}`}
+                  trigger={(props) => (
+                    <IconButton
+                      {...props}
+                      label={`Close ${title}`}
+                      variant="tertiary"
+                      onPress={panel.close}
+                      icon={
+                        <Glyph
+                          name="sheet-close"
+                          color={t.colors['color/fg/primary']}
+                        />
+                      }
+                    />
+                  )}
+                />
+              </View>
+            </View>
+            <ScrollView
+              keyboardShouldPersistTaps="handled"
+              style={{ flexGrow: 0, flexShrink: 1 }}
+              contentContainerStyle={{ paddingHorizontal: 8 }}
+            >
+              <ActionMenuContext.Provider
+                value={{
+                  close: panel.close,
+                  highlighted,
+                  setHighlighted,
+                  register: ignoreMenuRegistration,
+                }}
+              >
+                {children}
+              </ActionMenuContext.Provider>
+            </ScrollView>
+          </View>
+        </KeyboardAvoidingView>
+      </Modal>
+    </>
+  );
+}
+
+export function SheetAction({
+  style,
+  ...props
+}: Omit<
+  React.ComponentProps<typeof MenuItem>,
+  'checked' | 'accessibilityRole' | 'role'
+>) {
+  const t = useMagnolia();
+  return (
+    <MenuItem
+      {...props}
+      accessibilityRole="button"
+      style={[
+        { width: '100%', minHeight: Math.max(44, t.sizes['size/row']) },
+        style,
+      ]}
+    />
+  );
+}
+export function SheetSeparator() {
+  return (
+    <View style={{ height: 9, paddingHorizontal: 8, justifyContent: 'center' }}>
+      <Divider />
+    </View>
+  );
+}
+
+export function Drawer({
+  title,
+  subtitle,
+  open,
+  onOpenChange,
+  trigger,
+  children,
+  actions,
+  metrics = [],
+  details = [],
+  height = 640,
+  canClose = true,
+  onClose,
+  onOpenFull,
+  returnFocusRef,
+}: {
+  title: string;
+  subtitle?: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  trigger?: PanelTrigger;
+  children?: ReactNode;
+  actions?: (close: () => void) => ReactNode;
+  metrics?: readonly {
+    label: string;
+    value?: string | number | null;
+    unit?: string;
+  }[];
+  details?: readonly { label: string; value?: string | number | null }[];
+  height?: number;
+  canClose?: boolean;
+  onClose?: () => void;
+  onOpenFull?: PressableProps['onPress'];
+  returnFocusRef?: React.RefObject<NativeFocusTarget | null>;
+}) {
+  const t = useMagnolia(),
+    viewport = useWindowDimensions(),
+    panel = usePanelDisclosure(open, onOpenChange, onClose, returnFocusRef),
+    heading = React.useRef<View>(null);
+  function dismiss() {
+    if (canClose) panel.close();
+  }
+  return (
+    <>
+      {trigger?.({
+        ref: panel.focus.triggerRef,
+        accessibilityState: { expanded: panel.visible },
+        accessibilityHint: `Opens ${title}`,
+        onPress: () => panel.change(true),
+      })}
+      <Modal
+        visible={panel.visible}
+        transparent
+        animationType="none"
+        onRequestClose={dismiss}
+        onShow={() => panel.focus.focusElement(() => heading.current)}
+      >
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          accessibilityViewIsModal
+          style={{
+            flex: 1,
+            alignItems: 'flex-end',
+            backgroundColor: t.colors['color/bg/scrim'],
+          }}
+        >
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={`Dismiss ${title} drawer`}
+            disabled={!canClose}
+            onPress={dismiss}
+            style={{ position: 'absolute', inset: 0 }}
+          />
+          <View
+            onAccessibilityEscape={dismiss}
+            style={{
+              height: Math.min(
+                Number.isFinite(height) ? Math.max(1, height) : 640,
+                viewport.height,
+              ),
+              maxHeight: '100%',
+              width: v2Tokens.scale['size/drawer'],
+              maxWidth: '100%',
+              borderStartWidth: 1,
+              borderStartColor: t.colors['color/border/subtle'],
+              backgroundColor: t.colors['color/bg/overlay'],
+              boxShadow: '0 1px 2px #0003, 0 8px 20px #0000004d',
+            }}
+          >
+            <View
+              style={{
+                padding: 16,
+                gap: 8,
+                borderBottomWidth: 1,
+                borderBottomColor: t.colors['color/border/subtle'],
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+            >
+              <View style={{ flex: 1, minWidth: 0, gap: 2 }}>
+                <View
+                  ref={heading}
+                  accessible
+                  accessibilityRole="header"
+                  accessibilityLabel={title}
+                >
+                  <Text
+                    style={{
+                      fontSize: t.sizes['type/title/sm/size'],
+                      lineHeight: t.sizes['type/title/sm/line'],
+                      fontWeight: '500',
+                    }}
+                  >
+                    {title}
+                  </Text>
+                </View>
+                {subtitle && (
+                  <Text
+                    style={{
+                      fontSize: t.sizes['type/body/sm/size'],
+                      lineHeight: t.sizes['type/body/sm/line'],
+                      color: t.colors['color/fg/secondary'],
+                    }}
+                  >
+                    {subtitle}
+                  </Text>
+                )}
+              </View>
+              {onOpenFull && (
+                <Tooltip
+                  label={`Open ${title} in full page`}
+                  trigger={(props) => (
+                    <IconButton
+                      {...props}
+                      label={`Open ${title} in full page`}
+                      variant="tertiary"
+                      onPress={(e) => {
+                        onOpenFull(e);
+                        if (!e?.defaultPrevented) panel.close();
+                      }}
+                      icon={
+                        <Glyph
+                          name="drawer-open"
+                          color={t.colors['color/fg/primary']}
+                        />
+                      }
+                    />
+                  )}
+                />
+              )}
+              <Tooltip
+                label={`Close ${title}`}
+                trigger={(props) => (
+                  <IconButton
+                    {...props}
+                    label={`Close ${title}`}
+                    variant="tertiary"
+                    onPress={panel.close}
+                    icon={
+                      <Glyph
+                        name="drawer-close"
+                        color={t.colors['color/fg/primary']}
+                      />
+                    }
+                  />
+                )}
+              />
+            </View>
+            <ScrollView
+              keyboardShouldPersistTaps="handled"
+              style={{ flex: 1 }}
+              contentContainerStyle={{ padding: 16, gap: 16 }}
+            >
+              {!!metrics.length && (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    paddingBottom: 16,
+                    borderBottomWidth: 1,
+                    borderBottomColor: t.colors['color/border/subtle'],
+                  }}
+                >
+                  {metrics.map((metric, i) => (
+                    <View
+                      key={i}
+                      style={{
+                        flex: 1,
+                        minWidth: 0,
+                        paddingStart: i ? 12 : 0,
+                        paddingEnd: 12,
+                        borderStartWidth: i ? 1 : 0,
+                        borderStartColor: t.colors['color/border/subtle'],
+                      }}
+                    >
+                      <Stat {...metric} size="medium" />
+                    </View>
+                  ))}
+                </View>
+              )}
+              {details.map((detail, i) => (
+                <View
+                  key={i}
+                  accessible
+                  accessibilityLabel={`${detail.label}: ${detail.value ?? 'No data'}`}
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 12,
+                  }}
+                >
+                  <Text
+                    style={{
+                      flex: 1,
+                      fontSize: t.sizes['type/body/sm/size'],
+                      lineHeight: t.sizes['type/body/sm/line'],
+                      color: t.colors['color/fg/secondary'],
+                    }}
+                  >
+                    {detail.label}
+                  </Text>
+                  <Text
+                    style={{
+                      flexShrink: 1,
+                      textAlign: 'right',
+                      fontSize: t.sizes['type/body/sm/size'],
+                      lineHeight: t.sizes['type/body/sm/line'],
+                    }}
+                  >
+                    {detail.value ?? '—'}
+                  </Text>
+                </View>
+              ))}
+              {children}
+            </ScrollView>
+            {actions && (
+              <View
+                style={{
+                  padding: 16,
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  gap: 8,
+                  alignItems: 'center',
+                  justifyContent: 'flex-end',
+                  borderTopWidth: 1,
+                  borderTopColor: t.colors['color/border/subtle'],
+                }}
+              >
+                {actions(panel.close)}
+              </View>
+            )}
           </View>
         </KeyboardAvoidingView>
       </Modal>

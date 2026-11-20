@@ -1,5 +1,162 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+test('v2 Sheet matches density geometry, returns focus and dismisses by action or swipe', async ({
+  page,
+}, testInfo) => {
+  test.setTimeout(60000);
+  await page.goto('/v2');
+  const family = page.getByTestId('edge-panels-family');
+  const trigger = family.getByRole('button', {
+    name: 'Open object sheet',
+    exact: true,
+  });
+  const sheet = family.getByRole('dialog', { name: 'Northwind', exact: true });
+  const coarse = await page.evaluate(
+    () => matchMedia('(pointer:coarse)').matches,
+  );
+  for (const theme of ['dark', 'light']) {
+    await page.getByLabel('Theme', { exact: true }).selectOption(theme);
+    for (const density of ['comfortable', 'compact']) {
+      await page.getByLabel('Density', { exact: true }).selectOption(density);
+      await trigger.click();
+      await expect(sheet.getByRole('heading')).toBeFocused();
+      await expect(sheet).toHaveAccessibleDescription('Project · 214 entries');
+      const box = (await sheet.boundingBox())!;
+      expect(box.width).toBe(Math.min(390, page.viewportSize()!.width));
+      expect(box.height).toBe(
+        density === 'comfortable' ? 311 : coarse ? 295 : 243,
+      );
+      expect(box.y + box.height).toBeCloseTo(page.viewportSize()!.height, 0);
+      const icon = sheet.locator('[data-glyph="sheet-share"]');
+      expect((await icon.boundingBox())!.width).toBe(
+        density === 'comfortable' ? 20 : 16,
+      );
+      await page.mouse.move(1, 1);
+      await sheet.screenshot({
+        path: testInfo.outputPath(`sheet-${theme}-${density}.png`),
+      });
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include('.mg2-sheet')
+            .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      await page.keyboard.press('Escape');
+      await expect(sheet).toHaveCount(0);
+      await expect(trigger).toBeFocused();
+    }
+  }
+  await trigger.click();
+  await sheet.getByRole('button', { name: 'Duplicate', exact: true }).click();
+  await expect(sheet).toHaveCount(0);
+  await expect(family.getByRole('status')).toHaveText(
+    'Panel action: Duplicate',
+  );
+  await expect(trigger).toBeFocused();
+  await trigger.click();
+  const header = (await sheet.locator('.mg2-sheet-grabber').boundingBox())!;
+  const x = header.x + header.width / 2,
+    y = header.y + 8;
+  if (coarse) {
+    const cdp = await page.context().newCDPSession(page);
+    await cdp.send('Input.dispatchTouchEvent', {
+      type: 'touchStart',
+      touchPoints: [{ x, y }],
+    });
+    await cdp.send('Input.dispatchTouchEvent', {
+      type: 'touchMove',
+      touchPoints: [{ x, y: y + 80 }],
+    });
+    await cdp.send('Input.dispatchTouchEvent', {
+      type: 'touchEnd',
+      touchPoints: [],
+    });
+    await cdp.detach();
+  } else {
+    await page.mouse.move(x, y);
+    await page.mouse.down();
+    await page.mouse.move(x, y + 80, { steps: 8 });
+    await page.mouse.up();
+  }
+  await expect(sheet).toHaveCount(0);
+  await expect(trigger).toBeFocused();
+});
+
+test('v2 Drawer matches source geometry with a fixed footer and full-page action', async ({
+  page,
+}, testInfo) => {
+  test.setTimeout(60000);
+  await page.goto('/v2');
+  const family = page.getByTestId('edge-panels-family');
+  const trigger = family.getByRole('button', {
+    name: 'Open object drawer',
+    exact: true,
+  });
+  const drawer = family.getByRole('dialog', { name: 'Northwind', exact: true });
+  for (const theme of ['dark', 'light']) {
+    await page.getByLabel('Theme', { exact: true }).selectOption(theme);
+    for (const density of ['comfortable', 'compact']) {
+      await page.getByLabel('Density', { exact: true }).selectOption(density);
+      await trigger.click();
+      await expect(drawer.getByRole('heading')).toBeFocused();
+      await expect(drawer).toHaveAccessibleDescription('Project · Active');
+      const box = (await drawer.boundingBox())!;
+      expect(box.width).toBe(Math.min(420, page.viewportSize()!.width));
+      expect(box.height).toBe(Math.min(640, page.viewportSize()!.height));
+      expect(box.y).toBe(0);
+      expect(box.x + box.width).toBe(page.viewportSize()!.width);
+      expect(
+        (await drawer.locator('.mg2-drawer-header').boundingBox())!.height,
+      ).toBe(density === 'comfortable' ? 77 : 73);
+      expect(
+        (await drawer.locator('.mg2-drawer-footer').boundingBox())!.height,
+      ).toBe(density === 'comfortable' ? 77 : 65);
+      expect(
+        (await drawer.locator('[data-glyph="drawer-plus"]').boundingBox())!
+          .width,
+      ).toBe(density === 'comfortable' ? 20 : 16);
+      await page.mouse.move(1, 1);
+      await drawer.screenshot({
+        path: testInfo.outputPath(`drawer-${theme}-${density}.png`),
+      });
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include('.mg2-drawer')
+            .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      await page.keyboard.press('Escape');
+      await expect(drawer).toHaveCount(0);
+      await expect(trigger).toBeFocused();
+    }
+  }
+  const long = family.getByRole('button', {
+    name: 'Open long drawer',
+    exact: true,
+  });
+  await long.click();
+  const footer = drawer.locator('.mg2-drawer-footer');
+  const before = await footer.boundingBox();
+  await drawer.locator('.mg2-drawer-content').evaluate((el) => {
+    el.scrollTop = el.scrollHeight;
+  });
+  await expect(
+    drawer.getByText('Additional detail 30', { exact: true }),
+  ).toBeInViewport();
+  expect(await footer.boundingBox()).toEqual(before);
+  await drawer
+    .getByRole('button', { name: 'Open Northwind in full page', exact: true })
+    .click();
+  await expect(drawer).toHaveCount(0);
+  await expect(long).toBeFocused();
+  await expect(family.getByRole('status')).toHaveText(
+    'Panel action: Open full page',
+  );
+});
 test('v2 system theme updates original artwork with the device preference', async ({
   page,
 }) => {

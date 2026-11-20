@@ -61,6 +61,10 @@ import {
   MenuSeparator,
   Popover,
   Dialog,
+  Sheet,
+  SheetAction,
+  SheetSeparator,
+  Drawer,
 } from '../../packages/react-native/src/v2';
 test('v2 native Slider exposes stepped accessibility adjustments and disabled state', () => {
   const change = jest.fn();
@@ -1032,4 +1036,62 @@ test('v2 Dialog preserves its source confirm override without recoloring surroun
     ).toHaveStyle({ backgroundColor: mode === 'dark' ? '#a8302e' : '#c43f3e' });
     unmount();
   }
+});
+
+test('v2 native Sheet exposes object actions with button semantics and closes on selection', () => {
+  const action = jest.fn();
+  const { getByRole, queryByRole } = render(
+    <MagnoliaProvider>
+      <Sheet
+        title="Northwind"
+        subtitle="Project · 214 entries"
+        trigger={(props) => <Button {...props}>Open sheet</Button>}
+      >
+        <SheetAction label="Share link" onPress={action} />
+        <SheetSeparator />
+        <SheetAction label="Unavailable" disabled onPress={action} />
+      </Sheet>
+    </MagnoliaProvider>,
+  );
+  fireEvent.press(getByRole('button', { name: 'Open sheet' }));
+  expect(getByRole('header', { name: 'Northwind' })).toBeTruthy();
+  fireEvent.press(getByRole('button', { name: 'Unavailable' }));
+  expect(action).not.toHaveBeenCalled();
+  fireEvent.press(getByRole('button', { name: 'Share link' }));
+  expect(action).toHaveBeenCalledTimes(1);
+  expect(queryByRole('header', { name: 'Northwind' })).toBeNull();
+  fireEvent.press(getByRole('button', { name: 'Open sheet' }));
+  fireEvent.press(getByRole('button', { name: 'Close Northwind' }));
+  expect(queryByRole('header', { name: 'Northwind' })).toBeNull();
+});
+
+test('v2 native Drawer preserves nullable details and supports promote and footer actions', () => {
+  const promote = jest.fn();
+  const { getByRole, getByLabelText, queryByRole } = render(
+    <MagnoliaProvider>
+      <Drawer
+        title="Northwind"
+        subtitle="Project · Active"
+        trigger={(props) => <Button {...props}>Open drawer</Button>}
+        metrics={[{ label: 'Average', value: 14.2 }]}
+        details={[
+          { label: 'Owner', value: 'Maya Chen' },
+          { label: 'Count', value: 0 },
+          { label: 'Missing', value: null },
+        ]}
+        onOpenFull={promote}
+        actions={(close) => <Button onPress={close}>Edit</Button>}
+      />
+    </MagnoliaProvider>,
+  );
+  fireEvent.press(getByRole('button', { name: 'Open drawer' }));
+  expect(getByLabelText('Owner: Maya Chen')).toBeTruthy();
+  expect(getByLabelText('Count: 0')).toBeTruthy();
+  expect(getByLabelText('Missing: No data')).toBeTruthy();
+  fireEvent.press(getByRole('button', { name: 'Open Northwind in full page' }));
+  expect(promote).toHaveBeenCalledTimes(1);
+  expect(queryByRole('header', { name: 'Northwind' })).toBeNull();
+  fireEvent.press(getByRole('button', { name: 'Open drawer' }));
+  fireEvent.press(getByRole('button', { name: 'Edit' }));
+  expect(queryByRole('header', { name: 'Northwind' })).toBeNull();
 });

@@ -145,6 +145,22 @@ import asset142 from './assets/menu-trash.svg';
 import asset143 from './assets/menu-check.svg';
 import asset144 from './assets/popover-copy.svg';
 import asset145 from './assets/popover-copy-compact.svg';
+import asset146 from './assets/sheet-close.svg';
+import asset147 from './assets/sheet-close-compact.svg';
+import asset148 from './assets/sheet-share.svg';
+import asset149 from './assets/sheet-share-compact.svg';
+import asset150 from './assets/sheet-copy.svg';
+import asset151 from './assets/sheet-copy-compact.svg';
+import asset152 from './assets/sheet-download.svg';
+import asset153 from './assets/sheet-download-compact.svg';
+import asset154 from './assets/sheet-trash.svg';
+import asset155 from './assets/sheet-trash-compact.svg';
+import asset156 from './assets/drawer-open.svg';
+import asset157 from './assets/drawer-open-compact.svg';
+import asset158 from './assets/drawer-close.svg';
+import asset159 from './assets/drawer-close-compact.svg';
+import asset160 from './assets/drawer-plus.svg';
+import asset161 from './assets/drawer-plus-compact.svg';
 export const glyphs = {
   'spinner-dark': { src: asset0, width: 20, height: 20 },
   'error': { src: asset1, width: 12, height: 12 },
@@ -292,5 +308,21 @@ export const glyphs = {
   'menu-check': { src: asset143, width: 16, height: 16 },
   'popover-copy': { src: asset144, width: 20, height: 20 },
   'popover-copy-compact': { src: asset145, width: 16, height: 16 },
+  'sheet-close': { src: asset146, width: 20, height: 20 },
+  'sheet-close-compact': { src: asset147, width: 16, height: 16 },
+  'sheet-share': { src: asset148, width: 20, height: 20 },
+  'sheet-share-compact': { src: asset149, width: 16, height: 16 },
+  'sheet-copy': { src: asset150, width: 20, height: 20 },
+  'sheet-copy-compact': { src: asset151, width: 16, height: 16 },
+  'sheet-download': { src: asset152, width: 20, height: 20 },
+  'sheet-download-compact': { src: asset153, width: 16, height: 16 },
+  'sheet-trash': { src: asset154, width: 20, height: 20 },
+  'sheet-trash-compact': { src: asset155, width: 16, height: 16 },
+  'drawer-open': { src: asset156, width: 20, height: 20 },
+  'drawer-open-compact': { src: asset157, width: 16, height: 16 },
+  'drawer-close': { src: asset158, width: 20, height: 20 },
+  'drawer-close-compact': { src: asset159, width: 16, height: 16 },
+  'drawer-plus': { src: asset160, width: 20, height: 20 },
+  'drawer-plus-compact': { src: asset161, width: 16, height: 16 },
 } as const;
 export type GlyphName = keyof typeof glyphs;

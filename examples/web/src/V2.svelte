@@ -75,6 +75,10 @@
     MenuSeparator,
     Popover,
     Dialog,
+    Sheet,
+    SheetAction,
+    SheetSeparator,
+    Drawer,
   } from '../../../packages/svelte/src/lib/v2/index';
   import Glyph from '../../../packages/svelte/src/lib/v2/Glyph.svelte';
   let theme = $state<'dark' | 'light' | 'system'>('dark');
@@ -94,6 +98,10 @@
     note = $state('');
   let submitted = $state('');
   let confidence = $state(70);
+  let sheetOpen = $state(false),
+    drawerOpen = $state(false),
+    longDrawer = $state(false),
+    edgeAction = $state('None');
   let decisionOpen = $state(false),
     decisionLocked = $state(false),
     overlayAction = $state('None');
@@ -737,6 +745,92 @@
           </div></Card
         >
       </div>
+    </section>
+    <section data-testid="edge-panels-family" aria-label="Sheets and drawers">
+      <h2>Sheet and Drawer</h2>
+      <Button variant="secondary" onclick={() => (sheetOpen = true)}
+        >Open object sheet</Button
+      >
+      <Button
+        variant="secondary"
+        onclick={() => {
+          longDrawer = false;
+          drawerOpen = true;
+        }}>Open object drawer</Button
+      >
+      <Button
+        variant="secondary"
+        onclick={() => {
+          longDrawer = true;
+          drawerOpen = true;
+        }}>Open long drawer</Button
+      >
+      <Sheet
+        bind:open={sheetOpen}
+        title="Northwind"
+        subtitle="Project · 214 entries"
+      >
+        <SheetAction
+          label="Share link"
+          onclick={() => (edgeAction = 'Share link')}
+          >{#snippet icon()}<Glyph name="sheet-share" />{/snippet}</SheetAction
+        >
+        <SheetAction
+          label="Duplicate"
+          onclick={() => (edgeAction = 'Duplicate')}
+          >{#snippet icon()}<Glyph name="sheet-copy" />{/snippet}</SheetAction
+        >
+        <SheetAction
+          label="Export as CSV"
+          onclick={() => (edgeAction = 'Export as CSV')}
+          >{#snippet icon()}<Glyph
+              name="sheet-download"
+            />{/snippet}</SheetAction
+        >
+        <SheetSeparator />
+        <SheetAction
+          label="Delete"
+          tone="destructive"
+          onclick={() => (edgeAction = 'Delete')}
+          >{#snippet icon()}<Glyph name="sheet-trash" />{/snippet}</SheetAction
+        >
+      </Sheet>
+      <Drawer
+        bind:open={drawerOpen}
+        title="Northwind"
+        subtitle="Project · Active"
+        metrics={[
+          { label: 'Average', value: '14.2' },
+          { label: 'Best', value: '9' },
+          { label: 'Total', value: '36.2' },
+        ]}
+        details={[
+          { label: 'Owner', value: 'Maya Chen' },
+          { label: 'Started', value: 'Sep 14' },
+          { label: 'Due', value: 'Nov 9' },
+        ]}
+        onopenfull={() => (edgeAction = 'Open full page')}
+      >
+        {#if longDrawer}{#each Array.from({ length: 30 }, (_, i) => i + 1) as row}<p
+            >
+              Additional detail {row}
+            </p>{/each}{/if}
+        {#snippet actions(close)}<Button
+            variant="secondary"
+            onclick={() => {
+              edgeAction = 'Edit';
+              close();
+            }}>Edit</Button
+          ><Button
+            variant="primary"
+            onclick={() => {
+              edgeAction = 'Add entry';
+              close();
+            }}
+            >{#snippet icon()}<Glyph name="drawer-plus" />{/snippet}Add entry</Button
+          >{/snippet}
+      </Drawer>
+      <p role="status">Panel action: {edgeAction}</p>
     </section>
     <section
       data-testid="panels-family"
