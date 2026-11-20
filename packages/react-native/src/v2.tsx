@@ -274,6 +274,7 @@ export function Button({
   );
 }
 export type TextFieldProps = TextInputProps & {
+  ref?: React.Ref<TextInput>;
   label: string;
   helper?: string;
   error?: string;
@@ -1037,8 +1038,9 @@ export function SearchField({
   value = '',
   onChangeText,
   style,
+  ref: externalRef,
   ...rest
-}: TextInputProps & { label: string }) {
+}: TextInputProps & { label: string; ref?: React.Ref<TextInput> }) {
   const t = useMagnolia(),
     c = t.colors,
     s = t.sizes;
@@ -1062,7 +1064,11 @@ export function SearchField({
       <Glyph name="search" color={c['color/fg/secondary']} />
       <TextInput
         {...rest}
-        ref={input}
+        ref={(node) => {
+          input.current = node;
+          if (typeof externalRef === 'function') externalRef(node);
+          else if (externalRef) externalRef.current = node;
+        }}
         value={value}
         onChangeText={onChangeText}
         accessibilityLabel={rest.accessibilityLabel ?? label}

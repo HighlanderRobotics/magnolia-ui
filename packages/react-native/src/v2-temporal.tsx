@@ -278,6 +278,7 @@ export function Calendar({
 }
 
 export type TemporalFieldProps = {
+  ref?: React.Ref<TextInput>;
   label: string;
   value?: string;
   onValueChange: (value: string | undefined) => void;
@@ -299,6 +300,7 @@ function TemporalField({
   error,
   disabled = false,
   placeholder,
+  ref: inputRef,
 }: TemporalFieldProps & { kind: 'date' | 'time' }) {
   const t = useMagnolia(),
     c = t.colors,
@@ -385,6 +387,7 @@ function TemporalField({
         }}
       >
         <TextInput
+          ref={inputRef}
           accessibilityLabel={label}
           accessibilityHint={[
             message || helper,

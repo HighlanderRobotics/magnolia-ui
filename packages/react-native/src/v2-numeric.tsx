@@ -13,6 +13,7 @@ export function NumberField({
   onBlur,
   ...rest
 }: TextInputProps & {
+  ref?: React.Ref<TextInput>;
   label: string;
   unit?: string;
   helper?: string;

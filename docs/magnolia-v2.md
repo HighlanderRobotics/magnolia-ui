@@ -76,6 +76,8 @@ Run `npm run gallery -- --port 4180` and open [the v2 preview](http://127.0.0.1:
 
 React Native exports the core components from `@highlanderrobotics/magnolia-react-native/v2`. Wrap them in `MagnoliaProvider` with `mode`, `density`, and the application's registered Roboto `fontFamily`. Tabs use controlled `value`/`onValueChange`; text fields retain native `TextInput` props. Native buttons and fields preserve at least 44-point activation height in both densities. Loading uses the platform activity indicator, and native focus/assistive technology behavior remains platform owned.
 
+`TextField`, `TextArea`, `SearchField`, `NumberField`, `DateField`, and `TimeField` accept a `React.Ref<TextInput>` targeting their actual editable input. Use that ref in `ErrorSummary.onField` to focus the corresponding field. Search clearing retains its internal focus behavior when an external ref is supplied. `examples/native/V2.tsx` provides a local-only runtime fixture with theme/density switching, form validation, and overlay examples.
+
 Starlight exposes the generated semantic color mapping at `@highlanderrobotics/magnolia-starlight/v2.css`. Add it to Starlight's `customCss` and load Roboto in the application; it follows Starlight's `data-theme` attribute. The existing `theme.css` export keeps its previous mapping.
 
 Flutter exposes `package:magnolia_ui/magnolia_v2.dart`, `MagnoliaV2Theme.dark/light(compact: ...)`, and a `MagnoliaV2` theme extension containing every semantic color and density value. This is a Material adapter, not a claim that every Material control is a pixel-exact v2 component. The old `magnolia_ui.dart` API remains available.

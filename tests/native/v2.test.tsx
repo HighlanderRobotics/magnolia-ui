@@ -1,6 +1,7 @@
 import React from 'react';
 import { act } from 'react';
 import { AccessibilityInfo, AppState } from 'react-native';
+import type { TextInput } from 'react-native';
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import {
   MagnoliaProvider,
@@ -1305,7 +1306,7 @@ test('v2 native form sections preserve heading context and error summary links e
       >
         <FormRow>
           <TextField label="Location" value="" />
-          <NumberField label="Items checked" value={0} />
+          <NumberField label="Items checked" value="0" />
         </FormRow>
       </FormSection>
       <ErrorSummary errors={errors} onField={choose} />
@@ -1369,6 +1370,36 @@ test('v2 native Kbd exposes modifier swaps and hides key text without changing b
   expect(
     result.getByRole('image', { name: 'Fixed folder' }).props.style[0],
   ).toMatchObject({ width: 20, height: 20 });
+});
+
+test('v2 native inputs expose their actual editable target to linked error summaries', () => {
+  const text = React.createRef<TextInput>(),
+    search = React.createRef<TextInput>(),
+    number = React.createRef<TextInput>(),
+    date = React.createRef<TextInput>(),
+    time = React.createRef<TextInput>(),
+    notes = React.createRef<TextInput>();
+  render(
+    <MagnoliaProvider>
+      <TextField ref={text} label="Ref text" value="" />
+      <SearchField ref={search} label="Ref search" value="" />
+      <NumberField ref={number} label="Ref number" value="0" />
+      <DateField ref={date} label="Ref date" onValueChange={() => {}} />
+      <TimeField ref={time} label="Ref time" onValueChange={() => {}} />
+      <TextArea ref={notes} label="Ref notes" value="" />
+    </MagnoliaProvider>,
+  );
+  for (const [ref, label] of [
+    [text, 'Ref text'],
+    [search, 'Ref search'],
+    [number, 'Ref number'],
+    [date, 'Ref date'],
+    [time, 'Ref time'],
+    [notes, 'Ref notes'],
+  ] as const) {
+    expect(ref.current).toBeTruthy();
+    expect(ref.current.props.accessibilityLabel).toBe(label);
+  }
 });
 
 test('v2 native Sheet exposes object actions with button semantics and closes on selection', () => {
