@@ -26,6 +26,7 @@ import type {
   ViewStyle,
 } from 'react-native';
 import { v2Tokens } from '@highlanderrobotics/magnolia-tokens/v2';
+import { ButtonIdleSurface } from './v2-button-surface.js';
 import { nativeGlyphs, type NativeGlyphName } from './v2-glyphs.generated.js';
 export { NumberField, Stepper, Link, SelectableCard } from './v2-numeric.js';
 export { Steps, FileField, Attachment } from './v2-files.js';
@@ -107,6 +108,7 @@ export function Text({ style, ...props }: TextProps) {
   );
 }
 export type ButtonProps = Omit<PressableProps, 'children' | 'style'> & {
+  ref?: React.Ref<View>;
   children?: ReactNode;
   icon?: ReactNode;
   variant?: 'primary' | 'secondary' | 'tertiary' | 'danger';
@@ -135,36 +137,39 @@ export function Button({
   const [focus, setFocus] = useState(false);
   const c = t.colors,
     s = t.sizes;
+  const idleSurface = useContext(ButtonIdleSurface)[variant];
   const ramp = (pressed: boolean) =>
-    variant === 'primary'
-      ? c[
-          pressed
-            ? 'color/bg/primary-press'
-            : hover
-              ? 'color/bg/primary-hover'
-              : 'color/bg/accent-strong'
-        ]
-      : variant === 'danger'
+    !pressed && !hover && idleSurface
+      ? idleSurface
+      : variant === 'primary'
         ? c[
             pressed
-              ? 'color/bg/danger-press'
+              ? 'color/bg/primary-press'
               : hover
-                ? 'color/bg/danger-hover'
-                : 'color/bg/danger-strong'
+                ? 'color/bg/primary-hover'
+                : 'color/bg/accent-strong'
           ]
-        : variant === 'tertiary'
-          ? pressed
-            ? c['color/bg/tertiary-press']
-            : hover
-              ? c['color/bg/tertiary-hover']
-              : 'transparent'
-          : c[
+        : variant === 'danger'
+          ? c[
               pressed
-                ? 'color/bg/control-press'
+                ? 'color/bg/danger-press'
                 : hover
-                  ? 'color/bg/control-hover'
-                  : 'color/bg/control'
-            ];
+                  ? 'color/bg/danger-hover'
+                  : 'color/bg/danger-strong'
+            ]
+          : variant === 'tertiary'
+            ? pressed
+              ? c['color/bg/tertiary-press']
+              : hover
+                ? c['color/bg/tertiary-hover']
+                : 'transparent'
+            : c[
+                pressed
+                  ? 'color/bg/control-press'
+                  : hover
+                    ? 'color/bg/control-hover'
+                    : 'color/bg/control'
+              ];
   const foreground =
     variant === 'primary'
       ? c['color/fg/on-accent']
@@ -214,7 +219,10 @@ export function Button({
             44,
             s[size === 'large' ? 'size/control' : 'size/control-sm'],
           ),
-          paddingHorizontal: iconOnly ? 0 : s['pad/control-x'],
+          paddingStart: iconOnly
+            ? 0
+            : s[icon ? 'pad/control-x-icon' : 'pad/control-x'],
+          paddingEnd: iconOnly ? 0 : s['pad/control-x'],
           minWidth: iconOnly ? Math.max(44, s['size/control']) : undefined,
           paddingVertical: 8,
           borderRadius: s['radius/control'],
@@ -592,6 +600,7 @@ export function Glyph({
   const pairs: Partial<Record<NativeGlyphName, NativeGlyphName>> = {
     check: 'check-compact',
     modifier: 'modifier-compact',
+    'popover-copy': 'popover-copy-compact',
     'chip-check': 'chip-check-compact',
     'radio-box': 'radio-box-compact',
     'radio-dot': 'radio-dot-compact',
@@ -1269,4 +1278,6 @@ export {
   Menu,
   MenuItem,
   MenuSeparator,
+  Popover,
+  Dialog,
 } from './v2-overlays.js';

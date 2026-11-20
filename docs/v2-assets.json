@@ -1375,6 +1375,24 @@
       "width": 16.0,
       "height": 16.0,
       "sha256": "0a9b88d10763a6928fb0c04ba713b82668335b5b212254e4899c1708fdad4296"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/popover-copy.svg",
+      "nodeId": "I55:365;43:50",
+      "slot": "Popover copy action comfortable",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "d8729559d0ab5f3b699d6307bce9752942e382e6968f699a81f43766e0190ab2",
+      "mode": "comfortable"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/popover-copy-compact.svg",
+      "nodeId": "I55:365;43:50",
+      "slot": "Popover copy action compact",
+      "width": 16.0,
+      "height": 16.0,
+      "sha256": "024d04e55f896d0cee20310f52c05c70332b6981de526c098f04641508731d84",
+      "mode": "compact"
     }
   ]
 }

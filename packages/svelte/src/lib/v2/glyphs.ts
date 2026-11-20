@@ -143,6 +143,8 @@ import asset140 from './assets/menu-copy.svg';
 import asset141 from './assets/menu-download.svg';
 import asset142 from './assets/menu-trash.svg';
 import asset143 from './assets/menu-check.svg';
+import asset144 from './assets/popover-copy.svg';
+import asset145 from './assets/popover-copy-compact.svg';
 export const glyphs = {
   'spinner-dark': { src: asset0, width: 20, height: 20 },
   'error': { src: asset1, width: 12, height: 12 },
@@ -288,5 +290,7 @@ export const glyphs = {
   'menu-download': { src: asset141, width: 20, height: 20 },
   'menu-trash': { src: asset142, width: 20, height: 20 },
   'menu-check': { src: asset143, width: 16, height: 16 },
+  'popover-copy': { src: asset144, width: 20, height: 20 },
+  'popover-copy-compact': { src: asset145, width: 16, height: 16 },
 } as const;
 export type GlyphName = keyof typeof glyphs;

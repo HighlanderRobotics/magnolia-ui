@@ -3715,3 +3715,94 @@
   height: 20px;
   flex: none;
 }
+
+.mg2-popover {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  width: 320px;
+  max-width: calc(100vw - 16px);
+  max-height: calc(100dvh - 16px);
+  overflow: auto;
+  padding: 16px;
+  border: 1px solid var(--mg-v2-color-border-subtle);
+  border-radius: 12px;
+  background: var(--mg-v2-color-bg-overlay);
+  color: var(--mg-v2-color-fg-primary);
+  font-family: var(--mg-v2-font-family);
+  box-shadow:
+    0 1px 2px #0003,
+    0 8px 20px #0000004d;
+  gap: 12px;
+}
+.mg2-popover:popover-open {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.mg2-popover > h2 {
+  margin: 0;
+  color: var(--mg-v2-color-fg-primary);
+  font-size: var(--mg-v2-type-title-sm-size);
+  line-height: var(--mg-v2-type-title-sm-line);
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+.mg2-popover-body {
+  margin: 0;
+  color: var(--mg-v2-color-fg-secondary);
+  font-size: var(--mg-v2-type-body-sm-size);
+  line-height: var(--mg-v2-type-body-sm-line);
+}
+.mg2-overlay-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  width: 100%;
+}
+.mg2-dialog {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  width: 440px;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  padding: 24px;
+  border: 1px solid var(--mg-v2-color-border-subtle);
+  border-radius: 16px;
+  background: var(--mg-v2-color-bg-overlay);
+  color: var(--mg-v2-color-fg-primary);
+  font-family: var(--mg-v2-font-family);
+  box-shadow:
+    0 1px 2px #0003,
+    0 8px 20px #0000004d;
+}
+.mg2-dialog::backdrop {
+  background: var(--mg-v2-color-bg-scrim);
+}
+.mg2-dialog > h2 {
+  margin: 0;
+  color: var(--mg-v2-color-fg-primary);
+  font-size: var(--mg-v2-type-title-md-size);
+  line-height: var(--mg-v2-type-title-md-line);
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+.mg2-dialog-body {
+  margin: 0;
+  color: var(--mg-v2-color-fg-secondary);
+  font-size: var(--mg-v2-type-body-size);
+  line-height: var(--mg-v2-type-body-line);
+}
+.mg2-dialog-actions {
+  padding-top: 12px;
+}
+
+/* Dialog's confirm instance has this unbound source fill in both color modes. */
+.mg2-dialog-actions {
+  --mg-v2-color-bg-danger-strong: #a8302e;
+}

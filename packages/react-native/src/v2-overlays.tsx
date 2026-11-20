@@ -2,6 +2,8 @@ import React from 'react';
 import type { ReactNode } from 'react';
 import {
   Modal,
+  KeyboardAvoidingView,
+  Platform,
   Pressable,
   ScrollView,
   View,
@@ -9,8 +11,16 @@ import {
   AccessibilityInfo,
   findNodeHandle,
 } from 'react-native';
-import type { PressableProps, StyleProp, ViewStyle } from 'react-native';
+import type {
+  PressableProps,
+  StyleProp,
+  ViewStyle,
+  TextInput,
+} from 'react-native';
+import { ButtonIdleSurface } from './v2-button-surface.js';
 import { Text, Glyph, Kbd, Divider, useMagnolia } from './v2.js';
+
+type NativeFocusTarget = View | TextInput;
 
 export function Accordion({
   title,
@@ -129,19 +139,10 @@ export function Tooltip({
 }) {
   const [open, setOpen] = React.useState(false);
   const t = useMagnolia(),
-    {
-      anchor,
-      triggerRef,
-      viewport,
-      left,
-      top,
-      measure,
-      onLayout,
-      restoreFocus,
-    } = useAnchoredPopup(open);
+    { anchor, triggerRef, viewport, left, top, measure, onLayout } =
+      useAnchoredPopup(open);
   function close() {
     setOpen(false);
-    restoreFocus();
   }
   const hint = [
     label,
@@ -218,7 +219,7 @@ export function Tooltip({
 function useAnchoredPopup(open: boolean) {
   const viewport = useWindowDimensions(),
     anchor = React.useRef<View>(null),
-    triggerRef = React.useRef<View>(null);
+    focus = useOverlayFocus();
   const [frame, setFrame] = React.useState({
       x: 8,
       y: 8,
@@ -236,6 +237,11 @@ function useAnchoredPopup(open: boolean) {
   React.useEffect(() => {
     if (open) measure();
   }, [open, viewport.width, viewport.height, measure]);
+  const wasOpen = React.useRef(open);
+  React.useEffect(() => {
+    if (wasOpen.current && !open) focus.restoreFocus();
+    wasOpen.current = open;
+  }, [open, focus.restoreFocus]);
   const onLayout = React.useCallback(
     (event: import('react-native').LayoutChangeEvent) => {
       const { width, height } = event.nativeEvent.layout;
@@ -244,33 +250,6 @@ function useAnchoredPopup(open: boolean) {
       );
     },
     [],
-  );
-  const focusFrame = React.useRef<number | undefined>(undefined);
-  React.useEffect(
-    () => () => {
-      if (focusFrame.current !== undefined)
-        cancelAnimationFrame(focusFrame.current);
-    },
-    [],
-  );
-  const focusElement = React.useCallback(
-    (target: () => View | null | undefined) => {
-      if (focusFrame.current !== undefined)
-        cancelAnimationFrame(focusFrame.current);
-      focusFrame.current = requestAnimationFrame(() => {
-        focusFrame.current = undefined;
-        const element = target();
-        if (!element) return;
-        element.focus();
-        const node = findNodeHandle(element);
-        if (node != null) AccessibilityInfo.setAccessibilityFocus(node);
-      });
-    },
-    [],
-  );
-  const restoreFocus = React.useCallback(
-    () => focusElement(() => triggerRef.current),
-    [focusElement],
   );
   const gap = 8,
     left = Math.max(gap, Math.min(frame.x, viewport.width - size.width - gap)),
@@ -287,11 +266,10 @@ function useAnchoredPopup(open: boolean) {
   return {
     viewport,
     anchor,
-    triggerRef,
+    triggerRef: focus.triggerRef,
     measure,
     onLayout,
-    restoreFocus,
-    focusElement,
+    focusElement: focus.focusElement,
     left,
     top,
   };
@@ -340,7 +318,6 @@ export function Menu({
   function close() {
     change(false);
     setHighlighted(undefined);
-    popup.restoreFocus();
   }
   return (
     <View
@@ -564,5 +541,334 @@ export function MenuSeparator() {
         <Divider />
       </View>
     </View>
+  );
+}
+
+function useOverlayFocus() {
+  const triggerRef = React.useRef<View>(null);
+  const focusFrame = React.useRef<number | undefined>(undefined);
+  React.useEffect(
+    () => () => {
+      if (focusFrame.current !== undefined)
+        cancelAnimationFrame(focusFrame.current);
+    },
+    [],
+  );
+  const focusElement = React.useCallback(
+    (target: () => NativeFocusTarget | null | undefined) => {
+      if (focusFrame.current !== undefined)
+        cancelAnimationFrame(focusFrame.current);
+      focusFrame.current = requestAnimationFrame(() => {
+        focusFrame.current = undefined;
+        const element = target();
+        if (!element) return;
+        element.focus();
+        const node = findNodeHandle(element);
+        if (node != null) AccessibilityInfo.setAccessibilityFocus(node);
+      });
+    },
+    [],
+  );
+  const restoreFocus = React.useCallback(
+    () => focusElement(() => triggerRef.current),
+    [focusElement],
+  );
+  return { triggerRef, focusElement, restoreFocus };
+}
+
+export function Popover({
+  title,
+  body,
+  open,
+  onOpenChange,
+  trigger,
+  children,
+  actions,
+  initialFocusRef,
+}: {
+  title: string;
+  body?: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  trigger: (
+    props: Pick<
+      PressableProps,
+      'onPress' | 'accessibilityState' | 'accessibilityHint'
+    > & { ref: React.Ref<View> },
+  ) => ReactNode;
+  children?: ReactNode;
+  actions?: (close: () => void) => ReactNode;
+  initialFocusRef?: React.RefObject<NativeFocusTarget | null>;
+}) {
+  const t = useMagnolia(),
+    [internal, setInternal] = React.useState(false),
+    visible = open ?? internal,
+    popup = useAnchoredPopup(visible),
+    heading = React.useRef<View>(null);
+  function change(next: boolean) {
+    if (open === undefined) setInternal(next);
+    onOpenChange?.(next);
+    if (next) popup.measure();
+  }
+  function close() {
+    change(false);
+  }
+  return (
+    <View
+      ref={popup.anchor}
+      collapsable={false}
+      style={{ alignSelf: 'flex-start' }}
+    >
+      {trigger({
+        ref: popup.triggerRef,
+        accessibilityState: { expanded: visible },
+        accessibilityHint: `Opens ${title}`,
+        onPress: () => change(!visible),
+      })}
+      <Modal
+        visible={visible}
+        transparent
+        animationType="none"
+        onRequestClose={close}
+        onShow={() =>
+          popup.focusElement(() => initialFocusRef?.current ?? heading.current)
+        }
+      >
+        <View accessibilityViewIsModal style={{ flex: 1 }}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={`Dismiss ${title}`}
+            onPress={close}
+            style={{ position: 'absolute', inset: 0 }}
+          />
+          <View
+            onLayout={popup.onLayout}
+            onAccessibilityEscape={close}
+            style={{
+              position: 'absolute',
+              left: popup.left,
+              top: popup.top,
+              width: 320,
+              maxWidth: popup.viewport.width - 16,
+              maxHeight: popup.viewport.height - 16,
+              borderWidth: 1,
+              borderColor: t.colors['color/border/subtle'],
+              borderRadius: 12,
+              backgroundColor: t.colors['color/bg/overlay'],
+              boxShadow: '0 1px 2px #0003, 0 8px 20px #0000004d',
+              overflow: 'hidden',
+            }}
+          >
+            <ScrollView
+              keyboardShouldPersistTaps="handled"
+              contentContainerStyle={{ padding: 16, gap: 12 }}
+            >
+              <View
+                ref={heading}
+                accessible
+                accessibilityRole="header"
+                accessibilityLabel={title}
+              >
+                <Text
+                  style={{
+                    fontSize: t.sizes['type/title/sm/size'],
+                    lineHeight: t.sizes['type/title/sm/line'],
+                    fontWeight: '500',
+                  }}
+                >
+                  {title}
+                </Text>
+              </View>
+              {body && (
+                <Text
+                  style={{
+                    fontSize: t.sizes['type/body/sm/size'],
+                    lineHeight: t.sizes['type/body/sm/line'],
+                    color: t.colors['color/fg/secondary'],
+                  }}
+                >
+                  {body}
+                </Text>
+              )}
+              {children}
+              {actions && (
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    alignItems: 'center',
+                    justifyContent: 'flex-end',
+                    gap: 8,
+                  }}
+                >
+                  {actions(close)}
+                </View>
+              )}
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
+    </View>
+  );
+}
+
+export function Dialog({
+  title,
+  body,
+  open,
+  onOpenChange,
+  trigger,
+  children,
+  actions,
+  canClose = true,
+  onClose,
+  initialFocusRef,
+  returnFocusRef,
+}: {
+  title: string;
+  body?: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  trigger?: (
+    props: Pick<
+      PressableProps,
+      'onPress' | 'accessibilityState' | 'accessibilityHint'
+    > & { ref: React.Ref<View> },
+  ) => ReactNode;
+  children?: ReactNode;
+  actions?: (close: () => void) => ReactNode;
+  canClose?: boolean;
+  onClose?: () => void;
+  initialFocusRef?: React.RefObject<NativeFocusTarget | null>;
+  returnFocusRef?: React.RefObject<NativeFocusTarget | null>;
+}) {
+  const t = useMagnolia(),
+    [internal, setInternal] = React.useState(false),
+    visible = open ?? internal,
+    focus = useOverlayFocus(),
+    heading = React.useRef<View>(null),
+    wasVisible = React.useRef(false);
+  function change(next: boolean) {
+    if (open === undefined) setInternal(next);
+    onOpenChange?.(next);
+  }
+  function close() {
+    change(false);
+  }
+  function dismiss() {
+    if (canClose) close();
+  }
+  React.useEffect(() => {
+    if (wasVisible.current && !visible) {
+      onClose?.();
+      focus.focusElement(
+        () => returnFocusRef?.current ?? focus.triggerRef.current,
+      );
+    }
+    wasVisible.current = visible;
+  }, [visible, onClose, returnFocusRef, focus.focusElement]);
+  return (
+    <>
+      {trigger?.({
+        ref: focus.triggerRef,
+        accessibilityState: { expanded: visible },
+        accessibilityHint: `Opens ${title}`,
+        onPress: () => change(true),
+      })}
+      <Modal
+        visible={visible}
+        transparent
+        animationType="none"
+        onRequestClose={dismiss}
+        onShow={() =>
+          focus.focusElement(() => initialFocusRef?.current ?? heading.current)
+        }
+      >
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          accessibilityViewIsModal
+          style={{
+            flex: 1,
+            padding: 16,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: t.colors['color/bg/scrim'],
+          }}
+        >
+          <Pressable
+            disabled={!canClose}
+            accessibilityRole="button"
+            accessibilityLabel={`Dismiss ${title}`}
+            onPress={dismiss}
+            style={{ position: 'absolute', inset: 0 }}
+          />
+          <View
+            onAccessibilityEscape={dismiss}
+            style={{
+              width: 440,
+              maxWidth: '100%',
+              maxHeight: '100%',
+              flexShrink: 1,
+              borderWidth: 1,
+              borderColor: t.colors['color/border/subtle'],
+              borderRadius: 16,
+              backgroundColor: t.colors['color/bg/overlay'],
+              boxShadow: '0 1px 2px #0003, 0 8px 20px #0000004d',
+              overflow: 'hidden',
+            }}
+          >
+            <ScrollView
+              keyboardShouldPersistTaps="handled"
+              contentContainerStyle={{ padding: 24, gap: 12 }}
+            >
+              <View
+                ref={heading}
+                accessible
+                accessibilityRole="header"
+                accessibilityLabel={title}
+              >
+                <Text
+                  style={{
+                    fontSize: t.sizes['type/title/md/size'],
+                    lineHeight: t.sizes['type/title/md/line'],
+                    fontWeight: '500',
+                  }}
+                >
+                  {title}
+                </Text>
+              </View>
+              {body && (
+                <Text
+                  style={{
+                    fontSize: t.sizes['type/body/size'],
+                    lineHeight: t.sizes['type/body/line'],
+                    color: t.colors['color/fg/secondary'],
+                  }}
+                >
+                  {body}
+                </Text>
+              )}
+              {children}
+              {actions && (
+                <View
+                  style={{
+                    paddingTop: 12,
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    alignItems: 'center',
+                    justifyContent: 'flex-end',
+                    gap: 8,
+                  }}
+                >
+                  <ButtonIdleSurface.Provider value={{ danger: '#a8302e' }}>
+                    {actions(close)}
+                  </ButtonIdleSurface.Provider>
+                </View>
+              )}
+            </ScrollView>
+          </View>
+        </KeyboardAvoidingView>
+      </Modal>
+    </>
   );
 }

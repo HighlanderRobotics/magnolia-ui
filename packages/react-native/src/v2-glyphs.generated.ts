@@ -144,5 +144,7 @@ export const nativeGlyphs = {
   'menu-download': { source: require('./assets/v2/menu-download.png'), width: 20, height: 20 },
   'menu-trash': { source: require('./assets/v2/menu-trash.png'), width: 20, height: 20 },
   'menu-check': { source: require('./assets/v2/menu-check.png'), width: 16, height: 16 },
+  'popover-copy': { source: require('./assets/v2/popover-copy.png'), width: 20, height: 20 },
+  'popover-copy-compact': { source: require('./assets/v2/popover-copy-compact.png'), width: 16, height: 16 },
 } as const;
 export type NativeGlyphName = keyof typeof nativeGlyphs;

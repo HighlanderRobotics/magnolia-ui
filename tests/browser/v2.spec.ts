@@ -1716,3 +1716,149 @@ test('v2 Menu matches source geometry, maintains one highlight and supports keyb
     }
   }
 });
+
+test('v2 Popover and Dialog match source layout and preserve focus, dismissal and decision semantics', async ({
+  page,
+}, testInfo) => {
+  test.setTimeout(60000);
+  await page.goto('/v2');
+  const family = page.getByTestId('panels-family'),
+    share = family.getByRole('button', { name: 'Share view', exact: true }),
+    popover = family.getByRole('dialog', { name: 'Share view', exact: true }),
+    trigger = family.getByRole('button', { name: 'Open decision dialog' }),
+    dialog = family.getByRole('dialog', {
+      name: 'Delete Northwind?',
+      exact: true,
+    });
+  await share.click();
+  const copy = popover.getByRole('button', { name: 'Copy link', exact: true });
+  await expect(copy).toBeFocused();
+  await expect(popover).toHaveAccessibleDescription(
+    'Anyone in the workspace with the link can see this view.',
+  );
+  await page.keyboard.press('Escape');
+  await expect(popover).toBeHidden();
+  await expect(share).toBeFocused();
+  await share.click();
+  await page.keyboard.press('Tab');
+  await expect(trigger).toBeFocused();
+  await expect(popover).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(trigger).toBeFocused();
+  await share.click();
+  await copy.click();
+  await expect(popover).toBeHidden();
+  await expect(share).toBeFocused();
+  await expect(family.getByRole('status')).toHaveText(
+    'Overlay action: Copy link',
+  );
+  await share.click();
+  await trigger.click();
+  await expect(popover).toBeHidden();
+  await expect(dialog).toBeVisible();
+  const cancel = dialog.getByRole('button', { name: 'Cancel', exact: true }),
+    confirm = dialog.getByRole('button', {
+      name: 'Delete project',
+      exact: true,
+    });
+  await expect(cancel).toBeFocused();
+  await expect(dialog).toHaveAccessibleDescription(
+    "This removes the project and its 214 entries for everyone. It can't be undone.",
+  );
+  await page.keyboard.press('Shift+Tab');
+  await expect(confirm).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(cancel).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(dialog).toHaveCount(0);
+  await expect(trigger).toBeFocused();
+  await family
+    .getByRole('checkbox', { name: 'Require an explicit decision' })
+    .check();
+  await trigger.click();
+  await page.keyboard.press('Escape');
+  await expect(dialog).toBeVisible();
+  await page.mouse.click(2, 2);
+  await expect(dialog).toBeVisible();
+  await cancel.click();
+  await expect(dialog).toHaveCount(0);
+  await expect(trigger).toBeFocused();
+  await family
+    .getByRole('checkbox', { name: 'Require an explicit decision' })
+    .uncheck();
+  for (const theme of ['dark', 'light']) {
+    await page.getByLabel('Theme', { exact: true }).selectOption(theme);
+    for (const density of ['comfortable', 'compact']) {
+      await page.getByLabel('Density', { exact: true }).selectOption(density);
+      await share.click();
+      await expect(copy).toBeFocused();
+      const p = (await popover.boundingBox())!,
+        viewport = page.viewportSize()!;
+      expect(p.width).toBe(320);
+      expect(p.height).toBe(density === 'comfortable' ? 162 : 146);
+      expect(p.x).toBeGreaterThanOrEqual(8);
+      expect(p.x + p.width).toBeLessThanOrEqual(viewport.width - 8);
+      expect(p.y + p.height).toBeLessThanOrEqual(viewport.height - 8);
+      const icon = (await copy
+        .locator('[data-glyph="popover-copy"]')
+        .boundingBox())!;
+      expect(icon.width).toBe(density === 'comfortable' ? 20 : 16);
+      expect(icon.height).toBe(density === 'comfortable' ? 20 : 16);
+      const copyBox = (await copy.boundingBox())!;
+      expect(icon.x - copyBox.x).toBe(density === 'comfortable' ? 12 : 8);
+      expect(icon.y - copyBox.y).toBe((copyBox.height - icon.height) / 2);
+      await expect(popover.locator('.mg2-popover-body')).toHaveCSS(
+        'font-weight',
+        '400',
+      );
+      await popover.screenshot({
+        path: testInfo.outputPath(`popover-${theme}-${density}.png`),
+      });
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include('[data-testid="panels-family"]')
+            .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      await page.keyboard.press('Escape');
+      await trigger.click();
+      await expect(cancel).toBeFocused();
+      const d = (await dialog.boundingBox())!;
+      expect(d.width).toBe(Math.min(440, viewport.width - 32));
+      expect(d.height).toBe(density === 'comfortable' ? 202 : 182);
+      await expect(confirm).toHaveCSS('background-color', 'rgb(168, 48, 46)');
+      await expect(dialog.locator('.mg2-dialog-body')).toHaveCSS(
+        'font-weight',
+        '400',
+      );
+      await expect(dialog.getByRole('heading')).toHaveCSS('font-weight', '500');
+      const c = (await cancel.boundingBox())!,
+        a = (await confirm.boundingBox())!;
+      expect(a.x - (c.x + c.width)).toBeCloseTo(8, 1);
+      expect(d.y).toBeGreaterThanOrEqual(16);
+      expect(d.y + d.height).toBeLessThanOrEqual(viewport.height - 16);
+      await dialog.screenshot({
+        path: testInfo.outputPath(`dialog-${theme}-${density}.png`),
+      });
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include('[data-testid="panels-family"]')
+            .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      await cancel.click();
+      await expect(trigger).toBeFocused();
+    }
+  }
+  await trigger.click();
+  await confirm.click();
+  await expect(family.getByRole('status')).toHaveText(
+    'Overlay action: Delete project',
+  );
+  await expect(dialog).toHaveCount(0);
+  await expect(trigger).toBeFocused();
+});

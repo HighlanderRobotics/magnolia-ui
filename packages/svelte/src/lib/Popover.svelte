@@ -10,6 +10,9 @@
     children,
     initialFocus,
     anchorElement,
+    labelledby,
+    describedby,
+    class: className = '',
   }: {
     open?: boolean;
     label: string;
@@ -17,6 +20,9 @@
     children?: Snippet;
     initialFocus?: string;
     anchorElement?: HTMLElement;
+    labelledby?: string;
+    describedby?: string;
+    class?: string;
   } = $props();
   let anchor = $state<HTMLSpanElement>(null!);
   let panel = $state<HTMLDivElement>(null!);
@@ -55,8 +61,10 @@
     popover="auto"
     role="dialog"
     aria-label={label}
+    aria-labelledby={labelledby}
+    aria-describedby={describedby}
     tabindex="-1"
-    class="mg-popover"
+    class="mg-popover {className}"
     ontoggle={(event) => {
       if (event.newState === 'closed') {
         const restore =

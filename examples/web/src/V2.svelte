@@ -73,6 +73,8 @@
     Menu,
     MenuItem,
     MenuSeparator,
+    Popover,
+    Dialog,
   } from '../../../packages/svelte/src/lib/v2/index';
   import Glyph from '../../../packages/svelte/src/lib/v2/Glyph.svelte';
   let theme = $state<'dark' | 'light' | 'system'>('dark');
@@ -92,6 +94,9 @@
     note = $state('');
   let submitted = $state('');
   let confidence = $state(70);
+  let decisionOpen = $state(false),
+    decisionLocked = $state(false),
+    overlayAction = $state('None');
   let menuAction = $state('None'),
     menuView = $state('Detailed');
   let destination = $state('Home');
@@ -732,6 +737,52 @@
           </div></Card
         >
       </div>
+    </section>
+    <section
+      data-testid="panels-family"
+      aria-label="Popovers and decision dialogs"
+    >
+      <h2>Popover and Dialog</h2>
+      <Popover
+        title="Share view"
+        body="Anyone in the workspace with the link can see this view."
+      >
+        {#snippet trigger(attrs)}<Button {...attrs} variant="secondary"
+            >Share view</Button
+          >{/snippet}
+        {#snippet actions(close)}<Button
+            variant="secondary"
+            onclick={() => {
+              overlayAction = 'Copy link';
+              close();
+            }}
+            >{#snippet icon()}<Glyph name="popover-copy" />{/snippet}Copy link</Button
+          >{/snippet}
+      </Popover>
+      <Button variant="secondary" onclick={() => (decisionOpen = true)}
+        >Open decision dialog</Button
+      >
+      <Checkbox
+        label="Require an explicit decision"
+        bind:checked={decisionLocked}
+      />
+      <Dialog
+        bind:open={decisionOpen}
+        title="Delete Northwind?"
+        body="This removes the project and its 214 entries for everyone. It can't be undone."
+        canClose={!decisionLocked}
+      >
+        {#snippet actions(close)}<Button variant="secondary" onclick={close}
+            >Cancel</Button
+          ><Button
+            variant="danger"
+            onclick={() => {
+              overlayAction = 'Delete project';
+              close();
+            }}>Delete project</Button
+          >{/snippet}
+      </Dialog>
+      <p role="status">Overlay action: {overlayAction}</p>
     </section>
     <section data-testid="menu-family" aria-label="Action menus">
       <h2>Menu</h2>

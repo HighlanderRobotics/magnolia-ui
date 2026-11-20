@@ -59,6 +59,8 @@ import {
   Menu,
   MenuItem,
   MenuSeparator,
+  Popover,
+  Dialog,
 } from '../../packages/react-native/src/v2';
 test('v2 native Slider exposes stepped accessibility adjustments and disabled state', () => {
   const change = jest.fn();
@@ -931,4 +933,103 @@ test('v2 native Menu supports actions, disabled choices and cancellable selectio
   fireEvent.press(trigger);
   fireEvent.press(getByRole('button', { name: 'Dismiss Actions menu' }));
   expect(queryByRole('menuitem', { name: 'Edit' })).toBeNull();
+});
+
+test('v2 native Popover exposes its title and closes on action or dismissal', () => {
+  const action = jest.fn();
+  const { getByRole, queryByRole } = render(
+    <MagnoliaProvider>
+      <Popover
+        title="Share view"
+        body="Anyone with the link can see this view."
+        trigger={(props) => <Button {...props}>Share view</Button>}
+        actions={(close) => (
+          <Button
+            onPress={() => {
+              action();
+              close();
+            }}
+          >
+            Copy link
+          </Button>
+        )}
+      />
+    </MagnoliaProvider>,
+  );
+  const trigger = getByRole('button', { name: 'Share view' });
+  fireEvent.press(trigger);
+  expect(getByRole('header', { name: 'Share view' })).toBeTruthy();
+  fireEvent.press(getByRole('button', { name: 'Copy link' }));
+  expect(action).toHaveBeenCalledTimes(1);
+  expect(queryByRole('header', { name: 'Share view' })).toBeNull();
+  fireEvent.press(trigger);
+  fireEvent.press(getByRole('button', { name: 'Dismiss Share view' }));
+  expect(queryByRole('header', { name: 'Share view' })).toBeNull();
+});
+
+test('v2 native Dialog blocks incidental dismissal while allowing an explicit decision', () => {
+  const closed = jest.fn();
+  const { getByRole, queryByRole, getByText } = render(
+    <MagnoliaProvider>
+      <Dialog
+        title="Delete Northwind?"
+        body="It cannot be undone."
+        canClose={false}
+        onClose={closed}
+        trigger={(props) => <Button {...props}>Open decision</Button>}
+        actions={(close) => <Button onPress={close}>Cancel</Button>}
+      />
+    </MagnoliaProvider>,
+  );
+  fireEvent.press(getByRole('button', { name: 'Open decision' }));
+  expect(getByRole('header', { name: 'Delete Northwind?' })).toBeTruthy();
+  expect(getByText('It cannot be undone.')).toBeTruthy();
+  fireEvent.press(getByRole('button', { name: 'Dismiss Delete Northwind?' }));
+  expect(getByRole('header', { name: 'Delete Northwind?' })).toBeTruthy();
+  expect(closed).not.toHaveBeenCalled();
+  fireEvent(
+    getByRole('header', { name: 'Delete Northwind?' }),
+    'accessibilityEscape',
+  );
+  expect(getByRole('header', { name: 'Delete Northwind?' })).toBeTruthy();
+  fireEvent.press(getByRole('button', { name: 'Cancel' }));
+  expect(queryByRole('header', { name: 'Delete Northwind?' })).toBeNull();
+  expect(closed).toHaveBeenCalledTimes(1);
+});
+
+test('v2 Dialog preserves its source confirm override without recoloring surrounding buttons', () => {
+  for (const mode of ['dark', 'light'] as const) {
+    const { getByRole, unmount } = render(
+      <MagnoliaProvider mode={mode}>
+        <Button variant="danger">Danger outside</Button>
+        <Dialog
+          title="Confirm"
+          open
+          actions={(close) => (
+            <Button variant="danger" onPress={close}>
+              Confirm delete
+            </Button>
+          )}
+        />
+      </MagnoliaProvider>,
+    );
+    expect(getByRole('button', { name: 'Confirm delete' })).toHaveStyle({
+      backgroundColor: '#a8302e',
+    });
+    fireEvent(getByRole('button', { name: 'Confirm delete' }), 'hoverIn');
+    expect(getByRole('button', { name: 'Confirm delete' })).toHaveStyle({
+      backgroundColor: mode === 'dark' ? '#b53a37' : '#a12f2f',
+    });
+    fireEvent(getByRole('button', { name: 'Confirm delete' }), 'hoverOut');
+    expect(getByRole('button', { name: 'Confirm delete' })).toHaveStyle({
+      backgroundColor: '#a8302e',
+    });
+    expect(
+      getByRole('button', {
+        name: 'Danger outside',
+        includeHiddenElements: true,
+      }),
+    ).toHaveStyle({ backgroundColor: mode === 'dark' ? '#a8302e' : '#c43f3e' });
+    unmount();
+  }
 });
