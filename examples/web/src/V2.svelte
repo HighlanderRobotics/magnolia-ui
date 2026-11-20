@@ -68,6 +68,7 @@
     Distribution,
     Scatter,
     LineChart,
+    Accordion,
   } from '../../../packages/svelte/src/lib/v2/index';
   import Glyph from '../../../packages/svelte/src/lib/v2/Glyph.svelte';
   let theme = $state<'dark' | 'light' | 'system'>('dark');
@@ -725,6 +726,30 @@
           </div></Card
         >
       </div>
+    </section>
+    <section
+      data-testid="disclosure-family"
+      aria-label="Progressive disclosure"
+    >
+      <h2>Accordion</h2>
+      <Accordion title="Section title"
+        ><p>
+          Content revealed when the section is expanded. Keep it short; long
+          content belongs on its own page.
+        </p></Accordion
+      >
+      <Accordion title="First grouped section" name="gallery-sections"
+        ><p>First grouped content.</p></Accordion
+      >
+      <Accordion title="Second grouped section" name="gallery-sections"
+        ><p>Second grouped content.</p></Accordion
+      >
+      <Accordion title="Unavailable section" disabled
+        ><p>Unavailable content.</p></Accordion
+      >
+      <Accordion title="Unavailable expanded section" disabled open
+        ><p>This content remains readable.</p></Accordion
+      >
     </section>
     <section data-testid="line-family" aria-label="Line charts">
       <h2>LineChart</h2>

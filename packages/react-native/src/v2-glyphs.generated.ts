@@ -135,5 +135,7 @@ export const nativeGlyphs = {
   'line-point-4-light': { source: require('./assets/v2/line-point-4-light.png'), width: 12, height: 12, geometry: {"offsetX":-2,"offsetY":-2,"logicalWidth":8,"logicalHeight":8} },
   'line-point-5-dark': { source: require('./assets/v2/line-point-5-dark.png'), width: 12, height: 12, geometry: {"offsetX":-2,"offsetY":-2,"logicalWidth":8,"logicalHeight":8} },
   'line-point-5-light': { source: require('./assets/v2/line-point-5-light.png'), width: 12, height: 12, geometry: {"offsetX":-2,"offsetY":-2,"logicalWidth":8,"logicalHeight":8} },
+  'accordion-down': { source: require('./assets/v2/accordion-down.png'), width: 20, height: 20 },
+  'accordion-up': { source: require('./assets/v2/accordion-up.png'), width: 20, height: 20 },
 } as const;
 export type NativeGlyphName = keyof typeof nativeGlyphs;

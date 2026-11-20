@@ -1253,3 +1253,5 @@ export {
 } from './v2-charts.js';
 
 export { Distribution, Scatter, LineChart } from './v2-statistical-charts.js';
+
+export { Accordion } from './v2-overlays.js';

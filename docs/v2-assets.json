@@ -1302,6 +1302,22 @@
         "logicalHeight": 8
       },
       "fillVariableId": "VariableID:2:182"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/accordion-down.svg",
+      "nodeId": "76:4028",
+      "slot": "Accordion down chevron",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "f731452ccd4d42b27b6362ce386d519f58b3b99725bc11e266d09e1d9aa3007c"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/accordion-up.svg",
+      "nodeId": "76:4059",
+      "slot": "Accordion up chevron",
+      "width": 20.0,
+      "height": 20.0,
+      "sha256": "4071eacc6d39d0710f9c6b1d9f2fc36778e61303fef1f20f7b42e5d7947c259f"
     }
   ]
 }

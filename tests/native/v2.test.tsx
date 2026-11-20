@@ -54,6 +54,7 @@ import {
   Distribution,
   Scatter,
   LineChart,
+  Accordion,
 } from '../../packages/react-native/src/v2';
 test('v2 native Slider exposes stepped accessibility adjustments and disabled state', () => {
   const change = jest.fn();
@@ -809,4 +810,48 @@ test('v2 native LineChart inspects periods, skips empty columns and exposes miss
       'Period: W1, Series 0: 0, Series 1: 1, Series 2: 2, Series 3: 3, Series 4: 4, Series 5: 5',
     ),
   ).toBeTruthy();
+});
+
+test('v2 native Accordion announces expanded state and keeps disabled content readable', () => {
+  const change = jest.fn();
+  function Example() {
+    const [open, setOpen] = React.useState(false);
+    return (
+      <MagnoliaProvider>
+        <Accordion
+          title="Section title"
+          open={open}
+          onOpenChange={(next) => {
+            change(next);
+            setOpen(next);
+          }}
+        >
+          Revealed content.
+        </Accordion>
+        <Accordion title="Unavailable section" disabled onOpenChange={change}>
+          Hidden content.
+        </Accordion>
+        <Accordion title="Unavailable expanded section" disabled open>
+          Readable content.
+        </Accordion>
+      </MagnoliaProvider>
+    );
+  }
+  const { getByRole, getByText, queryByText } = render(<Example />);
+  const control = getByRole('button', { name: 'Section title' });
+  expect(control.props.accessibilityState.expanded).toBe(false);
+  expect(queryByText('Revealed content.')).toBeNull();
+  fireEvent.press(control);
+  expect(change).toHaveBeenLastCalledWith(true);
+  expect(
+    getByRole('button', { name: 'Section title' }).props.accessibilityState
+      .expanded,
+  ).toBe(true);
+  expect(getByText('Revealed content.')).toBeTruthy();
+  fireEvent.press(getByRole('button', { name: 'Unavailable section' }));
+  expect(change).toHaveBeenCalledTimes(1);
+  expect(queryByText('Hidden content.')).toBeNull();
+  expect(getByText('Readable content.')).toBeTruthy();
+  fireEvent.press(getByRole('button', { name: 'Section title' }));
+  expect(queryByText('Revealed content.')).toBeNull();
 });

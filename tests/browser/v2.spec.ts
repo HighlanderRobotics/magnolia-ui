@@ -1397,3 +1397,86 @@ test('v2 LineChart matches source geometry and inspects periods without filling 
     }
   }
 });
+
+test('v2 Accordion preserves source geometry, native keyboard groups and disabled states', async ({
+  page,
+}, testInfo) => {
+  test.setTimeout(60000);
+  await page.goto('/v2');
+  const family = page.getByTestId('disclosure-family'),
+    control = family.locator('details').first().locator('summary'),
+    details = family.locator('details').first();
+  await control.focus();
+  await expect(details).not.toHaveAttribute('open', '');
+  await page.keyboard.press('Enter');
+  await expect(details).toHaveAttribute('open', '');
+  await page.keyboard.press('Space');
+  await expect(details).not.toHaveAttribute('open', '');
+  await family.getByText('First grouped section', { exact: true }).click();
+  await expect(
+    family.getByText('First grouped content.', { exact: true }),
+  ).toBeVisible();
+  await family.getByText('Second grouped section', { exact: true }).click();
+  await expect(
+    family.getByText('First grouped content.', { exact: true }),
+  ).not.toBeVisible();
+  await expect(
+    family.getByText('Second grouped content.', { exact: true }),
+  ).toBeVisible();
+  await family
+    .getByText('Unavailable section', { exact: true })
+    .click({ force: true });
+  await expect(
+    family.getByText('Unavailable content.', { exact: true }),
+  ).not.toBeVisible();
+  await expect(
+    family.getByText('This content remains readable.', { exact: true }),
+  ).toBeVisible();
+  const coarse = await page.evaluate(
+    () => matchMedia('(pointer:coarse)').matches,
+  );
+  for (const theme of ['dark', 'light']) {
+    await page.getByLabel('Theme', { exact: true }).selectOption(theme);
+    for (const density of ['comfortable', 'compact']) {
+      await page.getByLabel('Density', { exact: true }).selectOption(density);
+      await page
+        .getByRole('heading', { name: 'Accordion', exact: true })
+        .click();
+      const closed = (await details.boundingBox())!;
+      expect(closed.width).toBe(coarse ? page.viewportSize()!.width - 48 : 400);
+      expect(closed.height).toBe(49);
+      await expect(
+        details.locator('[data-glyph="accordion-down"]'),
+      ).toHaveCount(1);
+      let glyph = (await details.locator('.mg2-glyph').boundingBox())!;
+      expect(glyph.width).toBe(20);
+      expect(glyph.height).toBe(20);
+      await details.screenshot({
+        path: testInfo.outputPath(`accordion-closed-${theme}-${density}.png`),
+      });
+      await control.click();
+      await expect(details.locator('[data-glyph="accordion-up"]')).toHaveCount(
+        1,
+      );
+      if (!coarse)
+        expect((await details.boundingBox())!.height).toBe(
+          density === 'comfortable' ? 109 : 105,
+        );
+      glyph = (await details.locator('.mg2-glyph').boundingBox())!;
+      expect(glyph.width).toBe(20);
+      expect(glyph.height).toBe(20);
+      await details.screenshot({
+        path: testInfo.outputPath(`accordion-open-${theme}-${density}.png`),
+      });
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include('[data-testid="disclosure-family"]')
+            .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      await control.click();
+    }
+  }
+});

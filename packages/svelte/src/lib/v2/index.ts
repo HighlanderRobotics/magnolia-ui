@@ -65,3 +65,4 @@ export { default as Heatmap } from './Heatmap.svelte';
 export { default as Distribution } from './Distribution.svelte';
 export { default as Scatter } from './Scatter.svelte';
 export { default as LineChart } from './LineChart.svelte';
+export { default as Accordion } from './Accordion.svelte';
