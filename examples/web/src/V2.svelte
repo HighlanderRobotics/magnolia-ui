@@ -60,6 +60,9 @@
     Pagination,
     PaginationPages,
     BulkActionBar,
+    Sparkline,
+    LegendItem,
+    ChartTooltip,
   } from '../../../packages/svelte/src/lib/v2/index';
   import Glyph from '../../../packages/svelte/src/lib/v2/Glyph.svelte';
   let theme = $state<'dark' | 'light' | 'system'>('dark');
@@ -717,6 +720,38 @@
           </div></Card
         >
       </div>
+    </section>
+    <section data-testid="chart-primitives" aria-label="Chart primitives">
+      <h2>Chart primitives</h2>
+      <div
+        style="display:grid;grid-template-columns:repeat(2,96px);gap:16px 24px"
+      >
+        {#each ['rising', 'falling', 'volatile', 'flat'] as shape}
+          <Sparkline
+            shape={shape as 'rising' | 'falling' | 'volatile' | 'flat'}
+            label={`${shape} neutral trend`}
+          />
+          <Sparkline
+            shape={shape as 'rising' | 'falling' | 'volatile' | 'flat'}
+            tone="accent"
+            label={`${shape} accent trend`}
+          />
+        {/each}
+      </div>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;margin-block:24px">
+        {#each [1, 2, 3, 4, 5, 'other'] as series}<LegendItem
+            label="Series"
+            series={series as 1 | 2 | 3 | 4 | 5 | 'other'}
+          />{/each}
+      </div>
+      <ChartTooltip
+        title="Week 6"
+        items={[
+          { label: 'Northwind', value: 42, series: 1 },
+          { label: 'Larkspur', value: 35, series: 2 },
+          { label: 'Halcyon', value: 28, series: 3 },
+        ]}
+      />
     </section>
     <section data-testid="table-family" aria-label="Data table components">
       <h2>Tables and pagination</h2>

@@ -911,3 +911,47 @@ test('v2 table sorting, editable cells, page bounds and bulk clearing work toget
     }
   }
 });
+
+test('v2 chart primitives preserve original sparkline bounds and series readouts', async ({
+  page,
+}, testInfo) => {
+  test.setTimeout(60000);
+  await page.goto('/v2');
+  const family = page.getByTestId('chart-primitives');
+  await expect(family.getByRole('img')).toHaveCount(8);
+  await expect(family.getByRole('tooltip')).toContainText(/Northwind\s*42/);
+  for (const theme of ['dark', 'light']) {
+    await page.getByLabel('Theme', { exact: true }).selectOption(theme);
+    for (const density of ['comfortable', 'compact']) {
+      await page.getByLabel('Density', { exact: true }).selectOption(density);
+      for (const spark of await family.getByRole('img').all()) {
+        const box = (await spark.boundingBox())!;
+        expect(box.width).toBe(96);
+        expect(box.height).toBe(24);
+        const glyph = (await spark.locator('.mg2-glyph').boundingBox())!;
+        expect(glyph.width).toBe(96);
+        expect(glyph.height).toBe(24);
+      }
+      for (const swatch of await family.locator('.mg2-chart-swatch').all()) {
+        const box = (await swatch.boundingBox())!;
+        expect(box.width).toBe(8);
+        expect(box.height).toBe(8);
+      }
+      const tooltip = (await family.getByRole('tooltip').boundingBox())!;
+      expect(tooltip.width).toBe(180);
+      expect(tooltip.height).toBe(120);
+      await family.screenshot({
+        path: testInfo.outputPath(`chart-primitives-${theme}-${density}.png`),
+      });
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include('[data-testid="chart-primitives"]')
+            .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      await page.bringToFront();
+    }
+  }
+});

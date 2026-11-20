@@ -1008,6 +1008,70 @@
       "width": 20,
       "height": 20,
       "sha256": "655bf5b018a554a23c82fccaaf405c0ea776b660e7e772b791d0ed7d32b7d4d0"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/spark-rising-neutral.svg",
+      "nodeId": "53:191",
+      "slot": "spark-rising-neutral",
+      "width": 96.0,
+      "height": 24.0,
+      "sha256": "c6cbd185b81a36881a4b17769a0c2317bbdd7bd9851a173d47ecff9e04f614b9"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/spark-rising-accent.svg",
+      "nodeId": "53:194",
+      "slot": "spark-rising-accent",
+      "width": 96.0,
+      "height": 24.0,
+      "sha256": "a830ff1a5a79ffb32595a846ff06e14dd481aa2a26af63e637aa4324d0590a11"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/spark-falling-neutral.svg",
+      "nodeId": "53:197",
+      "slot": "spark-falling-neutral",
+      "width": 96.0,
+      "height": 24.0,
+      "sha256": "257d1651a61557babf02494ff37131cea2be1de75fbc2dc8440a205131cea057"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/spark-falling-accent.svg",
+      "nodeId": "53:200",
+      "slot": "spark-falling-accent",
+      "width": 96.0,
+      "height": 24.0,
+      "sha256": "ddb5d605434d85f0cc354aed0995de4433308811fd4cae16ed96e7c886c7887a"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/spark-volatile-neutral.svg",
+      "nodeId": "53:203",
+      "slot": "spark-volatile-neutral",
+      "width": 96.0,
+      "height": 24.0,
+      "sha256": "6ef7d282748057822295a81afdb6bc31c7e0b0b2ecbdf5eec85225d0a6815d4e"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/spark-volatile-accent.svg",
+      "nodeId": "53:206",
+      "slot": "spark-volatile-accent",
+      "width": 96.0,
+      "height": 24.0,
+      "sha256": "8b4b8ef0fce9435b42524b71c4860f2b6a02746af0d8737dcaf6be1d8527ea74"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/spark-flat-neutral.svg",
+      "nodeId": "53:209",
+      "slot": "spark-flat-neutral",
+      "width": 96.0,
+      "height": 24.0,
+      "sha256": "d7753444dc40ec4d2bedfcbdf6b6e87bb5a6a87abd6194210c8526b137500459"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/spark-flat-accent.svg",
+      "nodeId": "53:212",
+      "slot": "spark-flat-accent",
+      "width": 96.0,
+      "height": 24.0,
+      "sha256": "665edf10677282773ca5e7972cbf6511f8be15f9f130cbb587e1ff5a3e0ec857"
     }
   ]
 }

@@ -110,6 +110,14 @@ import asset107 from './assets/bulk-assign.svg';
 import asset108 from './assets/bulk-export.svg';
 import asset109 from './assets/bulk-delete.svg';
 import asset110 from './assets/bulk-clear.svg';
+import asset111 from './assets/spark-rising-neutral.svg';
+import asset112 from './assets/spark-rising-accent.svg';
+import asset113 from './assets/spark-falling-neutral.svg';
+import asset114 from './assets/spark-falling-accent.svg';
+import asset115 from './assets/spark-volatile-neutral.svg';
+import asset116 from './assets/spark-volatile-accent.svg';
+import asset117 from './assets/spark-flat-neutral.svg';
+import asset118 from './assets/spark-flat-accent.svg';
 export const glyphs = {
   'spinner-dark': { src: asset0, width: 20, height: 20 },
   'error': { src: asset1, width: 12, height: 12 },
@@ -222,5 +230,13 @@ export const glyphs = {
   'bulk-export': { src: asset108, width: 20, height: 20 },
   'bulk-delete': { src: asset109, width: 20, height: 20 },
   'bulk-clear': { src: asset110, width: 20, height: 20 },
+  'spark-rising-neutral': { src: asset111, width: 96, height: 24 },
+  'spark-rising-accent': { src: asset112, width: 96, height: 24 },
+  'spark-falling-neutral': { src: asset113, width: 96, height: 24 },
+  'spark-falling-accent': { src: asset114, width: 96, height: 24 },
+  'spark-volatile-neutral': { src: asset115, width: 96, height: 24 },
+  'spark-volatile-accent': { src: asset116, width: 96, height: 24 },
+  'spark-flat-neutral': { src: asset117, width: 96, height: 24 },
+  'spark-flat-accent': { src: asset118, width: 96, height: 24 },
 } as const;
 export type GlyphName = keyof typeof glyphs;

@@ -57,3 +57,6 @@ export { default as TableRow } from './TableRow.svelte';
 export { default as Pagination } from './Pagination.svelte';
 export { default as PaginationPages } from './PaginationPages.svelte';
 export { default as BulkActionBar } from './BulkActionBar.svelte';
+export { default as Sparkline } from './Sparkline.svelte';
+export { default as LegendItem } from './LegendItem.svelte';
+export { default as ChartTooltip } from './ChartTooltip.svelte';

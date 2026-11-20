@@ -46,6 +46,9 @@ import {
   Pagination,
   PaginationPages,
   BulkActionBar,
+  Sparkline,
+  LegendItem,
+  ChartTooltip,
 } from '../../packages/react-native/src/v2';
 test('v2 native Slider exposes stepped accessibility adjustments and disabled state', () => {
   const change = jest.fn();
@@ -567,4 +570,29 @@ test('v2 data controls bound pagination, sort requests, cell commits and clearin
       <BulkActionBar count={0} onClear={clear} />
     </MagnoliaProvider>,
   );
+});
+
+test('v2 chart primitives retain trend names and series values in both modes', () => {
+  const content = (mode: 'dark' | 'light') => (
+    <MagnoliaProvider mode={mode} density="compact">
+      <Sparkline label="Northwind rising output" />
+      <LegendItem label="Northwind" series={1} />
+      <ChartTooltip
+        title="Week 6"
+        items={[
+          { label: 'Northwind', value: 42, series: 1 },
+          { label: 'Larkspur', value: 35, series: 2 },
+        ]}
+      />
+    </MagnoliaProvider>
+  );
+  const { getByRole, getByLabelText, getByText, rerender } = render(
+    content('dark'),
+  );
+  expect(getByRole('image', { name: 'Northwind rising output' })).toBeTruthy();
+  expect(getByLabelText('Northwind: 42')).toBeTruthy();
+  expect(getByLabelText('Larkspur: 35')).toBeTruthy();
+  rerender(content('light'));
+  expect(getByText('Week 6')).toBeTruthy();
+  expect(getByLabelText('Northwind: 42')).toBeTruthy();
 });

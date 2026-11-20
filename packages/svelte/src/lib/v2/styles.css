@@ -2964,3 +2964,96 @@
 .mg2-pagination .mg2-glyph[data-glyph='page-prev-disabled'] {
   color: var(--mg-v2-color-fg-disabled);
 }
+
+.mg2-sparkline {
+  display: inline-flex;
+  width: 96px;
+  height: 24px;
+  color: var(--mg-v2-color-fg-secondary);
+}
+.mg2-sparkline[data-tone='accent'] {
+  color: var(--mg-v2-color-fg-accent);
+}
+.mg2-chart-swatch {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  flex: 0 0 8px;
+  border-radius: 2px;
+  background: var(--mg-v2-color-fg-tertiary);
+}
+.mg2-chart-swatch[data-series='1'] {
+  background: var(--mg-v2-color-chart-cat-1);
+}
+.mg2-chart-swatch[data-series='2'] {
+  background: var(--mg-v2-color-chart-cat-2);
+}
+.mg2-chart-swatch[data-series='3'] {
+  background: var(--mg-v2-color-chart-cat-3);
+}
+.mg2-chart-swatch[data-series='4'] {
+  background: var(--mg-v2-color-chart-cat-4);
+}
+.mg2-chart-swatch[data-series='5'] {
+  background: var(--mg-v2-color-chart-cat-5);
+}
+.mg2-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--mg-v2-color-fg-secondary);
+  font-size: var(--mg-v2-type-body-sm-size);
+  line-height: var(--mg-v2-type-body-sm-line);
+}
+.mg2-chart-tooltip {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 180px;
+  max-width: 100%;
+  padding: 12px;
+  border: 1px solid var(--mg-v2-color-border-subtle);
+  border-radius: 8px;
+  background: var(--mg-v2-color-bg-overlay);
+  box-shadow:
+    0 1px 2px #0003,
+    0 8px 20px #0000004d;
+}
+.mg2-chart-tooltip-title {
+  font-size: var(--mg-v2-type-label-sm-size);
+  line-height: var(--mg-v2-type-label-sm-line);
+  font-weight: 500;
+  color: var(--mg-v2-color-fg-secondary);
+}
+.mg2-chart-tooltip dl {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+}
+.mg2-chart-tooltip dl > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.mg2-chart-tooltip dt {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--mg-v2-type-body-sm-size);
+  line-height: var(--mg-v2-type-body-sm-line);
+  color: var(--mg-v2-color-fg-secondary);
+}
+.mg2-chart-tooltip dt > span:last-child {
+  overflow-wrap: anywhere;
+}
+.mg2-chart-tooltip dd {
+  margin: 0;
+  font-size: var(--mg-v2-type-label-sm-size);
+  line-height: var(--mg-v2-type-label-sm-line);
+  font-weight: 500;
+  color: var(--mg-v2-color-fg-primary);
+  font-variant-numeric: tabular-nums;
+}

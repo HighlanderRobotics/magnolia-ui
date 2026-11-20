@@ -72,3 +72,5 @@ export function paginationPages(current: number, total: number) {
     .filter((p) => p >= 1 && p <= bounded.totalPages)
     .sort((a, b) => a - b);
 }
+
+export type ChartSeries = 1 | 2 | 3 | 4 | 5 | 'other';

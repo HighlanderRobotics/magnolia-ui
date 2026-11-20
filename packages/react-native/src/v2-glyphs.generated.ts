@@ -111,5 +111,13 @@ export const nativeGlyphs = {
   'bulk-export': { source: require('./assets/v2/bulk-export.png'), width: 20, height: 20 },
   'bulk-delete': { source: require('./assets/v2/bulk-delete.png'), width: 20, height: 20 },
   'bulk-clear': { source: require('./assets/v2/bulk-clear.png'), width: 20, height: 20 },
+  'spark-rising-neutral': { source: require('./assets/v2/spark-rising-neutral.png'), width: 96, height: 24 },
+  'spark-rising-accent': { source: require('./assets/v2/spark-rising-accent.png'), width: 96, height: 24 },
+  'spark-falling-neutral': { source: require('./assets/v2/spark-falling-neutral.png'), width: 96, height: 24 },
+  'spark-falling-accent': { source: require('./assets/v2/spark-falling-accent.png'), width: 96, height: 24 },
+  'spark-volatile-neutral': { source: require('./assets/v2/spark-volatile-neutral.png'), width: 96, height: 24 },
+  'spark-volatile-accent': { source: require('./assets/v2/spark-volatile-accent.png'), width: 96, height: 24 },
+  'spark-flat-neutral': { source: require('./assets/v2/spark-flat-neutral.png'), width: 96, height: 24 },
+  'spark-flat-accent': { source: require('./assets/v2/spark-flat-accent.png'), width: 96, height: 24 },
 } as const;
 export type NativeGlyphName = keyof typeof nativeGlyphs;

@@ -128,4 +128,10 @@ Pagination shows the bounded visible range and total, provides configurable page
 
 BulkActionBar shows selected count, optional assign/export/delete callbacks (or custom children) and clear. Web defaults to a floating bottom bar; set `floating={false}` for inline compositions. Escape clears selection unless a child already handled it. Clearing while focus is inside returns focus to the control active when selection began. Native exposes clear and accessibility escape; the application positions it with `style` and supplies any destructive-action confirmation. Bulk action buttons retain 44 px targets and wrap on narrow screens.
 
+## Chart primitives
+
+Sparkline (53:213) uses the eight original SVGs for rising/falling/volatile/flat shapes in neutral/accent tones at their natural 96 × 24 px bounds. It is a shape indicator; applications supply an accessible `label` describing the represented data, or leave it decorative when adjacent text already gives the same meaning. It does not fabricate numerical data from a shape.
+
+LegendItem (53:238) provides an 8 px swatch and label for categorical series 1–5 or `other`. ChartTooltip (53:253) takes a title and ordered `{label, value, series}` items, with tabular, right-aligned values. It renders the readout; the owning chart controls its position and associates it with the active point. Both platforms use the generated theme tokens. The `ChartSeries` type is exported from the v2 token package.
+
 The full token source and the controls above are implemented. Charts, remaining overlays, and the complete canonical icon inventory still require v2 implementation and parity checks. Existing v1 controls do not count as v2 coverage. LVT-380 stays In Progress; no v1.0 or v2 release is implied, and Lovat dependencies remain unchanged.

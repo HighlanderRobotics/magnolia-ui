@@ -1243,3 +1243,5 @@ export {
   PaginationPages,
   BulkActionBar,
 } from './v2-data.js';
+
+export { Sparkline, LegendItem, ChartTooltip } from './v2-charts.js';
