@@ -1,7 +1,10 @@
 import { execFileSync } from 'node:child_process';
+import assert from 'node:assert/strict';
 import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
+import { createServer } from 'vite';
+import { svelte } from '@sveltejs/vite-plugin-svelte';
 const manager = process.argv[2] ?? 'npm';
 if (!['npm', 'pnpm', 'yarn', 'bun'].includes(manager))
   throw new Error('Choose npm, pnpm, yarn or bun');
@@ -96,13 +99,36 @@ if (manager === 'yarn')
     cwd: directory,
     stdio: 'inherit',
   });
-const inspect = `import {tokens} from '@highlanderrobotics/magnolia-tokens'; import {readFileSync} from 'node:fs'; if(tokens.themes.dark.primary!=='#b59aff')throw Error('Bad tokens'); for(const path of ['@highlanderrobotics/magnolia-tokens/css','@highlanderrobotics/magnolia-starlight/theme.css']) if(!readFileSync(import.meta.resolve(path).replace('file://',''),'utf8')) throw Error('Missing CSS'); console.log('Token imports and CSS exports passed.');`;
+const inspect = `
+import { tokens } from '@highlanderrobotics/magnolia-tokens';
+import { v2Tokens } from '@highlanderrobotics/magnolia-tokens/v2';
+import { readFileSync } from 'node:fs';
+if (tokens.themes.dark.primary !== '#b59aff') throw Error('Bad tokens');
+if (!v2Tokens.color.dark['color/bg/canvas']) throw Error('Missing v2 tokens');
+for (const path of [
+  '@highlanderrobotics/magnolia-tokens/css',
+  '@highlanderrobotics/magnolia-tokens/v2/css',
+  '@highlanderrobotics/magnolia-starlight/theme.css',
+  '@highlanderrobotics/magnolia-starlight/v2.css',
+]) {
+  if (!readFileSync(new URL(import.meta.resolve(path)), 'utf8')) throw Error('Missing CSS: ' + path);
+}
+console.log('Token imports and CSS exports passed.');
+`;
 writeFileSync(join(directory, 'smoke.mjs'), inspect);
 execFileSync('node', ['smoke.mjs'], { cwd: directory, stdio: 'inherit' });
 // Resolve published Svelte declarations and RN types from the isolated consumer.
 writeFileSync(
   join(directory, 'types.ts'),
-  `import {Button} from '@highlanderrobotics/magnolia-svelte'; import type {ButtonProps} from '@highlanderrobotics/magnolia-react-native'; const props:ButtonProps={children:'Save',onPress:async()=>{}}; void Button; void props;`,
+  `import { Button } from '@highlanderrobotics/magnolia-svelte';
+import type { ButtonProps } from '@highlanderrobotics/magnolia-react-native';
+import { ErrorSummary } from '@highlanderrobotics/magnolia-svelte/v2';
+import type { TextFieldProps } from '@highlanderrobotics/magnolia-react-native/v2';
+import type { TextInput } from 'react-native';
+const props: ButtonProps = { children: 'Save', onPress: async () => {} };
+const field: TextFieldProps = { label: 'Name', ref: (input: TextInput | null) => { input?.focus(); } };
+void Button; void ErrorSummary; void props; void field;
+`,
 );
 execFileSync(
   resolve('node_modules/.bin/tsc'),
@@ -120,4 +146,38 @@ execFileSync(
   ],
   { cwd: directory, stdio: 'inherit' },
 );
+writeFileSync(
+  join(directory, 'Report.svelte'),
+  `<script>
+  import { MagnoliaUIRoot, FormSection, TextField, ErrorSummary, Button } from '@highlanderrobotics/magnolia-svelte/v2';
+</script>
+<MagnoliaUIRoot theme="light" density="compact">
+  <form>
+    <ErrorSummary errors={[{ id: 'name', label: 'Name', message: 'Enter a name' }]} />
+    <FormSection title="Report details">
+      <TextField id="name" label="Name" error="Enter a name" />
+      <Button type="submit">Save report</Button>
+    </FormSection>
+  </form>
+</MagnoliaUIRoot>
+`,
+);
+const server = await createServer({
+  root: directory,
+  configFile: false,
+  plugins: [svelte()],
+  server: { middlewareMode: true, hmr: false, ws: false },
+  appType: 'custom',
+});
+try {
+  const { render } = await server.ssrLoadModule('svelte/server');
+  const { default: Report } = await server.ssrLoadModule('/Report.svelte');
+  const { body } = render(Report);
+  assert.match(body, /data-magnolia-version="2"/);
+  assert.match(body, /href="#name"/);
+  assert.match(body, /aria-errormessage=/);
+  assert.match(body, /Save report/);
+} finally {
+  await server.close();
+}
 console.log(`${manager} ${source} consumer passed: ${directory}`);

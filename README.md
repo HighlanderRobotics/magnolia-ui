@@ -11,12 +11,15 @@
 Install the published Svelte package:
 
 ```sh
-npm install --save-exact @highlanderrobotics/magnolia-svelte
+npm install --save-exact @highlanderrobotics/magnolia-svelte@2.0.0
 ```
 
 ```svelte
 <script lang="ts">
-  import { MagnoliaUIRoot, Button } from '@highlanderrobotics/magnolia-svelte';
+  import {
+    MagnoliaUIRoot,
+    Button,
+  } from '@highlanderrobotics/magnolia-svelte/v2';
 </script>
 
 <MagnoliaUIRoot theme="dark">
@@ -24,11 +27,11 @@ npm install --save-exact @highlanderrobotics/magnolia-svelte
 </MagnoliaUIRoot>
 ```
 
-Bundle fonts in your app, or import `@highlanderrobotics/magnolia-svelte/fonts.css` to use the hosted web fonts. See the [component contracts](docs/components.md) and [native example](examples/native/README.md) for platform setup.
+Load Roboto 400/500 and Roboto Mono 400 in your app. See the [component contracts](docs/components.md) and [native example](examples/native/README.md) for platform setup.
 
 ## Explore v2
 
-Magnolia v2 adds Dark/Light themes, Comfortable/Compact densities and components matched to the new Figma source. Its source is available in this branch through the Svelte and React Native `/v2` entry points; release validation is in progress.
+Magnolia v2 adds Dark/Light themes, Comfortable/Compact densities and components matched to the new Figma source. Use the Svelte and React Native `/v2` entry points for the new components. The original root imports remain available.
 
 Use Node 22.23.4+ and npm 11.6.2, then run from the repository root:
 
@@ -38,7 +41,7 @@ npm run build
 npm run gallery
 ```
 
-Open the [v2 gallery](http://localhost:4173/v2). See the [v2 APIs and coverage](docs/magnolia-v2.md) for component examples, platform adaptations and remaining validation gates.
+Open the [v2 gallery](http://localhost:4173/v2). See the [v2 APIs and coverage](docs/magnolia-v2.md) for component examples and platform adaptations.
 
 ## Packages
 
