@@ -120,6 +120,20 @@ import asset117 from './assets/spark-flat-neutral.svg';
 import asset118 from './assets/spark-flat-accent.svg';
 import asset119 from './assets/distribution-outlier-accent.svg';
 import asset120 from './assets/distribution-outlier-neutral.svg';
+import asset121 from './assets/scatter-highlight-dark.svg';
+import asset122 from './assets/scatter-highlight-light.svg';
+import asset123 from './assets/scatter-neutral-dark.svg';
+import asset124 from './assets/scatter-neutral-light.svg';
+import asset125 from './assets/line-point-1-dark.svg';
+import asset126 from './assets/line-point-1-light.svg';
+import asset127 from './assets/line-point-2-dark.svg';
+import asset128 from './assets/line-point-2-light.svg';
+import asset129 from './assets/line-point-3-dark.svg';
+import asset130 from './assets/line-point-3-light.svg';
+import asset131 from './assets/line-point-4-dark.svg';
+import asset132 from './assets/line-point-4-light.svg';
+import asset133 from './assets/line-point-5-dark.svg';
+import asset134 from './assets/line-point-5-light.svg';
 export const glyphs = {
   'spinner-dark': { src: asset0, width: 20, height: 20 },
   'error': { src: asset1, width: 12, height: 12 },
@@ -242,5 +256,19 @@ export const glyphs = {
   'spark-flat-accent': { src: asset118, width: 96, height: 24 },
   'distribution-outlier-accent': { src: asset119, width: 6, height: 6 },
   'distribution-outlier-neutral': { src: asset120, width: 6, height: 6 },
+  'scatter-highlight-dark': { src: asset121, width: 13, height: 13, geometry: {"offsetX":-1.5,"offsetY":-1.5,"logicalWidth":10,"logicalHeight":10} },
+  'scatter-highlight-light': { src: asset122, width: 13, height: 13, geometry: {"offsetX":-1.5,"offsetY":-1.5,"logicalWidth":10,"logicalHeight":10} },
+  'scatter-neutral-dark': { src: asset123, width: 13, height: 13, geometry: {"offsetX":-1.5,"offsetY":-1.5,"logicalWidth":10,"logicalHeight":10} },
+  'scatter-neutral-light': { src: asset124, width: 13, height: 13, geometry: {"offsetX":-1.5,"offsetY":-1.5,"logicalWidth":10,"logicalHeight":10} },
+  'line-point-1-dark': { src: asset125, width: 12, height: 12, geometry: {"offsetX":-2,"offsetY":-2,"logicalWidth":8,"logicalHeight":8} },
+  'line-point-1-light': { src: asset126, width: 12, height: 12, geometry: {"offsetX":-2,"offsetY":-2,"logicalWidth":8,"logicalHeight":8} },
+  'line-point-2-dark': { src: asset127, width: 12, height: 12, geometry: {"offsetX":-2,"offsetY":-2,"logicalWidth":8,"logicalHeight":8} },
+  'line-point-2-light': { src: asset128, width: 12, height: 12, geometry: {"offsetX":-2,"offsetY":-2,"logicalWidth":8,"logicalHeight":8} },
+  'line-point-3-dark': { src: asset129, width: 12, height: 12, geometry: {"offsetX":-2,"offsetY":-2,"logicalWidth":8,"logicalHeight":8} },
+  'line-point-3-light': { src: asset130, width: 12, height: 12, geometry: {"offsetX":-2,"offsetY":-2,"logicalWidth":8,"logicalHeight":8} },
+  'line-point-4-dark': { src: asset131, width: 12, height: 12, geometry: {"offsetX":-2,"offsetY":-2,"logicalWidth":8,"logicalHeight":8} },
+  'line-point-4-light': { src: asset132, width: 12, height: 12, geometry: {"offsetX":-2,"offsetY":-2,"logicalWidth":8,"logicalHeight":8} },
+  'line-point-5-dark': { src: asset133, width: 12, height: 12, geometry: {"offsetX":-2,"offsetY":-2,"logicalWidth":8,"logicalHeight":8} },
+  'line-point-5-light': { src: asset134, width: 12, height: 12, geometry: {"offsetX":-2,"offsetY":-2,"logicalWidth":8,"logicalHeight":8} },
 } as const;
 export type GlyphName = keyof typeof glyphs;

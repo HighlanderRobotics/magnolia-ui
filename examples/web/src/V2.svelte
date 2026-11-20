@@ -66,6 +66,7 @@
     BarChart,
     Heatmap,
     Distribution,
+    Scatter,
   } from '../../../packages/svelte/src/lib/v2/index';
   import Glyph from '../../../packages/svelte/src/lib/v2/Glyph.svelte';
   let theme = $state<'dark' | 'light' | 'system'>('dark');
@@ -723,6 +724,38 @@
           </div></Card
         >
       </div>
+    </section>
+    <section data-testid="scatter-family" aria-label="Scatter charts">
+      <h2>Scatter</h2>
+      <Scatter
+        label="Cycle time and output"
+        xLabel="Cycle time (days)"
+        yLabel="Output"
+        formatX={(value) => `${value} d`}
+        points={[
+          { label: 'Observation 1', x: 1.2, y: 34, highlighted: true },
+          { label: 'Observation 2', x: 1.8, y: 30, highlighted: false },
+          { label: 'Observation 3', x: 2.1, y: 28, highlighted: false },
+          { label: 'Observation 4', x: 2.6, y: 31, highlighted: false },
+          { label: 'Observation 5', x: 3, y: 24, highlighted: false },
+          { label: 'Observation 6', x: 3.4, y: 22, highlighted: false },
+          { label: 'Observation 7', x: 3.9, y: 25, highlighted: false },
+          { label: 'Observation 8', x: 4.4, y: 18, highlighted: false },
+          { label: 'Observation 9', x: 5.1, y: 16, highlighted: false },
+          { label: 'Observation 10', x: 5.6, y: 12, highlighted: false },
+          { label: 'Observation 11', x: 6.2, y: 14, highlighted: false },
+          { label: 'Observation 12', x: 6.8, y: 9, highlighted: false },
+          { label: 'Observation 13', x: 2.3, y: 36, highlighted: true },
+          { label: 'Observation 14', x: 1.5, y: 38, highlighted: true },
+          { label: 'Observation 15', x: 4, y: 20, highlighted: false },
+          { label: 'Observation 16', x: 3.2, y: 27, highlighted: false },
+          { label: 'Observation 17', x: 7.4, y: 6, highlighted: false },
+        ]}
+      />
+      <Scatter
+        label="Missing observations"
+        points={[{ label: 'Missing', x: NaN, y: 20 }]}
+      />
     </section>
     <section data-testid="distribution-family" aria-label="Distribution charts">
       <h2>Distribution</h2>

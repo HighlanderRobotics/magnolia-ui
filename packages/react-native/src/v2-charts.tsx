@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, ScrollView, Pressable, useWindowDimensions } from 'react-native';
+import {
+  View,
+  ScrollView,
+  Pressable,
+  useWindowDimensions,
+  Image,
+} from 'react-native';
 import type { ViewProps } from 'react-native';
 import {
   chartDomain,
@@ -14,6 +20,7 @@ import type {
   ChartDomain,
   HeatmapRow,
 } from '@highlanderrobotics/magnolia-tokens/v2';
+import { nativeGlyphs } from './v2-glyphs.generated.js';
 import { Text, Glyph, Button, useMagnolia } from './v2.js';
 
 export function Sparkline({
@@ -643,5 +650,29 @@ export function Heatmap({
         </View>
       </ChartSurface>
     </ChartFrame>
+  );
+}
+
+export function ChartMarker({
+  kind,
+}: {
+  kind:
+    'scatter-highlight' | 'scatter-neutral' | `line-point-${1 | 2 | 3 | 4 | 5}`;
+}) {
+  const t = useMagnolia(),
+    asset = nativeGlyphs[`${kind}-${t.mode}`];
+  return (
+    <View
+      pointerEvents="none"
+      accessibilityElementsHidden
+      importantForAccessibility="no-hide-descendants"
+      style={{ width: asset.width, height: asset.height }}
+    >
+      <Image
+        source={asset.source}
+        resizeMode="contain"
+        style={{ width: asset.width, height: asset.height }}
+      />
+    </View>
   );
 }

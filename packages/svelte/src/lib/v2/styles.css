@@ -3253,19 +3253,6 @@
   border: 0;
   border-radius: 2px;
 }
-.mg2-heat-readout {
-  position: absolute;
-  z-index: 5;
-  pointer-events: none;
-  left: min(
-    calc(44px + var(--mg2-heat-c) * var(--mg2-heat-col-step)),
-    calc(100% - 188px)
-  );
-  top: min(
-    calc(28px + var(--mg2-heat-r) * var(--mg2-heat-row-step)),
-    calc(100% - 76px)
-  );
-}
 @media (pointer: coarse) {
   .mg2-heatmap {
     --mg2-heat-col-step: 48px;
@@ -3398,4 +3385,61 @@
   .mg2-distribution {
     --mg2-distribution-step: 48px;
   }
+}
+
+.mg2-chart-marker {
+  display: block;
+  max-width: none;
+}
+.mg2-scatter {
+  position: relative;
+  width: 560px;
+  height: 240px;
+}
+.mg2-scatter-y {
+  left: 10px;
+  width: 28px;
+  text-align: end;
+}
+.mg2-scatter-x {
+  top: 212px;
+}
+.mg2-scatter-x-label {
+  right: 16px;
+  top: 226px;
+}
+.mg2-scatter-point {
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  border: 0;
+  padding: 0;
+  border-radius: 50%;
+  background: transparent;
+  pointer-events: none;
+  z-index: 1;
+}
+.mg2-scatter-point[data-highlight='true'] {
+  z-index: 2;
+}
+.mg2-scatter-point:focus-visible {
+  outline: 2px solid var(--mg-v2-color-border-focus);
+  outline-offset: 2px;
+}
+.mg2-scatter .mg2-chart-empty {
+  left: 44px;
+}
+
+.mg2-chart-readout {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  width: max-content;
+  max-width: calc(100vw - 16px);
+  overflow: visible;
+  pointer-events: none;
 }

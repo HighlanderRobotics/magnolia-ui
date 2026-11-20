@@ -52,6 +52,7 @@ import {
   BarChart,
   Heatmap,
   Distribution,
+  Scatter,
 } from '../../packages/react-native/src/v2';
 test('v2 native Slider exposes stepped accessibility adjustments and disabled state', () => {
   const change = jest.fn();
@@ -706,6 +707,49 @@ test('v2 native Distribution highlights valid rows and exposes exact quantiles',
   expect(
     getByText(
       'Project: Northwind, Minimum: 12, Q1: 22, Median: 28, Q3: 34, Maximum: 48, Outliers: 54',
+    ),
+  ).toBeTruthy();
+});
+
+test('v2 native Scatter adjusts through valid observations and preserves accessible raw values', () => {
+  const inspect = jest.fn();
+  const { getByRole, getByText } = render(
+    <MagnoliaProvider>
+      <Scatter
+        label="Cycle time and output"
+        xLabel="Cycle time (days)"
+        yLabel="Output"
+        formatX={(value) => `${value} d`}
+        points={[
+          { label: 'Northwind', x: 1.2, y: 34, highlighted: true },
+          { label: 'Larkspur', x: 1.8, y: 30 },
+          { label: 'Missing', x: NaN, y: 20 },
+        ]}
+        onInspect={inspect}
+      />
+    </MagnoliaProvider>,
+  );
+  const control = getByRole('adjustable', {
+    name: 'Inspect Cycle time and output',
+  });
+  expect(control.props.accessibilityValue.max).toBe(2);
+  fireEvent(control, 'accessibilityAction', {
+    nativeEvent: { actionName: 'increment' },
+  });
+  expect(inspect).toHaveBeenCalledWith(
+    1,
+    expect.objectContaining({ label: 'Larkspur', x: 1.8, y: 30 }),
+  );
+  expect(getByText('Larkspur')).toBeTruthy();
+  expect(getByRole('adjustable').props.accessibilityValue.text).toContain(
+    '1.8 d',
+  );
+  fireEvent.press(
+    getByRole('button', { name: 'View Cycle time and output data' }),
+  );
+  expect(
+    getByText(
+      'Observation: Missing, Cycle time (days): —, Output: 20, Group: Context',
     ),
   ).toBeTruthy();
 });

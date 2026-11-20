@@ -1088,6 +1088,220 @@
       "width": 6,
       "height": 6,
       "sha256": "dc8b78cd1f3875c13cb37025610842839fb4dbec832af4fc7bbe099e29af0db8"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/scatter-highlight-dark.svg",
+      "nodeId": "103:4392",
+      "slot": "scatter-highlight-dark",
+      "width": 13.0,
+      "height": 13.0,
+      "sha256": "7f447466dfa2068466ec77a6cb50a8706f46f63b529bcc533a946ae3ee017ebb",
+      "mode": "Dark",
+      "geometry": {
+        "offsetX": -1.5,
+        "offsetY": -1.5,
+        "logicalWidth": 10,
+        "logicalHeight": 10
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/scatter-highlight-light.svg",
+      "nodeId": "103:4392",
+      "slot": "scatter-highlight-light",
+      "width": 13.0,
+      "height": 13.0,
+      "sha256": "c1725ef1fa9aa3072893d592135541ac037e0ab0536a4da2417b646cfb4f81dd",
+      "mode": "Light",
+      "geometry": {
+        "offsetX": -1.5,
+        "offsetY": -1.5,
+        "logicalWidth": 10,
+        "logicalHeight": 10
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/scatter-neutral-dark.svg",
+      "nodeId": "103:4393",
+      "slot": "scatter-neutral-dark",
+      "width": 13.0,
+      "height": 13.0,
+      "sha256": "a51bf5127f20490b59847c0191a7f43f7079b645dd137eb1445ff58605d4671c",
+      "mode": "Dark",
+      "geometry": {
+        "offsetX": -1.5,
+        "offsetY": -1.5,
+        "logicalWidth": 10,
+        "logicalHeight": 10
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/scatter-neutral-light.svg",
+      "nodeId": "103:4393",
+      "slot": "scatter-neutral-light",
+      "width": 13.0,
+      "height": 13.0,
+      "sha256": "e8a2dcc0ad6334274267f9ced48ca3b6876c0e858a2a924d7e00895661a2d907",
+      "mode": "Light",
+      "geometry": {
+        "offsetX": -1.5,
+        "offsetY": -1.5,
+        "logicalWidth": 10,
+        "logicalHeight": 10
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/line-point-1-dark.svg",
+      "nodeId": "53:273",
+      "slot": "line-point-1-dark",
+      "width": 12.0,
+      "height": 12.0,
+      "sha256": "c705f59a4f3a9c2b8f91d54e10af586bb81fceeb2beaafad4aa0c03e0be35de8",
+      "mode": "Dark",
+      "geometry": {
+        "offsetX": -2,
+        "offsetY": -2,
+        "logicalWidth": 8,
+        "logicalHeight": 8
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/line-point-1-light.svg",
+      "nodeId": "53:273",
+      "slot": "line-point-1-light",
+      "width": 12.0,
+      "height": 12.0,
+      "sha256": "14157762278013ba23161feb185be5a44f7d1f2d4980f5a1e596df73bc125a75",
+      "mode": "Light",
+      "geometry": {
+        "offsetX": -2,
+        "offsetY": -2,
+        "logicalWidth": 8,
+        "logicalHeight": 8
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/line-point-2-dark.svg",
+      "nodeId": "53:276",
+      "slot": "line-point-2-dark",
+      "width": 12.0,
+      "height": 12.0,
+      "sha256": "395dafc394c3413025132c7c552c42c129dc12d430733df27877bc4178ac373c",
+      "mode": "Dark",
+      "geometry": {
+        "offsetX": -2,
+        "offsetY": -2,
+        "logicalWidth": 8,
+        "logicalHeight": 8
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/line-point-2-light.svg",
+      "nodeId": "53:276",
+      "slot": "line-point-2-light",
+      "width": 12.0,
+      "height": 12.0,
+      "sha256": "dc377c239fc34c7cb742c64ded305fab73cd007091ecdf3c00799786fa81437d",
+      "mode": "Light",
+      "geometry": {
+        "offsetX": -2,
+        "offsetY": -2,
+        "logicalWidth": 8,
+        "logicalHeight": 8
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/line-point-3-dark.svg",
+      "nodeId": "53:279",
+      "slot": "line-point-3-dark",
+      "width": 12.0,
+      "height": 12.0,
+      "sha256": "ab7edaac63288714020db3d612dfd6dae72bfa74b52f44ab6da91ab071d78ba7",
+      "mode": "Dark",
+      "geometry": {
+        "offsetX": -2,
+        "offsetY": -2,
+        "logicalWidth": 8,
+        "logicalHeight": 8
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/line-point-3-light.svg",
+      "nodeId": "53:279",
+      "slot": "line-point-3-light",
+      "width": 12.0,
+      "height": 12.0,
+      "sha256": "34bcb72c25ffb7b6988fd6ff61d69806bfe58a33589e7a52e21bea91b0197ad9",
+      "mode": "Light",
+      "geometry": {
+        "offsetX": -2,
+        "offsetY": -2,
+        "logicalWidth": 8,
+        "logicalHeight": 8
+      }
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/line-point-4-dark.svg",
+      "nodeId": "53:273",
+      "slot": "line-point-4-dark",
+      "width": 12.0,
+      "height": 12.0,
+      "sha256": "65055341eb9860642d8a685d78a29cd6a15241e6e145c87fb67bdba63ab0f4ca",
+      "mode": "Dark",
+      "geometry": {
+        "offsetX": -2,
+        "offsetY": -2,
+        "logicalWidth": 8,
+        "logicalHeight": 8
+      },
+      "fillVariableId": "VariableID:2:181"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/line-point-4-light.svg",
+      "nodeId": "53:273",
+      "slot": "line-point-4-light",
+      "width": 12.0,
+      "height": 12.0,
+      "sha256": "4cd0dc0ad0ab7fce1ef27a4e2392756899502b4962e89a0638d7f14661df26e5",
+      "mode": "Light",
+      "geometry": {
+        "offsetX": -2,
+        "offsetY": -2,
+        "logicalWidth": 8,
+        "logicalHeight": 8
+      },
+      "fillVariableId": "VariableID:2:181"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/line-point-5-dark.svg",
+      "nodeId": "53:273",
+      "slot": "line-point-5-dark",
+      "width": 12.0,
+      "height": 12.0,
+      "sha256": "169eccf55235a5ed5152842a36f9b517eb4cbb96f1eb557c1284a9fee62caeab",
+      "mode": "Dark",
+      "geometry": {
+        "offsetX": -2,
+        "offsetY": -2,
+        "logicalWidth": 8,
+        "logicalHeight": 8
+      },
+      "fillVariableId": "VariableID:2:182"
+    },
+    {
+      "path": "packages/svelte/src/lib/v2/assets/line-point-5-light.svg",
+      "nodeId": "53:273",
+      "slot": "line-point-5-light",
+      "width": 12.0,
+      "height": 12.0,
+      "sha256": "868a6a61a26e89c1bd73ea14789c97d026b034890f1b9da02ce33d365cc3c6d2",
+      "mode": "Light",
+      "geometry": {
+        "offsetX": -2,
+        "offsetY": -2,
+        "logicalWidth": 8,
+        "logicalHeight": 8
+      },
+      "fillVariableId": "VariableID:2:182"
     }
   ]
 }

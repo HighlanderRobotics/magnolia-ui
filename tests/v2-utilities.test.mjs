@@ -13,6 +13,8 @@ import {
   heatThresholds,
   heatLevel,
   validBoxPlot,
+  validScatterPoint,
+  nearestChartPoint,
 } from '../packages/tokens/dist/v2.js';
 test('v2 slider steps are relative to min and do not leak floating-point tails', () => {
   assert.equal(sliderValue(0.3, 0.1, 1, 0.2), 0.3);
@@ -114,4 +116,43 @@ test('v2 box plots reject unordered and nonfinite quantiles', () => {
     validBoxPlot({ ...row, min: 1, q1: 1, median: 1, q3: 1, max: 1 }),
     true,
   );
+});
+
+test('v2 scatter inspection chooses nearest finite points with stable tie handling', () => {
+  assert.equal(validScatterPoint({ label: 'A', x: 1.2, y: 34 }), true);
+  assert.equal(validScatterPoint({ label: 'Missing', x: NaN, y: 34 }), false);
+  assert.equal(
+    nearestChartPoint(
+      [
+        { x: 0, y: 0 },
+        { x: 2, y: 0 },
+      ],
+      1,
+      0,
+    ),
+    0,
+  );
+  assert.equal(
+    nearestChartPoint(
+      [
+        { x: 0, y: 0 },
+        { x: 2, y: 0 },
+      ],
+      1.5,
+      0,
+    ),
+    1,
+  );
+  assert.equal(
+    nearestChartPoint(
+      [
+        { x: NaN, y: 0 },
+        { x: 2, y: 0 },
+      ],
+      1,
+      0,
+    ),
+    1,
+  );
+  assert.equal(nearestChartPoint([], 1, 0), -1);
 });

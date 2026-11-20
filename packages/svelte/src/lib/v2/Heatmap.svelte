@@ -6,6 +6,7 @@
   import type { HeatmapRow } from '@highlanderrobotics/magnolia-tokens/v2';
   import ChartFrame from './ChartFrame.svelte';
   import ChartTooltip from './ChartTooltip.svelte';
+  import ChartReadout from './ChartReadout.svelte';
   const uid = $props.id();
   let {
     label,
@@ -131,7 +132,9 @@
     role="group"
     aria-label={`${label} cells`}
     style={`--mg2-heat-columns:${columns.length};--mg2-heat-rows:${rows.length}`}
-    onpointerleave={() => (tooltip = false)}
+    onpointerleave={(e) => {
+      if (e.pointerType !== 'touch') tooltip = false;
+    }}
   >
     <span id={`${uid}-help`} class="mg2-sr-only"
       >Use arrow keys to inspect cells. Escape hides the readout.</span
@@ -196,9 +199,11 @@
       >
     </div>
     {#if first < 0}<span class="mg2-chart-empty">No data</span>{/if}
-    {#if tooltip && active && activeValue !== null && activeValue !== undefined}<div
-        class="mg2-heat-readout"
-        style={`--mg2-heat-r:${active.row};--mg2-heat-c:${active.column}`}
+    {#if tooltip && active && activeValue !== null && activeValue !== undefined}
+      <ChartReadout
+        anchor={buttons[active.row * columns.length + active.column] ??
+          undefined}
+        ondismiss={() => (tooltip = false)}
       >
         <ChartTooltip
           id={`${uid}-tooltip`}
@@ -211,6 +216,7 @@
             },
           ]}
         />
-      </div>{/if}
+      </ChartReadout>
+    {/if}
   </div>
 </ChartFrame>

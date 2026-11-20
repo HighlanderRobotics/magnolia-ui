@@ -1092,6 +1092,15 @@ test('v2 Heatmap preserves the source matrix and supports sparse keyboard inspec
       });
       await matrix.getByRole('button', { name: 'Mon, W1: 5' }).focus();
       await expect(matrix.getByRole('tooltip')).toContainText(/Activity\s*5/);
+      if (coarse) {
+        await matrix.getByRole('button', { name: 'Sun, W12: 5' }).tap();
+        await expect(matrix.getByRole('tooltip')).toBeVisible();
+        const readout = (await matrix.getByRole('tooltip').boundingBox())!;
+        expect(readout.x + readout.width).toBeLessThanOrEqual(
+          page.viewportSize()!.width - 8,
+        );
+      }
+
       expect(
         (
           await new AxeBuilder({ page })
@@ -1177,6 +1186,101 @@ test('v2 Distribution matches quantile geometry and preserves original outlier r
         (
           await new AxeBuilder({ page })
             .include('[data-testid="distribution-family"]')
+            .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      await page.bringToFront();
+    }
+  }
+});
+
+test('v2 Scatter preserves original point artwork, nearest inspection and keyboard data access', async ({
+  page,
+}, testInfo) => {
+  test.setTimeout(60000);
+  await page.goto('/v2');
+  const family = page.getByTestId('scatter-family'),
+    plot = family.getByRole('group', {
+      name: 'Cycle time and output observations',
+    });
+  await plot.locator('..').scrollIntoViewIfNeeded();
+  await plot.locator('..').evaluate((el) => (el.scrollLeft = 0));
+  const box = (await plot.boundingBox())!,
+    coarse = await page.evaluate(() => matchMedia('(pointer:coarse)').matches);
+  if (!coarse) {
+    const project = page.getByLabel('Project name', { exact: true });
+    await project.focus();
+    await plot.locator('..').scrollIntoViewIfNeeded();
+    const hoverBox = (await plot.boundingBox())!;
+    await page.mouse.move(hoverBox.x + 119, hoverBox.y + 37.4);
+    await expect(family.getByRole('tooltip')).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(family.getByRole('tooltip')).toHaveCount(0);
+    await expect(project).toBeFocused();
+  }
+  if (coarse) await page.touchscreen.tap(box.x + 119, box.y + 37.4);
+  else await page.mouse.click(box.x + 119, box.y + 37.4);
+  await expect(family.getByRole('tooltip')).toContainText('Observation 1');
+  const first = plot.getByRole('button', { name: /^Observation 1,/ });
+  await first.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(
+    plot.getByRole('button', { name: /^Observation 2,/ }),
+  ).toBeFocused();
+  await page.keyboard.press('End');
+  await expect(
+    plot.getByRole('button', { name: /^Observation 17,/ }),
+  ).toBeFocused();
+  await page.keyboard.press('Home');
+  await expect(first).toBeFocused();
+  const readout = (await family.getByRole('tooltip').boundingBox())!;
+  expect(readout.x).toBeGreaterThanOrEqual(8);
+  expect(readout.x + readout.width).toBeLessThanOrEqual(
+    page.viewportSize()!.width - 8,
+  );
+  await page.keyboard.press('Escape');
+  await expect(family.getByRole('tooltip')).toHaveCount(0);
+  await family
+    .getByText('View Cycle time and output data', { exact: true })
+    .click();
+  await expect(
+    family
+      .getByRole('table', { name: 'Cycle time and output' })
+      .getByRole('row', { name: 'Observation 1 1.2 d 34 Highlighted' }),
+  ).toBeVisible();
+  await family
+    .getByText('View Cycle time and output data', { exact: true })
+    .click();
+  let dark = '';
+  for (const theme of ['dark', 'light']) {
+    await page.getByLabel('Theme', { exact: true }).selectOption(theme);
+    for (const density of ['comfortable', 'compact']) {
+      await page.getByLabel('Density', { exact: true }).selectOption(density);
+      const bounds = (await plot.boundingBox())!;
+      expect(bounds.width).toBe(560);
+      expect(bounds.height).toBe(240);
+      await expect(plot.locator('.mg2-chart-marker')).toHaveCount(17);
+      for (const marker of await plot.locator('.mg2-chart-marker').all()) {
+        const a = (await marker.boundingBox())!;
+        expect(a.width).toBe(13);
+        expect(a.height).toBe(13);
+      }
+      const a = (await first.boundingBox())!;
+      expect(a.x - bounds.x).toBeCloseTo(112.5, 1);
+      expect(a.y - bounds.y).toBeCloseTo(30.9, 1);
+      const src = await first.locator('img').getAttribute('src');
+      if (theme === 'dark') dark = src!;
+      else expect(src).not.toBe(dark);
+      await page.getByRole('heading', { name: 'Scatter', exact: true }).click();
+      await plot.locator('..').evaluate((el) => (el.scrollLeft = 0));
+      await (coarse ? plot.locator('..') : plot).screenshot({
+        path: testInfo.outputPath(`scatter-${theme}-${density}.png`),
+      });
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include('[data-testid="scatter-family"]')
             .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
             .analyze()
         ).violations,

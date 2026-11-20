@@ -176,3 +176,31 @@ export function validBoxPlot(row: BoxPlotDatum): boolean {
     row.q3 <= row.max
   );
 }
+
+export type ScatterPoint = {
+  label: string;
+  x: number;
+  y: number;
+  highlighted?: boolean;
+};
+export function validScatterPoint(point: ScatterPoint): boolean {
+  return Number.isFinite(point.x) && Number.isFinite(point.y);
+}
+export function nearestChartPoint(
+  points: readonly { x: number; y: number }[],
+  x: number,
+  y: number,
+): number {
+  if (!Number.isFinite(x) || !Number.isFinite(y)) return -1;
+  let best = -1,
+    distance = Infinity;
+  points.forEach((point, i) => {
+    if (!Number.isFinite(point.x) || !Number.isFinite(point.y)) return;
+    const d = (point.x - x) ** 2 + (point.y - y) ** 2;
+    if (d < distance) {
+      best = i;
+      distance = d;
+    }
+  });
+  return best;
+}

@@ -35,3 +35,55 @@ test('v2 original Figma assets retain their bytes, dimensions and component slot
     );
   }
 });
+
+test('chart marker artwork preserves theme-specific fills and original two-color rings', async () => {
+  const { default: sharp } = await import('sharp');
+  const { v2Tokens } = await import('../packages/tokens/dist/v2.js');
+  const rgb = (hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+  for (const family of [
+    'scatter-highlight',
+    'scatter-neutral',
+    'line-point-1',
+    'line-point-2',
+    'line-point-3',
+    'line-point-4',
+    'line-point-5',
+  ]) {
+    for (const mode of ['dark', 'light']) {
+      const { data, info } = await sharp(
+        new URL(
+          `../packages/react-native/src/assets/v2/${family}-${mode}.png`,
+          import.meta.url,
+        ).pathname,
+      )
+        .ensureAlpha()
+        .raw()
+        .toBuffer({ resolveWithObject: true });
+      const center = Math.floor(info.width / 2),
+        at = (x, y) => [
+          ...data.subarray(
+            (y * info.width + x) * 4,
+            (y * info.width + x) * 4 + 4,
+          ),
+        ];
+      const fill =
+        family === 'scatter-neutral'
+          ? 'color/chart/other'
+          : family === 'scatter-highlight'
+            ? 'color/chart/cat-1'
+            : `color/chart/cat-${family.at(-1)}`;
+      const ring =
+        family === 'scatter-highlight' ? 'color/fg/primary' : 'color/bg/raised';
+      assert.deepEqual(
+        at(center, center),
+        [...rgb(v2Tokens.color[mode][fill]), 255],
+        `${family} ${mode} fill`,
+      );
+      assert.deepEqual(
+        at(center, 2),
+        [...rgb(v2Tokens.color[mode][ring]), 255],
+        `${family} ${mode} ring`,
+      );
+    }
+  }
+});
