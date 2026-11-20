@@ -3159,3 +3159,131 @@
 .mg2-bar-value[data-outside='true'] {
   background: var(--mg-v2-color-bg-base);
 }
+
+.mg2-heatmap {
+  --mg2-heat-col-step: 40px;
+  --mg2-heat-row-step: 24px;
+  --mg2-heat-cell-w: 36px;
+  --mg2-heat-cell-h: 20px;
+  position: relative;
+  width: max(
+    560px,
+    calc(80px + var(--mg2-heat-columns) * var(--mg2-heat-col-step))
+  );
+  height: max(
+    236px,
+    calc(var(--mg2-heat-rows) * var(--mg2-heat-row-step) + 68px)
+  );
+}
+.mg2-heat-cell {
+  position: absolute;
+  left: calc(44px + var(--mg2-heat-c) * var(--mg2-heat-col-step));
+  top: calc(4px + var(--mg2-heat-r) * var(--mg2-heat-row-step));
+  width: var(--mg2-heat-cell-w);
+  height: var(--mg2-heat-cell-h);
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.mg2-heat-cell:focus-visible {
+  outline: 2px solid var(--mg-v2-color-border-focus);
+  outline-offset: 0;
+}
+.mg2-heat-cell:disabled {
+  cursor: default;
+}
+.mg2-heat-fill {
+  display: block;
+  width: 36px;
+  height: 20px;
+  border: 1px solid var(--mg-v2-color-border-subtle);
+  border-radius: 4px;
+  background: transparent;
+  pointer-events: none;
+}
+.mg2-heat-fill[data-level='1'] {
+  background: var(--mg-v2-color-chart-seq-1);
+}
+.mg2-heat-fill[data-level='2'] {
+  background: var(--mg-v2-color-chart-seq-2);
+}
+.mg2-heat-fill[data-level='3'] {
+  background: var(--mg-v2-color-chart-seq-3);
+}
+.mg2-heat-fill[data-level='4'] {
+  background: var(--mg-v2-color-chart-seq-4);
+}
+.mg2-heat-fill[data-level='5'] {
+  background: var(--mg-v2-color-chart-seq-5);
+}
+.mg2-heat-fill[data-level='6'] {
+  background: var(--mg-v2-color-chart-seq-6);
+}
+.mg2-heat-fill[data-level='7'] {
+  background: var(--mg-v2-color-chart-seq-7);
+}
+.mg2-heat-row-label {
+  left: 0;
+  top: calc(
+    4px + var(--mg2-heat-r) * var(--mg2-heat-row-step) +
+      (var(--mg2-heat-cell-h) - 16px) / 2
+  );
+}
+.mg2-heat-column-label {
+  left: calc(52px + var(--mg2-heat-c) * var(--mg2-heat-col-step));
+  top: calc(var(--mg2-heat-rows) * var(--mg2-heat-row-step) + 8px);
+}
+.mg2-heat-scale {
+  position: absolute;
+  left: 44px;
+  top: calc(var(--mg2-heat-rows) * var(--mg2-heat-row-step) + 28px);
+  width: 299px;
+  height: 30px;
+}
+.mg2-heat-scale-step {
+  position: absolute;
+  top: 3px;
+  width: 30px;
+  height: 10px;
+  border: 0;
+  border-radius: 2px;
+}
+.mg2-heat-readout {
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  left: min(
+    calc(44px + var(--mg2-heat-c) * var(--mg2-heat-col-step)),
+    calc(100% - 188px)
+  );
+  top: min(
+    calc(28px + var(--mg2-heat-r) * var(--mg2-heat-row-step)),
+    calc(100% - 76px)
+  );
+}
+@media (pointer: coarse) {
+  .mg2-heatmap {
+    --mg2-heat-col-step: 48px;
+    --mg2-heat-row-step: 48px;
+    --mg2-heat-cell-w: 44px;
+    --mg2-heat-cell-h: 44px;
+  }
+}
+
+.mg2-heat-row-label {
+  width: 40px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.mg2-heat-column-label {
+  width: 72px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

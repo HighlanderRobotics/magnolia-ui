@@ -64,6 +64,7 @@
     LegendItem,
     ChartTooltip,
     BarChart,
+    Heatmap,
   } from '../../../packages/svelte/src/lib/v2/index';
   import Glyph from '../../../packages/svelte/src/lib/v2/Glyph.svelte';
   let theme = $state<'dark' | 'light' | 'system'>('dark');
@@ -721,6 +722,45 @@
           </div></Card
         >
       </div>
+    </section>
+    <section data-testid="heatmap-family" aria-label="Heatmap">
+      <h2>Heatmap</h2>
+      <Heatmap
+        label="Weekly activity"
+        columns={Array.from({ length: 12 }, (_, i) => `W${i + 1}`)}
+        rows={[
+          {
+            label: 'Mon',
+            values: [5, 10, 10, 15, 20, 15, 20, 25, 25, 30, 25, 30],
+          },
+          {
+            label: 'Tue',
+            values: [0, 5, 10, 10, 15, 20, 20, 20, 25, 25, 30, 30],
+          },
+          {
+            label: 'Wed',
+            values: [5, 5, 15, 15, 15, 20, 25, 25, 20, 25, 30, 25],
+          },
+          {
+            label: 'Thu',
+            values: [10, 10, 10, 20, 20, 25, 25, 30, 30, 25, 30, 30],
+          },
+          {
+            label: 'Fri',
+            values: [5, 10, 15, 15, 20, 20, 25, 25, 25, 30, 25, 30],
+          },
+          { label: 'Sat', values: [0, 0, 0, 5, 5, 5, 0, 5, 10, 5, 5, 10] },
+          { label: 'Sun', values: [0, 0, 0, 0, 0, 5, 0, 0, 5, 0, 5, 5] },
+        ]}
+      />
+      <Heatmap
+        label="Sparse activity"
+        columns={['W1', 'W2', 'W3']}
+        rows={[
+          { label: 'Mon', values: [0, null, 10] },
+          { label: 'Tue', values: [5, 10, 15] },
+        ]}
+      />
     </section>
     <section data-testid="bar-chart-family" aria-label="Bar charts">
       <h2>Bar chart</h2>

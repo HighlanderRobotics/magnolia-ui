@@ -137,3 +137,23 @@ export function chartIndex(
     enabled[0],
   );
 }
+
+export type HeatLevel = 1 | 2 | 3 | 4 | 5 | 6 | 7;
+export function heatThresholds(values?: readonly number[]): readonly number[] {
+  return values?.length === 7 &&
+    values.every((v, i) => Number.isFinite(v) && (i === 0 || v > values[i - 1]))
+    ? values
+    : [0, 5, 10, 15, 20, 25, 30];
+}
+export function heatLevel(
+  value: number | null | undefined,
+  thresholds?: readonly number[],
+): HeatLevel | undefined {
+  if (value === null || value === undefined || !Number.isFinite(value))
+    return undefined;
+  const stops = heatThresholds(thresholds);
+  let level = 1;
+  for (let i = 1; i < stops.length; i++) if (value >= stops[i]) level = i + 1;
+  return level as HeatLevel;
+}
+export type HeatmapRow = { label: string; values: (number | null)[] };

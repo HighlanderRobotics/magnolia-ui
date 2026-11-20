@@ -5,11 +5,14 @@ import {
   chartDomain,
   chartTicks,
   chartIndex,
+  heatThresholds,
+  heatLevel,
 } from '@highlanderrobotics/magnolia-tokens/v2';
 import type {
   ChartSeries,
   ChartDatum,
   ChartDomain,
+  HeatmapRow,
 } from '@highlanderrobotics/magnolia-tokens/v2';
 import { Text, Glyph, Button, useMagnolia } from './v2.js';
 
@@ -163,11 +166,13 @@ export function ChartFrame({
   columns,
   rows,
   children,
+  readout,
 }: {
   label: string;
   columns: string[];
   rows: (string | number | null)[][];
   children: React.ReactNode;
+  readout?: React.ReactNode;
 }) {
   const [showData, setShowData] = React.useState(false);
   return (
@@ -175,6 +180,7 @@ export function ChartFrame({
       <ScrollView horizontal accessibilityLabel={label}>
         {children}
       </ScrollView>
+      {readout}
       <Button
         variant="tertiary"
         onPress={() => setShowData(!showData)}
@@ -415,6 +421,226 @@ export function BarChart({
             })}
           </>
         )}
+      </ChartSurface>
+    </ChartFrame>
+  );
+}
+
+export function Heatmap({
+  label,
+  columns,
+  rows,
+  thresholds,
+  formatValue = String,
+  onInspect,
+}: {
+  label: string;
+  columns: string[];
+  rows: HeatmapRow[];
+  thresholds?: readonly number[];
+  formatValue?: (value: number) => string;
+  onInspect?: (row: number, column: number, value: number) => void;
+}) {
+  const t = useMagnolia(),
+    stops = heatThresholds(thresholds),
+    [active, setActive] = React.useState<
+      { row: number; column: number } | undefined
+    >(),
+    width = Math.max(560, 80 + columns.length * 48),
+    height = Math.max(236, rows.length * 48 + 68);
+  const [focused, setFocused] = React.useState<string | undefined>();
+  const lastInspection = React.useRef<string | undefined>(undefined);
+  const caption = {
+    fontSize: t.sizes['type/caption/size'],
+    lineHeight: t.sizes['type/caption/line'],
+    color: t.colors['color/fg/secondary'],
+  };
+  const current = active ? rows[active.row]?.values[active.column] : null;
+  const inspect = (r: number, c: number) => {
+    const value = rows[r]?.values[c];
+    if (heatLevel(value, stops) === undefined) return;
+    setActive({ row: r, column: c });
+    const key = `${r}:${c}:${value}`;
+    if (key !== lastInspection.current) {
+      lastInspection.current = key;
+      onInspect?.(r, c, value!);
+    }
+  };
+  return (
+    <ChartFrame
+      label={label}
+      columns={['Row', 'Column', 'Value']}
+      rows={rows.flatMap((row) =>
+        columns.map((column, c) => [
+          row.label,
+          column,
+          heatLevel(row.values[c], stops) === undefined
+            ? null
+            : formatValue(row.values[c]!),
+        ]),
+      )}
+      readout={
+        active && heatLevel(current, stops) !== undefined ? (
+          <ChartTooltip
+            title={`${rows[active.row].label} · ${columns[active.column]}`}
+            items={[
+              {
+                label: 'Activity',
+                value: formatValue(current!),
+                series: 'other',
+              },
+            ]}
+          />
+        ) : undefined
+      }
+    >
+      <ChartSurface width={width} height={height}>
+        {!rows.some((row) =>
+          columns.some((_, c) => heatLevel(row.values[c], stops) !== undefined),
+        ) && (
+          <Text
+            allowFontScaling={false}
+            style={[caption, { position: 'absolute', left: 44, top: 96 }]}
+          >
+            No data
+          </Text>
+        )}
+        {rows.map((row, r) => (
+          <React.Fragment key={r}>
+            <Text
+              allowFontScaling={false}
+              accessibilityElementsHidden
+              importantForAccessibility="no-hide-descendants"
+              style={[
+                caption,
+                { position: 'absolute', left: 0, top: 18 + r * 48, width: 40 },
+              ]}
+            >
+              {row.label}
+            </Text>
+            {columns.map((column, c) => {
+              const level = heatLevel(row.values[c], stops);
+              return (
+                <Pressable
+                  key={c}
+                  accessibilityRole="button"
+                  accessibilityLabel={`${row.label}, ${column}: ${level === undefined ? 'No data' : formatValue(row.values[c]!)}`}
+                  accessibilityState={{ disabled: level === undefined }}
+                  disabled={level === undefined}
+                  onPress={() => inspect(r, c)}
+                  onFocus={() => {
+                    setFocused(`${r}:${c}`);
+                    inspect(r, c);
+                  }}
+                  onBlur={() => setFocused(undefined)}
+                  onAccessibilityEscape={() => setActive(undefined)}
+                  style={({ pressed }) => ({
+                    position: 'absolute',
+                    left: 44 + c * 48,
+                    top: 4 + r * 48,
+                    width: 44,
+                    height: 44,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: 4,
+                    outlineWidth: pressed || focused === `${r}:${c}` ? 2 : 0,
+                    outlineOffset: 0,
+                    outlineColor: t.colors['color/border/focus'],
+                  })}
+                >
+                  <View
+                    pointerEvents="none"
+                    style={{
+                      width: 36,
+                      height: 20,
+                      borderRadius: 4,
+                      borderWidth: 1,
+                      borderColor: t.colors['color/border/subtle'],
+                      backgroundColor:
+                        level === undefined
+                          ? 'transparent'
+                          : t.colors[`color/chart/seq-${level}` as const],
+                    }}
+                  />
+                </Pressable>
+              );
+            })}
+          </React.Fragment>
+        ))}
+        {columns.map((column, c) =>
+          c % 2 === 0 ? (
+            <Text
+              allowFontScaling={false}
+              key={c}
+              accessibilityElementsHidden
+              importantForAccessibility="no-hide-descendants"
+              style={[
+                caption,
+                {
+                  position: 'absolute',
+                  left: 52 + c * 48,
+                  top: rows.length * 48 + 8,
+                },
+              ]}
+            >
+              {column}
+            </Text>
+          ) : null,
+        )}
+        <View
+          accessible
+          accessibilityLabel={`Scale: ${stops.map(formatValue).join(', ')}`}
+          style={{
+            position: 'absolute',
+            left: 44,
+            top: rows.length * 48 + 28,
+            width: 299,
+            height: 30,
+          }}
+        >
+          <Text
+            allowFontScaling={false}
+            style={[caption, { position: 'absolute', left: 0, top: 0 }]}
+          >
+            Fewer
+          </Text>
+          {stops.map((stop, i) => (
+            <React.Fragment key={i}>
+              <View
+                style={{
+                  position: 'absolute',
+                  left: 41 + i * 32,
+                  top: 3,
+                  width: 30,
+                  height: 10,
+                  borderRadius: 2,
+                  backgroundColor:
+                    t.colors[
+                      `color/chart/seq-${i + 1}` as keyof typeof t.colors
+                    ],
+                }}
+              />
+              {i % 2 === 0 && (
+                <Text
+                  allowFontScaling={false}
+                  style={[
+                    caption,
+                    { position: 'absolute', left: 41 + i * 32, top: 15 },
+                  ]}
+                >
+                  {formatValue(stop)}
+                  {i === 6 ? '+' : ''}
+                </Text>
+              )}
+            </React.Fragment>
+          ))}
+          <Text
+            allowFontScaling={false}
+            style={[caption, { position: 'absolute', left: 271, top: 0 }]}
+          >
+            More
+          </Text>
+        </View>
       </ChartSurface>
     </ChartFrame>
   );

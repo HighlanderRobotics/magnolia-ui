@@ -1025,3 +1025,83 @@ test('v2 BarChart matches source geometry and supports keyboard selection and ac
     }
   }
 });
+
+test('v2 Heatmap preserves the source matrix and supports sparse keyboard inspection', async ({
+  page,
+}, testInfo) => {
+  test.setTimeout(60000);
+  await page.goto('/v2');
+  const family = page.getByTestId('heatmap-family'),
+    sparse = family.getByRole('group', { name: 'Sparse activity cells' });
+  const first = sparse.getByRole('button', { name: 'Mon, W1: 0' });
+  await first.focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(
+    sparse.getByRole('button', { name: 'Mon, W3: 10' }),
+  ).toBeFocused();
+  await page.keyboard.press('ArrowDown');
+  await expect(
+    sparse.getByRole('button', { name: 'Tue, W3: 15' }),
+  ).toBeFocused();
+  await page.keyboard.press('Home');
+  await expect(
+    sparse.getByRole('button', { name: 'Tue, W1: 5' }),
+  ).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(sparse.getByRole('tooltip')).toHaveCount(0);
+  await page.keyboard.press('Control+Home');
+  await expect(first).toBeFocused();
+  await family.getByText('View Sparse activity data', { exact: true }).click();
+  await expect(
+    family
+      .getByRole('table', { name: 'Sparse activity' })
+      .getByRole('row', { name: 'Mon W2 —' }),
+  ).toBeVisible();
+  await family.getByText('View Sparse activity data', { exact: true }).click();
+  const matrix = family.getByRole('group', { name: 'Weekly activity cells' });
+  for (const theme of ['dark', 'light']) {
+    await page.getByLabel('Theme', { exact: true }).selectOption(theme);
+    for (const density of ['comfortable', 'compact']) {
+      await page.getByLabel('Density', { exact: true }).selectOption(density);
+      const coarse = await page.evaluate(
+          () => matchMedia('(pointer:coarse)').matches,
+        ),
+        box = (await matrix.boundingBox())!;
+      expect(box.width).toBe(coarse ? 656 : 560);
+      expect(box.height).toBe(coarse ? 404 : 236);
+      await expect(matrix.getByRole('button')).toHaveCount(84);
+      const fill = (await matrix
+        .locator('.mg2-heat-cell .mg2-heat-fill')
+        .first()
+        .boundingBox())!;
+      expect(fill.width).toBe(36);
+      expect(fill.height).toBe(20);
+      const target = (await matrix.getByRole('button').first().boundingBox())!;
+      expect(target.width).toBe(coarse ? 44 : 36);
+      expect(target.height).toBe(coarse ? 44 : 20);
+      await page.getByRole('heading', { name: 'Heatmap', exact: true }).click();
+      const cells = matrix.locator('.mg2-heat-cell');
+      const a = (await cells.nth(0).boundingBox())!,
+        b = (await cells.nth(1).boundingBox())!,
+        nextRow = (await cells.nth(12).boundingBox())!;
+      expect(b.x - a.x).toBe(coarse ? 48 : 40);
+      expect(nextRow.y - a.y).toBe(coarse ? 48 : 24);
+      // Capture the scroll viewport on touch devices so screenshot resizing does not change pointer media queries.
+      await (coarse ? matrix.locator('..') : matrix).screenshot({
+        path: testInfo.outputPath(`heatmap-${theme}-${density}.png`),
+      });
+      await matrix.getByRole('button', { name: 'Mon, W1: 5' }).focus();
+      await expect(matrix.getByRole('tooltip')).toContainText(/Activity\s*5/);
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .include('[data-testid="heatmap-family"]')
+            .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      await page.bringToFront();
+      await page.keyboard.press('Escape');
+    }
+  }
+});

@@ -10,6 +10,8 @@ import {
   chartDomain,
   chartTicks,
   chartIndex,
+  heatThresholds,
+  heatLevel,
 } from '../packages/tokens/dist/v2.js';
 test('v2 slider steps are relative to min and do not leak floating-point tails', () => {
   assert.equal(sliderValue(0.3, 0.1, 1, 0.2), 0.3);
@@ -82,4 +84,15 @@ test('v2 chart domains and selection preserve missing data and sensible axes', (
   assert.equal(chartIndex([null, 12, NaN, 9], 2), 1);
   assert.equal(chartIndex([null, 12, NaN, 9]), 3);
   assert.equal(chartIndex([null, NaN]), -1);
+});
+
+test('v2 heatmap thresholds distinguish zero, saturation and missing values', () => {
+  assert.equal(heatLevel(0), 1);
+  assert.equal(heatLevel(10), 3);
+  assert.equal(heatLevel(30), 7);
+  assert.equal(heatLevel(300), 7);
+  for (const value of [null, undefined, NaN, Infinity])
+    assert.equal(heatLevel(value), undefined);
+  assert.deepEqual(heatThresholds([10, 5]), [0, 5, 10, 15, 20, 25, 30]);
+  assert.equal(heatLevel(30, [0, 10, 20, 30, 40, 50, 60]), 4);
 });

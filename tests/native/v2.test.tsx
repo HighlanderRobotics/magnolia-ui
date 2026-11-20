@@ -50,6 +50,7 @@ import {
   LegendItem,
   ChartTooltip,
   BarChart,
+  Heatmap,
 } from '../../packages/react-native/src/v2';
 test('v2 native Slider exposes stepped accessibility adjustments and disabled state', () => {
   const change = jest.fn();
@@ -628,4 +629,35 @@ test('v2 native BarChart selects real values and exposes data without inventing 
   fireEvent.press(getByRole('button', { name: 'View Weekly output data' }));
   expect(getByText('Period: Missing, Value: —')).toBeTruthy();
   expect(getByText('Period: W1, Value: 34')).toBeTruthy();
+});
+
+test('v2 native Heatmap announces cells, preserves missing data and exposes its scale/readout', () => {
+  const inspect = jest.fn();
+  const { getByRole, getByText, getByLabelText } = render(
+    <MagnoliaProvider>
+      <Heatmap
+        label="Weekly activity"
+        columns={['W1', 'W2']}
+        rows={[
+          { label: 'Mon', values: [0, null] },
+          { label: 'Tue', values: [10, 30] },
+        ]}
+        onInspect={inspect}
+      />
+    </MagnoliaProvider>,
+  );
+  expect(getByRole('button', { name: 'Mon, W1: 0' })).toBeTruthy();
+  expect(
+    getByRole('button', { name: 'Mon, W2: No data' }).props.accessibilityState
+      .disabled,
+  ).toBe(true);
+  const cell = getByRole('button', { name: 'Tue, W2: 30' });
+  fireEvent(cell, 'focus');
+  fireEvent.press(cell);
+  expect(inspect).toHaveBeenCalledTimes(1);
+  expect(inspect).toHaveBeenCalledWith(1, 1, 30);
+  expect(getByText('Tue · W2')).toBeTruthy();
+  expect(getByLabelText('Scale: 0, 5, 10, 15, 20, 25, 30')).toBeTruthy();
+  fireEvent.press(getByRole('button', { name: 'View Weekly activity data' }));
+  expect(getByText('Row: Mon, Column: W2, Value: —')).toBeTruthy();
 });
