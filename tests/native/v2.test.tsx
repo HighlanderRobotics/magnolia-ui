@@ -1,0 +1,1461 @@
+import React from 'react';
+import { act } from 'react';
+import { AccessibilityInfo, AppState } from 'react-native';
+import type { TextInput } from 'react-native';
+import { fireEvent, render, waitFor } from '@testing-library/react-native';
+import {
+  MagnoliaProvider,
+  Button,
+  TextField,
+  Tabs,
+  Stat,
+  Checkbox,
+  Radio,
+  Switch,
+  Chip,
+  SearchField,
+  TextArea,
+  Select,
+  IconButton,
+  Kbd,
+  ProgressBar,
+  ProgressRing,
+  Avatar,
+  ListItem,
+  Banner,
+  NumberField,
+  Stepper,
+  SelectableCard,
+  Link,
+  FileField,
+  Attachment,
+  Steps,
+  Calendar,
+  DateField,
+  TimeField,
+  Combobox,
+  MultiSelect,
+  Slider,
+  NavItem,
+  NavRailItem,
+  NavSection,
+  Breadcrumb,
+  TabBarItem,
+  TabBar,
+  TopBar,
+  Table,
+  TableCell,
+  TableRow,
+  Pagination,
+  PaginationPages,
+  BulkActionBar,
+  Sparkline,
+  LegendItem,
+  ChartTooltip,
+  BarChart,
+  Heatmap,
+  Distribution,
+  Scatter,
+  LineChart,
+  Accordion,
+  Tooltip,
+  Menu,
+  MenuItem,
+  MenuSeparator,
+  Popover,
+  Dialog,
+  Sheet,
+  SheetAction,
+  SheetSeparator,
+  Drawer,
+  Toast,
+  CommandItem,
+  CommandPalette,
+  Icon,
+  iconNames,
+  FormSection,
+  FormRow,
+  ErrorSummary,
+  NavRail,
+} from '../../packages/react-native/src/v2';
+test('v2 native Slider exposes stepped accessibility adjustments and disabled state', () => {
+  const change = jest.fn();
+  const { getByRole } = render(
+    <MagnoliaProvider>
+      <Slider label="Confidence" value={70} step={5} onValueChange={change} />
+      <Slider label="Locked" value={100} disabled onValueChange={change} />
+    </MagnoliaProvider>,
+  );
+  const slider = getByRole('adjustable', { name: 'Confidence' });
+  expect(slider.props.accessibilityValue.now).toBe(70);
+  fireEvent(slider, 'accessibilityAction', {
+    nativeEvent: { actionName: 'increment' },
+  });
+  expect(change).toHaveBeenLastCalledWith(75);
+  fireEvent(slider, 'accessibilityAction', {
+    nativeEvent: { actionName: 'decrement' },
+  });
+  expect(change).toHaveBeenLastCalledWith(65);
+  fireEvent(
+    getByRole('adjustable', { name: 'Locked' }),
+    'accessibilityAction',
+    { nativeEvent: { actionName: 'decrement' } },
+  );
+  expect(change).toHaveBeenCalledTimes(2);
+});
+test('v2 native searchable choices announce loading and suppress choices during a request', async () => {
+  const choose = jest.fn();
+  const { getByRole, getByText, queryByRole } = render(
+    <MagnoliaProvider>
+      <Combobox
+        label="Owner"
+        value={null}
+        items={[{ value: 'priya', label: 'Priya Nair' }]}
+        onValueChange={choose}
+        loading
+      />
+    </MagnoliaProvider>,
+  );
+  fireEvent.press(getByRole('combobox', { name: 'Owner' }));
+  await waitFor(() => expect(getByText('Searching…')).toBeTruthy());
+  expect(queryByRole('radio')).toBeNull();
+  expect(choose).not.toHaveBeenCalled();
+});
+test('v2 native searchable choices filter options, skip disabled values and preserve token removal', () => {
+  const choose = jest.fn(),
+    multi = jest.fn();
+  const items = [
+    { value: 'priya', label: 'Priya Nair' },
+    { value: 'pritam', label: 'Pritam Rao' },
+    { value: 'disabled', label: 'Unavailable', disabled: true },
+  ];
+  const { getByRole, getByLabelText, queryByRole } = render(
+    <MagnoliaProvider>
+      <Combobox
+        label="Owner"
+        items={items}
+        value="priya"
+        onValueChange={choose}
+      />
+      <MultiSelect
+        label="Tags"
+        items={items}
+        value={['priya']}
+        onValueChange={multi}
+      />
+    </MagnoliaProvider>,
+  );
+  fireEvent.press(getByRole('combobox', { name: 'Owner' }));
+  fireEvent.changeText(getByLabelText('Search Owner'), 'Prit');
+  expect(queryByRole('radio', { name: 'Priya Nair' })).toBeNull();
+  fireEvent.press(getByRole('radio', { name: 'Pritam Rao' }));
+  expect(choose).toHaveBeenCalledWith('pritam');
+  fireEvent.press(getByRole('button', { name: 'Remove Priya Nair' }));
+  expect(multi).toHaveBeenCalledWith([]);
+  fireEvent.press(getByRole('combobox', { name: 'Tags' }));
+  fireEvent.press(getByRole('checkbox', { name: 'Unavailable' }));
+  expect(multi).toHaveBeenCalledTimes(1);
+  fireEvent.press(getByRole('checkbox', { name: 'Pritam Rao' }));
+  expect(multi).toHaveBeenLastCalledWith(['priya', 'pritam']);
+});
+test('v2 native temporal controls validate typed dates and expose calendar/time choices', () => {
+  const dateChange = jest.fn(),
+    timeChange = jest.fn();
+  const { getByLabelText, getByRole, getByText } = render(
+    <MagnoliaProvider>
+      <DateField
+        label="Due date"
+        value="2026-10-14"
+        onValueChange={dateChange}
+      />
+      <TimeField label="Start time" value="14:30" onValueChange={timeChange} />
+    </MagnoliaProvider>,
+  );
+  fireEvent.changeText(getByLabelText('Due date'), '2026-02-30');
+  fireEvent(getByLabelText('Due date'), 'blur', {});
+  expect(getByText('Error: Enter a valid date.')).toBeTruthy();
+  expect(dateChange).not.toHaveBeenCalled();
+  fireEvent.press(getByRole('button', { name: 'Choose Due date' }));
+  fireEvent.press(getByRole('button', { name: 'Thu, Oct 15, 2026' }));
+  expect(dateChange).toHaveBeenCalledWith('2026-10-15');
+  fireEvent.press(getByRole('button', { name: 'Choose Start time' }));
+  fireEvent.press(getByRole('radio', { name: '2:45 PM' }));
+  expect(timeChange).toHaveBeenCalledWith('14:45');
+});
+test('v2 native calendar disables constrained days and starts a new range after completion', () => {
+  const change = jest.fn();
+  const { getByRole } = render(
+    <MagnoliaProvider>
+      <Calendar
+        value="2026-10-14"
+        endValue="2026-10-17"
+        range
+        min="2026-10-01"
+        max="2026-10-31"
+        today="2026-10-09"
+        onValueChange={change}
+      />
+    </MagnoliaProvider>,
+  );
+  expect(
+    getByRole('button', { name: 'Mon, Sep 28, 2026' }).props.accessibilityState
+      .disabled,
+  ).toBe(true);
+  fireEvent.press(getByRole('button', { name: 'Tue, Oct 20, 2026' }));
+  expect(change).toHaveBeenCalledWith('2026-10-20', undefined);
+});
+test('v2 native file controls delegate picking, expose progress and keep retry/remove independent', () => {
+  const browse = jest.fn(),
+    retry = jest.fn(),
+    remove = jest.fn();
+  const { getByRole, getByLabelText } = render(
+    <MagnoliaProvider>
+      <FileField label="Photos" onBrowse={browse} />
+      <Attachment
+        name="photo.jpg"
+        state="failed"
+        onRetry={retry}
+        onRemove={remove}
+      />
+      <Attachment
+        name="upload.jpg"
+        state="uploading"
+        progress={77}
+        onRemove={remove}
+      />
+      <Steps items={['Details', 'Counts', 'Review']} current={1} />
+    </MagnoliaProvider>,
+  );
+  fireEvent.press(getByRole('button', { name: 'Photos' }));
+  expect(browse).toHaveBeenCalledTimes(1);
+  fireEvent.press(getByRole('button', { name: 'Retry' }));
+  expect(retry).toHaveBeenCalledTimes(1);
+  expect(remove).not.toHaveBeenCalled();
+  fireEvent.press(getByRole('button', { name: 'Remove photo.jpg' }));
+  expect(remove).toHaveBeenCalledTimes(1);
+  expect(
+    getByRole('progressbar', { name: 'Uploading upload.jpg' }).props
+      .accessibilityValue.now,
+  ).toBe(77);
+  expect(getByLabelText('Counts: current')).toBeTruthy();
+});
+test('v2 native numeric controls preserve raw decimals and clamp stepper activation', () => {
+  const change = jest.fn();
+  const { getByRole, getByLabelText } = render(
+    <MagnoliaProvider>
+      <NumberField
+        label="Cycle time"
+        unit="seconds"
+        value="4.2"
+        onChangeText={change}
+      />
+      <Stepper label="Items" value={0} min={0} max={5} onValueChange={change} />
+    </MagnoliaProvider>,
+  );
+  fireEvent.changeText(getByLabelText('Cycle time'), '4.');
+  expect(change).toHaveBeenCalledWith('4.');
+  expect(getByLabelText('Cycle time').props.keyboardType).toBe('decimal-pad');
+  change.mockClear();
+  fireEvent.press(getByRole('button', { name: 'Decrease Items' }));
+  expect(change).not.toHaveBeenCalled();
+  fireEvent.press(getByRole('button', { name: 'Increase Items' }));
+  expect(change).toHaveBeenCalledWith(1);
+});
+test('v2 native selectable cards expose radio state and disabled links block navigation', () => {
+  const choose = jest.fn(),
+    navigate = jest.fn();
+  const { getByRole } = render(
+    <MagnoliaProvider density="compact">
+      <SelectableCard
+        title="Phone"
+        value="phone"
+        selected
+        onValueChange={choose}
+      />
+      <SelectableCard
+        title="Archive"
+        value="archive"
+        selected={false}
+        disabled
+        onValueChange={choose}
+      />
+      <Link
+        label="Unavailable"
+        href="https://example.com"
+        disabled
+        onPress={navigate}
+      />
+    </MagnoliaProvider>,
+  );
+  expect(
+    getByRole('radio', { name: 'Phone' }).props.accessibilityState.checked,
+  ).toBe(true);
+  fireEvent.press(getByRole('radio', { name: 'Archive' }));
+  expect(choose).not.toHaveBeenCalled();
+  fireEvent.press(getByRole('radio', { name: 'Phone' }));
+  expect(choose).toHaveBeenCalledWith('phone');
+  fireEvent.press(getByRole('link', { name: 'Unavailable' }));
+  expect(navigate).not.toHaveBeenCalled();
+});
+test('v2 native display clamps progress, preserves missing data and avatar fallback', () => {
+  const { getByRole, getByText } = render(
+    <MagnoliaProvider>
+      <ProgressBar label="Complete" value={120} />
+      <ProgressRing label="Pending" value={NaN} />
+      <ProgressRing label="Not started" value={-1} />
+      <Avatar name="Maya Chen" />
+    </MagnoliaProvider>,
+  );
+  expect(
+    getByRole('progressbar', { name: 'Complete' }).props.accessibilityValue.now,
+  ).toBe(100);
+  expect(
+    getByRole('progressbar', { name: 'Pending' }).props.accessibilityState.busy,
+  ).toBe(true);
+  expect(
+    getByRole('progressbar', { name: 'Not started' }).props.accessibilityValue
+      .now,
+  ).toBe(0);
+  expect(getByText('MC')).toBeTruthy();
+});
+test('v2 native display retains list selection, disabled activation and dismissible banners', () => {
+  const press = jest.fn(),
+    dismiss = jest.fn();
+  const { getByRole, queryByText } = render(
+    <MagnoliaProvider>
+      <ListItem title="Northwind" unread selected onPress={press} />
+      <ListItem title="Archived" disabled onPress={press} />
+      <Banner title="Review tasks" dismissible onDismiss={dismiss} />
+    </MagnoliaProvider>,
+  );
+  expect(
+    getByRole('button', { name: 'Unread: Northwind' }).props.accessibilityState
+      .selected,
+  ).toBe(true);
+  fireEvent.press(getByRole('button', { name: 'Archived' }));
+  expect(press).not.toHaveBeenCalled();
+  fireEvent.press(getByRole('button', { name: 'Unread: Northwind' }));
+  expect(press).toHaveBeenCalledTimes(1);
+  fireEvent.press(getByRole('button', { name: 'Dismiss Review tasks' }));
+  expect(dismiss).toHaveBeenCalledTimes(1);
+  expect(queryByText('Review tasks')).toBeNull();
+});
+test('v2 native choices retain mixed, disabled and selected semantics', () => {
+  const changed = jest.fn();
+  const { getByRole, getByLabelText } = render(
+    <MagnoliaProvider density="compact">
+      <Checkbox
+        label="Projects"
+        checked
+        indeterminate
+        onCheckedChange={changed}
+      />
+      <Switch
+        label="Notifications"
+        checked
+        disabled
+        onCheckedChange={changed}
+      />
+      <Radio label="Weekly" value="week" checked onValueChange={changed} />
+      <Chip label="Active" selected onSelectedChange={changed} />
+      <IconButton label="More" />
+      <Kbd keyName="K" modifier />
+    </MagnoliaProvider>,
+  );
+  expect(
+    getByRole('checkbox', { name: 'Projects' }).props.accessibilityState
+      .checked,
+  ).toBe('mixed');
+  fireEvent.press(getByRole('checkbox', { name: 'Projects' }));
+  expect(changed).toHaveBeenLastCalledWith(false);
+  fireEvent.press(getByRole('switch', { name: 'Notifications' }));
+  expect(changed).toHaveBeenCalledTimes(1);
+  expect(
+    getByRole('radio', { name: 'Weekly' }).props.accessibilityState.checked,
+  ).toBe(true);
+  expect(
+    getByRole('button', { name: 'Active' }).props.accessibilityState.selected,
+  ).toBe(true);
+  expect(getByLabelText('Command K')).toBeTruthy();
+});
+test('v2 native search clears through its controlled callback and select skips disabled choices', () => {
+  const clear = jest.fn(),
+    choose = jest.fn();
+  const { getByRole, getByLabelText, getByText } = render(
+    <MagnoliaProvider>
+      <SearchField
+        label="Search projects"
+        value="Northwind"
+        onChangeText={clear}
+      />
+      <TextArea label="Notes" value={'x'.repeat(281)} characterLimit={280} />
+      <Select
+        label="Interval"
+        value="week"
+        items={[
+          { value: 'week', label: 'Weekly' },
+          { value: 'disabled', label: 'Unavailable', disabled: true },
+          { value: 'month', label: 'Monthly' },
+        ]}
+        onValueChange={choose}
+      />
+    </MagnoliaProvider>,
+  );
+  fireEvent.press(getByRole('button', { name: 'Clear Search projects' }));
+  expect(clear).toHaveBeenCalledWith('');
+  expect(getByLabelText('Notes').props.accessibilityHint).toContain(
+    'Up to 280',
+  );
+  fireEvent.press(getByRole('combobox', { name: 'Interval' }));
+  fireEvent.press(getByRole('radio', { name: 'Unavailable' }));
+  expect(choose).not.toHaveBeenCalled();
+  fireEvent.press(getByRole('radio', { name: 'Monthly' }));
+  expect(choose).toHaveBeenCalledWith('month');
+  expect(getByText('Weekly')).toBeTruthy();
+});
+test('v2 native loading preserves its label and blocks duplicate submission', () => {
+  const onPress = jest.fn();
+  const { getByRole, getByText, rerender } = render(
+    <MagnoliaProvider>
+      <Button onPress={onPress} loading>
+        Save changes
+      </Button>
+    </MagnoliaProvider>,
+  );
+  expect(getByText('Save changes')).toBeTruthy();
+  expect(getByRole('button').props.accessibilityState.busy).toBe(true);
+  fireEvent.press(getByRole('button'));
+  expect(onPress).not.toHaveBeenCalled();
+  rerender(
+    <MagnoliaProvider mode="light" density="compact">
+      <Button onPress={onPress}>Save changes</Button>
+    </MagnoliaProvider>,
+  );
+  fireEvent.press(getByRole('button'));
+  expect(onPress).toHaveBeenCalledTimes(1);
+});
+test('v2 native fields announce errors and tabs preserve disabled states', () => {
+  const change = jest.fn();
+  const { getByLabelText, getByRole, getByText } = render(
+    <MagnoliaProvider>
+      <TextField label="Match" error="Enter a positive number" />
+      <Tabs
+        label="Views"
+        value="missing"
+        onValueChange={change}
+        items={[
+          { value: 'a', label: 'Overview' },
+          { value: 'b', label: 'Notes', disabled: true },
+        ]}
+      />
+      <Stat label="Average" value={null} />
+    </MagnoliaProvider>,
+  );
+  expect(getByLabelText('Match').props.accessibilityHint).toContain(
+    'Enter a positive number',
+  );
+  expect(
+    getByRole('tab', { name: 'Overview' }).props.accessibilityState.selected,
+  ).toBe(true);
+  fireEvent.press(getByRole('tab', { name: 'Notes' }));
+  expect(change).not.toHaveBeenCalled();
+  expect(getByText('—')).toBeTruthy();
+});
+
+test('v2 navigation announces current destinations and suppresses disabled actions', () => {
+  const navigate = jest.fn();
+  const { getByRole, getByLabelText, getByText } = render(
+    <MagnoliaProvider density="compact">
+      <NavSection label="Workspace" />
+      <NavItem label="Projects" count={0} selected onPress={navigate} />
+      <NavItem label="Locked" disabled onPress={navigate} />
+      <NavRailItem label="Home" onPress={navigate} />
+      <Breadcrumb
+        items={[
+          { label: 'Projects root', onPress: navigate },
+          { label: 'Settings', onPress: navigate },
+        ]}
+      />
+    </MagnoliaProvider>,
+  );
+  const selected = getByRole('button', { name: 'Projects, 0' });
+  expect(selected.props.accessibilityState.selected).toBe(true);
+  fireEvent.press(selected);
+  fireEvent.press(getByRole('button', { name: 'Locked' }));
+  expect(navigate).toHaveBeenCalledTimes(1);
+  fireEvent.press(getByRole('button', { name: 'Home' }));
+  fireEvent.press(getByRole('button', { name: 'Projects root' }));
+  expect(navigate).toHaveBeenCalledTimes(3);
+  expect(getByLabelText('Settings, current page')).toBeTruthy();
+  expect(getByText('Workspace')).toBeTruthy();
+});
+
+test('v2 mobile navigation exposes badge counts, header actions and collapsed headings', () => {
+  const back = jest.fn(),
+    action = jest.fn(),
+    choose = jest.fn();
+  const ui = (collapsed: boolean) => (
+    <MagnoliaProvider density="compact">
+      <TopBar
+        title="Northwind"
+        variant="large"
+        collapsed={collapsed}
+        onBack={back}
+        onAction={action}
+      />
+      <TabBar>
+        <TabBarItem label="Home" selected onPress={choose} />
+        <TabBarItem label="Inbox" badge={0} disabled onPress={choose} />
+      </TabBar>
+    </MagnoliaProvider>
+  );
+  const { getByRole, getAllByRole, rerender } = render(ui(false));
+  expect(getAllByRole('header')).toHaveLength(1);
+  expect(getByRole('header').props.children).toBe('Northwind');
+  fireEvent.press(getByRole('button', { name: 'Back' }));
+  fireEvent.press(getByRole('button', { name: 'More options' }));
+  fireEvent.press(getByRole('button', { name: 'Home' }));
+  fireEvent.press(getByRole('button', { name: 'Inbox, 0 unread' }));
+  expect(back).toHaveBeenCalledTimes(1);
+  expect(action).toHaveBeenCalledTimes(1);
+  expect(choose).toHaveBeenCalledTimes(1);
+  expect(
+    getByRole('button', { name: 'Home' }).props.accessibilityState.selected,
+  ).toBe(true);
+  rerender(ui(true));
+  expect(getAllByRole('header')).toHaveLength(1);
+});
+
+test('v2 data controls bound pagination, sort requests, cell commits and clearing', () => {
+  const change = jest.fn(),
+    size = jest.fn(),
+    sort = jest.fn(),
+    commit = jest.fn(),
+    clear = jest.fn(),
+    exportRows = jest.fn();
+  const { getByRole, getAllByRole, getByLabelText, getByText, rerender } =
+    render(
+      <MagnoliaProvider>
+        <Pagination
+          total={312}
+          page={1}
+          onPageChange={change}
+          onPageSizeChange={size}
+        />
+        <PaginationPages
+          totalPages={13}
+          page={3}
+          onPageChange={change}
+          label="Page picker"
+        />
+        <Table
+          caption="Projects"
+          columns={[{ key: 'score', label: 'Score', sortable: true }]}
+          rows={[{ score: 12 }]}
+          onSortChange={sort}
+        />
+        <TableRow selected>
+          <TableCell
+            value="Northwind"
+            editable
+            label="Edit project"
+            onCommit={commit}
+          />
+        </TableRow>
+        <BulkActionBar count={2} onClear={clear} onExport={exportRows} />
+      </MagnoliaProvider>,
+    );
+  const previous = getAllByRole('button', { name: 'Previous page' })[0];
+  expect(previous.props.accessibilityState.disabled).toBe(true);
+  fireEvent.press(getByRole('button', { name: 'Page 4' }));
+  expect(change).toHaveBeenLastCalledWith(4);
+  fireEvent.press(getByRole('button', { name: 'Score, not sorted' }));
+  expect(sort).toHaveBeenCalledWith('score', 'ascending');
+  fireEvent.press(getByRole('combobox', { name: 'Rows per page' }));
+  fireEvent.press(getByRole('radio', { name: '50' }));
+  expect(size).toHaveBeenCalledWith(50);
+  expect(change).toHaveBeenLastCalledWith(1);
+  fireEvent.press(getByRole('button', { name: 'Edit project: Northwind' }));
+  const input = getByLabelText('Edit project');
+  fireEvent.changeText(input, 'Northwind West');
+  fireEvent(input, 'submitEditing');
+  expect(commit).toHaveBeenCalledTimes(1);
+  expect(commit).toHaveBeenCalledWith('Northwind West');
+  fireEvent.press(getByRole('button', { name: 'Edit project: Northwind' }));
+  fireEvent.changeText(getByLabelText('Edit project'), 'Discard');
+  fireEvent(getByLabelText('Edit project'), 'keyPress', {
+    nativeEvent: { key: 'Escape' },
+  });
+  expect(commit).toHaveBeenCalledTimes(1);
+  expect(getByRole('button', { name: 'Edit project: Northwind' })).toBeTruthy();
+  fireEvent.press(getByRole('button', { name: 'Export' }));
+  fireEvent.press(getByRole('button', { name: 'Clear selection' }));
+  expect(exportRows).toHaveBeenCalledTimes(1);
+  expect(clear).toHaveBeenCalledTimes(1);
+  expect(getByText('2 selected')).toBeTruthy();
+  rerender(
+    <MagnoliaProvider>
+      <BulkActionBar count={0} onClear={clear} />
+    </MagnoliaProvider>,
+  );
+});
+
+test('v2 chart primitives retain trend names and series values in both modes', () => {
+  const content = (mode: 'dark' | 'light') => (
+    <MagnoliaProvider mode={mode} density="compact">
+      <Sparkline label="Northwind rising output" />
+      <LegendItem label="Northwind" series={1} />
+      <ChartTooltip
+        title="Week 6"
+        items={[
+          { label: 'Northwind', value: 42, series: 1 },
+          { label: 'Larkspur', value: 35, series: 2 },
+        ]}
+      />
+    </MagnoliaProvider>
+  );
+  const { getByRole, getByLabelText, getByText, rerender } = render(
+    content('dark'),
+  );
+  expect(getByRole('image', { name: 'Northwind rising output' })).toBeTruthy();
+  expect(getByLabelText('Northwind: 42')).toBeTruthy();
+  expect(getByLabelText('Larkspur: 35')).toBeTruthy();
+  rerender(content('light'));
+  expect(getByText('Week 6')).toBeTruthy();
+  expect(getByLabelText('Northwind: 42')).toBeTruthy();
+});
+
+test('v2 native BarChart selects real values and exposes data without inventing missing bars', () => {
+  const select = jest.fn();
+  const { getByRole, getByText } = render(
+    <MagnoliaProvider>
+      <BarChart
+        label="Weekly output"
+        data={[
+          { label: 'W1', value: 34 },
+          { label: 'Missing', value: null },
+          { label: 'W3', value: 66 },
+        ]}
+        onHighlightChange={select}
+      />
+    </MagnoliaProvider>,
+  );
+  expect(
+    getByRole('button', { name: 'W3: 66' }).props.accessibilityState.selected,
+  ).toBe(true);
+  expect(
+    getByRole('button', { name: 'Missing: No data' }).props.accessibilityState
+      .disabled,
+  ).toBe(true);
+  fireEvent.press(getByRole('button', { name: 'W1: 34' }));
+  expect(select).toHaveBeenCalledWith(0);
+  expect(
+    getByRole('button', { name: 'W1: 34' }).props.accessibilityState.selected,
+  ).toBe(true);
+  fireEvent.press(getByRole('button', { name: 'View Weekly output data' }));
+  expect(getByText('Period: Missing, Value: —')).toBeTruthy();
+  expect(getByText('Period: W1, Value: 34')).toBeTruthy();
+});
+
+test('v2 native Heatmap announces cells, preserves missing data and exposes its scale/readout', () => {
+  const inspect = jest.fn();
+  const { getByRole, getByText, getByLabelText } = render(
+    <MagnoliaProvider>
+      <Heatmap
+        label="Weekly activity"
+        columns={['W1', 'W2']}
+        rows={[
+          { label: 'Mon', values: [0, null] },
+          { label: 'Tue', values: [10, 30] },
+        ]}
+        onInspect={inspect}
+      />
+    </MagnoliaProvider>,
+  );
+  expect(getByRole('button', { name: 'Mon, W1: 0' })).toBeTruthy();
+  expect(
+    getByRole('button', { name: 'Mon, W2: No data' }).props.accessibilityState
+      .disabled,
+  ).toBe(true);
+  const cell = getByRole('button', { name: 'Tue, W2: 30' });
+  fireEvent(cell, 'focus');
+  fireEvent.press(cell);
+  expect(inspect).toHaveBeenCalledTimes(1);
+  expect(inspect).toHaveBeenCalledWith(1, 1, 30);
+  expect(getByText('Tue · W2')).toBeTruthy();
+  expect(getByLabelText('Scale: 0, 5, 10, 15, 20, 25, 30')).toBeTruthy();
+  fireEvent.press(getByRole('button', { name: 'View Weekly activity data' }));
+  expect(getByText('Row: Mon, Column: W2, Value: —')).toBeTruthy();
+});
+
+test('v2 native Distribution highlights valid rows and exposes exact quantiles', () => {
+  const select = jest.fn();
+  const { getByRole, getByText } = render(
+    <MagnoliaProvider>
+      <Distribution
+        label="Project distribution"
+        data={[
+          {
+            label: 'Northwind',
+            min: 12,
+            q1: 22,
+            median: 28,
+            q3: 34,
+            max: 48,
+            outliers: [54],
+          },
+          { label: 'Invalid', min: 10, q1: 8, median: 9, q3: 12, max: 14 },
+          { label: 'Larkspur', min: 8, q1: 18, median: 24, q3: 29, max: 41 },
+        ]}
+        onHighlightChange={select}
+      />
+    </MagnoliaProvider>,
+  );
+  expect(
+    getByRole('button', { name: /^Northwind, minimum 12/ }).props
+      .accessibilityState.selected,
+  ).toBe(true);
+  expect(
+    getByRole('button', { name: 'Invalid: Invalid range' }).props
+      .accessibilityState.disabled,
+  ).toBe(true);
+  fireEvent.press(getByRole('button', { name: /^Larkspur, minimum 8/ }));
+  expect(select).toHaveBeenCalledWith(2);
+  expect(
+    getByRole('button', { name: /^Larkspur, minimum 8/ }).props
+      .accessibilityState.selected,
+  ).toBe(true);
+  fireEvent.press(
+    getByRole('button', { name: 'View Project distribution data' }),
+  );
+  expect(
+    getByText(
+      'Project: Northwind, Minimum: 12, Q1: 22, Median: 28, Q3: 34, Maximum: 48, Outliers: 54',
+    ),
+  ).toBeTruthy();
+});
+
+test('v2 native Scatter adjusts through valid observations and preserves accessible raw values', () => {
+  const inspect = jest.fn();
+  const { getByRole, getByText } = render(
+    <MagnoliaProvider>
+      <Scatter
+        label="Cycle time and output"
+        xLabel="Cycle time (days)"
+        yLabel="Output"
+        formatX={(value) => `${value} d`}
+        points={[
+          { label: 'Northwind', x: 1.2, y: 34, highlighted: true },
+          { label: 'Larkspur', x: 1.8, y: 30 },
+          { label: 'Missing', x: NaN, y: 20 },
+        ]}
+        onInspect={inspect}
+      />
+    </MagnoliaProvider>,
+  );
+  const control = getByRole('adjustable', {
+    name: 'Inspect Cycle time and output',
+  });
+  expect(control.props.accessibilityValue.max).toBe(2);
+  fireEvent(control, 'accessibilityAction', {
+    nativeEvent: { actionName: 'increment' },
+  });
+  expect(inspect).toHaveBeenCalledWith(
+    1,
+    expect.objectContaining({ label: 'Larkspur', x: 1.8, y: 30 }),
+  );
+  expect(getByText('Larkspur')).toBeTruthy();
+  expect(getByRole('adjustable').props.accessibilityValue.text).toContain(
+    '1.8 d',
+  );
+  fireEvent.press(
+    getByRole('button', { name: 'View Cycle time and output data' }),
+  );
+  expect(
+    getByText(
+      'Observation: Missing, Cycle time (days): —, Output: 20, Group: Context',
+    ),
+  ).toBeTruthy();
+});
+
+test('v2 native LineChart inspects periods, skips empty columns and exposes missing values', () => {
+  const inspect = jest.fn();
+  const { getByRole, getByText, queryByRole, rerender } = render(
+    <MagnoliaProvider>
+      <LineChart
+        label="Output"
+        labels={['W1', 'W2', 'W3', 'W4']}
+        series={[
+          { label: 'Northwind', values: [1, null, 3, 4] },
+          { label: 'Larkspur', values: [2, null, null, 5] },
+        ]}
+        onInspect={inspect}
+      />
+    </MagnoliaProvider>,
+  );
+  expect(getByRole('adjustable').props.accessibilityValue.text).toContain(
+    'W4, Northwind: 4, Larkspur: 5',
+  );
+  fireEvent(getByRole('adjustable'), 'accessibilityAction', {
+    nativeEvent: { actionName: 'decrement' },
+  });
+  expect(inspect).toHaveBeenLastCalledWith(2);
+  expect(getByRole('adjustable').props.accessibilityValue.text).toContain(
+    'W3, Northwind: 3, Larkspur: No data',
+  );
+  fireEvent(getByRole('adjustable'), 'accessibilityAction', {
+    nativeEvent: { actionName: 'decrement' },
+  });
+  expect(inspect).toHaveBeenLastCalledWith(0);
+  fireEvent.press(getByRole('button', { name: 'View Output data' }));
+  expect(getByText('Period: W2, Northwind: —, Larkspur: —')).toBeTruthy();
+  rerender(
+    <MagnoliaProvider>
+      <LineChart
+        label="Output"
+        labels={['W1']}
+        series={Array.from({ length: 6 }, (_, i) => ({
+          label: `Series ${i}`,
+          values: [i],
+        }))}
+      />
+    </MagnoliaProvider>,
+  );
+  expect(queryByRole('adjustable')).toBeNull();
+  expect(
+    getByText(
+      'LineChart supports up to five series. View all values in the data table.',
+    ),
+  ).toBeTruthy();
+  expect(
+    getByText(
+      'Period: W1, Series 0: 0, Series 1: 1, Series 2: 2, Series 3: 3, Series 4: 4, Series 5: 5',
+    ),
+  ).toBeTruthy();
+});
+
+test('v2 native Accordion announces expanded state and keeps disabled content readable', () => {
+  const change = jest.fn();
+  function Example() {
+    const [open, setOpen] = React.useState(false);
+    return (
+      <MagnoliaProvider>
+        <Accordion
+          title="Section title"
+          open={open}
+          onOpenChange={(next) => {
+            change(next);
+            setOpen(next);
+          }}
+        >
+          Revealed content.
+        </Accordion>
+        <Accordion title="Unavailable section" disabled onOpenChange={change}>
+          Hidden content.
+        </Accordion>
+        <Accordion title="Unavailable expanded section" disabled open>
+          Readable content.
+        </Accordion>
+      </MagnoliaProvider>
+    );
+  }
+  const { getByRole, getByText, queryByText } = render(<Example />);
+  const control = getByRole('button', { name: 'Section title' });
+  expect(control.props.accessibilityState.expanded).toBe(false);
+  expect(queryByText('Revealed content.')).toBeNull();
+  fireEvent.press(control);
+  expect(change).toHaveBeenLastCalledWith(true);
+  expect(
+    getByRole('button', { name: 'Section title' }).props.accessibilityState
+      .expanded,
+  ).toBe(true);
+  expect(getByText('Revealed content.')).toBeTruthy();
+  fireEvent.press(getByRole('button', { name: 'Unavailable section' }));
+  expect(change).toHaveBeenCalledTimes(1);
+  expect(queryByText('Hidden content.')).toBeNull();
+  expect(getByText('Readable content.')).toBeTruthy();
+  fireEvent.press(getByRole('button', { name: 'Section title' }));
+  expect(queryByText('Revealed content.')).toBeNull();
+});
+
+test('v2 native Tooltip supplies a hint and supports long-press and escape dismissal', () => {
+  const { getByRole, getByLabelText, queryByLabelText } = render(
+    <MagnoliaProvider>
+      <Tooltip
+        label="Search"
+        shortcut="K"
+        modifier
+        trigger={(props) => <IconButton {...props} label="Open search" />}
+      />
+    </MagnoliaProvider>,
+  );
+  const trigger = getByRole('button', { name: 'Open search' });
+  expect(trigger.props.accessibilityHint).toBe('Search, Command K');
+  expect(queryByLabelText('Dismiss Search tooltip')).toBeNull();
+  fireEvent(trigger, 'longPress');
+  expect(getByRole('button', { name: 'Dismiss Search tooltip' })).toBeTruthy();
+  fireEvent(getByLabelText('Search, Command K'), 'accessibilityEscape');
+  expect(queryByLabelText('Dismiss Search tooltip')).toBeNull();
+  fireEvent(trigger, 'longPress');
+  fireEvent.press(getByRole('button', { name: 'Dismiss Search tooltip' }));
+  expect(queryByLabelText('Dismiss Search tooltip')).toBeNull();
+});
+
+test('v2 native Menu supports actions, disabled choices and cancellable selection', () => {
+  const action = jest.fn();
+  function Example() {
+    const [checked, setChecked] = React.useState(false);
+    return (
+      <MagnoliaProvider>
+        <Menu
+          label="Actions"
+          trigger={(props) => <Button {...props}>Open actions</Button>}
+        >
+          <MenuItem label="Edit" onPress={action} />
+          <MenuItem label="Unavailable" disabled onPress={action} />
+          <MenuSeparator />
+          <MenuItem
+            label="Detailed"
+            checked={checked}
+            onPress={(e) => {
+              e.preventDefault();
+              setChecked(true);
+            }}
+          />
+        </Menu>
+      </MagnoliaProvider>
+    );
+  }
+  const { getByRole, queryByRole } = render(<Example />);
+  const trigger = getByRole('button', { name: 'Open actions' });
+  fireEvent.press(trigger);
+  expect(getByRole('button', { name: 'Dismiss Actions menu' })).toBeTruthy();
+  fireEvent.press(getByRole('menuitem', { name: 'Unavailable' }));
+  expect(action).not.toHaveBeenCalled();
+  const event = {
+    defaultPrevented: false,
+    preventDefault() {
+      this.defaultPrevented = true;
+    },
+  };
+  fireEvent.press(getByRole('radio', { name: 'Detailed' }), event);
+  expect(
+    getByRole('radio', { name: 'Detailed' }).props.accessibilityState.checked,
+  ).toBe(true);
+  expect(getByRole('menuitem', { name: 'Edit' })).toBeTruthy();
+  fireEvent.press(getByRole('menuitem', { name: 'Edit' }));
+  expect(action).toHaveBeenCalledTimes(1);
+  expect(queryByRole('menuitem', { name: 'Edit' })).toBeNull();
+  fireEvent.press(trigger);
+  fireEvent.press(getByRole('button', { name: 'Dismiss Actions menu' }));
+  expect(queryByRole('menuitem', { name: 'Edit' })).toBeNull();
+});
+
+test('v2 native Popover exposes its title and closes on action or dismissal', () => {
+  const action = jest.fn();
+  const { getByRole, queryByRole } = render(
+    <MagnoliaProvider>
+      <Popover
+        title="Share view"
+        body="Anyone with the link can see this view."
+        trigger={(props) => <Button {...props}>Share view</Button>}
+        actions={(close) => (
+          <Button
+            onPress={() => {
+              action();
+              close();
+            }}
+          >
+            Copy link
+          </Button>
+        )}
+      />
+    </MagnoliaProvider>,
+  );
+  const trigger = getByRole('button', { name: 'Share view' });
+  fireEvent.press(trigger);
+  expect(getByRole('header', { name: 'Share view' })).toBeTruthy();
+  fireEvent.press(getByRole('button', { name: 'Copy link' }));
+  expect(action).toHaveBeenCalledTimes(1);
+  expect(queryByRole('header', { name: 'Share view' })).toBeNull();
+  fireEvent.press(trigger);
+  fireEvent.press(getByRole('button', { name: 'Dismiss Share view' }));
+  expect(queryByRole('header', { name: 'Share view' })).toBeNull();
+});
+
+test('v2 native Dialog blocks incidental dismissal while allowing an explicit decision', () => {
+  const closed = jest.fn();
+  const { getByRole, queryByRole, getByText } = render(
+    <MagnoliaProvider>
+      <Dialog
+        title="Delete Northwind?"
+        body="It cannot be undone."
+        canClose={false}
+        onClose={closed}
+        trigger={(props) => <Button {...props}>Open decision</Button>}
+        actions={(close) => <Button onPress={close}>Cancel</Button>}
+      />
+    </MagnoliaProvider>,
+  );
+  fireEvent.press(getByRole('button', { name: 'Open decision' }));
+  expect(getByRole('header', { name: 'Delete Northwind?' })).toBeTruthy();
+  expect(getByText('It cannot be undone.')).toBeTruthy();
+  fireEvent.press(getByRole('button', { name: 'Dismiss Delete Northwind?' }));
+  expect(getByRole('header', { name: 'Delete Northwind?' })).toBeTruthy();
+  expect(closed).not.toHaveBeenCalled();
+  fireEvent(
+    getByRole('header', { name: 'Delete Northwind?' }),
+    'accessibilityEscape',
+  );
+  expect(getByRole('header', { name: 'Delete Northwind?' })).toBeTruthy();
+  fireEvent.press(getByRole('button', { name: 'Cancel' }));
+  expect(queryByRole('header', { name: 'Delete Northwind?' })).toBeNull();
+  expect(closed).toHaveBeenCalledTimes(1);
+});
+
+test('v2 Dialog preserves its source confirm override without recoloring surrounding buttons', () => {
+  for (const mode of ['dark', 'light'] as const) {
+    const { getByRole, unmount } = render(
+      <MagnoliaProvider mode={mode}>
+        <Button variant="danger">Danger outside</Button>
+        <Dialog
+          title="Confirm"
+          open
+          actions={(close) => (
+            <Button variant="danger" onPress={close}>
+              Confirm delete
+            </Button>
+          )}
+        />
+      </MagnoliaProvider>,
+    );
+    expect(getByRole('button', { name: 'Confirm delete' })).toHaveStyle({
+      backgroundColor: '#a8302e',
+    });
+    fireEvent(getByRole('button', { name: 'Confirm delete' }), 'hoverIn');
+    expect(getByRole('button', { name: 'Confirm delete' })).toHaveStyle({
+      backgroundColor: mode === 'dark' ? '#b53a37' : '#a12f2f',
+    });
+    fireEvent(getByRole('button', { name: 'Confirm delete' }), 'hoverOut');
+    expect(getByRole('button', { name: 'Confirm delete' })).toHaveStyle({
+      backgroundColor: '#a8302e',
+    });
+    expect(
+      getByRole('button', {
+        name: 'Danger outside',
+        includeHiddenElements: true,
+      }),
+    ).toHaveStyle({ backgroundColor: mode === 'dark' ? '#a8302e' : '#c43f3e' });
+    unmount();
+  }
+});
+
+test('v2 native Toast pauses its remaining timer during interaction and backgrounding', async () => {
+  jest.useFakeTimers();
+  const previousState = AppState.currentState;
+  AppState.currentState = 'active';
+  const reader = jest
+    .spyOn(AccessibilityInfo, 'isScreenReaderEnabled')
+    .mockResolvedValue(false);
+  let background: (state: string) => void = () => {};
+  const appState = jest
+    .spyOn(AppState, 'addEventListener')
+    .mockImplementation((_type, listener) => {
+      background = listener;
+      return { remove: jest.fn() };
+    });
+  const dismiss = jest.fn(),
+    change = jest.fn();
+  const result = render(
+    <MagnoliaProvider>
+      <Toast
+        open
+        message="Moved to archive"
+        actionLabel="Undo"
+        onDismiss={dismiss}
+        onOpenChange={change}
+      />
+    </MagnoliaProvider>,
+  );
+  try {
+    await act(async () => {});
+    act(() => jest.advanceTimersByTime(4000));
+    const action = result.getByRole('button', { name: 'Undo' });
+    fireEvent(action, 'focus', {});
+    act(() => jest.advanceTimersByTime(10000));
+    expect(dismiss).not.toHaveBeenCalled();
+    act(() => background('background'));
+    fireEvent(action, 'blur', {});
+    act(() => jest.advanceTimersByTime(10000));
+    expect(dismiss).not.toHaveBeenCalled();
+    act(() => background('active'));
+    act(() => jest.advanceTimersByTime(999));
+    expect(dismiss).not.toHaveBeenCalled();
+    act(() => jest.advanceTimersByTime(1));
+    expect(dismiss).toHaveBeenCalledWith('timeout');
+    expect(change).toHaveBeenCalledWith(false);
+  } finally {
+    result.unmount();
+    reader.mockRestore();
+    appState.mockRestore();
+    AppState.currentState = previousState;
+    jest.useRealTimers();
+  }
+});
+
+test('v2 native Toast retains danger messages, supports retry prevention and supplies dismiss without an action', async () => {
+  jest.useFakeTimers();
+  const appState = jest
+    .spyOn(AppState, 'addEventListener')
+    .mockReturnValue({ remove: jest.fn() });
+  const reader = jest
+    .spyOn(AccessibilityInfo, 'isScreenReaderEnabled')
+    .mockResolvedValue(false);
+  const dismiss = jest.fn(),
+    action = jest.fn();
+  const result = render(
+    <MagnoliaProvider>
+      <Toast
+        open
+        tone="danger"
+        message="Could not save changes"
+        actionLabel="Retry"
+        onAction={action}
+        onDismiss={dismiss}
+      />
+    </MagnoliaProvider>,
+  );
+  try {
+    await act(async () => {});
+    act(() => jest.advanceTimersByTime(60000));
+    expect(dismiss).not.toHaveBeenCalled();
+    expect(
+      result.getByRole('alert', { name: 'Could not save changes' }),
+    ).toBeTruthy();
+    fireEvent.press(result.getByRole('button', { name: 'Retry' }), {
+      defaultPrevented: true,
+    });
+    expect(action).toHaveBeenCalledTimes(1);
+    expect(dismiss).not.toHaveBeenCalled();
+    fireEvent.press(result.getByRole('button', { name: 'Retry' }), {
+      defaultPrevented: false,
+    });
+    expect(dismiss).toHaveBeenCalledWith('action');
+    result.rerender(
+      <MagnoliaProvider>
+        <Toast
+          open
+          tone="danger"
+          message="Connection lost"
+          onDismiss={dismiss}
+        />
+      </MagnoliaProvider>,
+    );
+    fireEvent.press(result.getByRole('button', { name: 'Dismiss' }));
+    expect(dismiss).toHaveBeenLastCalledWith('dismiss');
+  } finally {
+    result.unmount();
+    reader.mockRestore();
+    appState.mockRestore();
+    jest.useRealTimers();
+  }
+});
+
+test('v2 native Toast remains available to screen readers and cancels expiry on unmount', async () => {
+  jest.useFakeTimers();
+  const reader = jest
+    .spyOn(AccessibilityInfo, 'isScreenReaderEnabled')
+    .mockResolvedValue(true);
+  const appState = jest
+    .spyOn(AppState, 'addEventListener')
+    .mockReturnValue({ remove: jest.fn() });
+  const previousState = AppState.currentState;
+  AppState.currentState = 'active';
+  const dismiss = jest.fn();
+  const result = render(
+    <MagnoliaProvider>
+      <Toast
+        open
+        message="Changes saved"
+        actionLabel="View"
+        onDismiss={dismiss}
+      />
+    </MagnoliaProvider>,
+  );
+  try {
+    await act(async () => {});
+    act(() => jest.advanceTimersByTime(60000));
+    expect(dismiss).not.toHaveBeenCalled();
+    expect(result.getByRole('button', { name: 'View' })).toBeTruthy();
+    result.unmount();
+    act(() => jest.advanceTimersByTime(60000));
+    expect(dismiss).not.toHaveBeenCalled();
+  } finally {
+    reader.mockRestore();
+    appState.mockRestore();
+    AppState.currentState = previousState;
+    jest.useRealTimers();
+  }
+});
+
+test('v2 native commands search aliases, skip disabled navigation and open panel actions once', () => {
+  const select = jest.fn();
+  const items = [
+    { id: 'home', label: 'Home', group: 'Go to' },
+    { id: 'locked', label: 'Unavailable', group: 'Go to', disabled: true },
+    { id: 'export', label: 'Export view', group: 'Actions', keywords: ['csv'] },
+  ];
+  const result = render(
+    <MagnoliaProvider>
+      <CommandPalette
+        items={items}
+        trigger={(props) => <Button {...props}>Open commands</Button>}
+        onSelect={select}
+      />
+    </MagnoliaProvider>,
+  );
+  fireEvent.press(result.getByRole('button', { name: 'Open commands' }));
+  const input = result.getByRole('combobox', { name: 'Commands' });
+  fireEvent(input, 'keyPress', { nativeEvent: { key: 'ArrowDown' } });
+  expect(
+    result.getByRole('button', { name: 'Export view' }).props.accessibilityState
+      .selected,
+  ).toBe(true);
+  fireEvent.press(result.getByRole('button', { name: 'Unavailable' }));
+  expect(select).not.toHaveBeenCalled();
+  fireEvent.changeText(input, 'csv');
+  expect(result.queryByRole('button', { name: 'Home' })).toBeNull();
+  fireEvent(result.getByRole('button', { name: 'Export view' }), 'longPress');
+  expect(select).toHaveBeenCalledTimes(1);
+  expect(select).toHaveBeenCalledWith(
+    expect.objectContaining({ id: 'export' }),
+    { panel: true },
+  );
+  expect(result.queryByRole('combobox')).toBeNull();
+});
+
+test('v2 native commands expose empty/loading states and honor prevented selection', () => {
+  const select = jest.fn(() => false);
+  const items = [{ id: 'home', label: 'Home' }];
+  const result = render(
+    <MagnoliaProvider>
+      <CommandPalette open items={items} onSelect={select} />
+    </MagnoliaProvider>,
+  );
+  const input = result.getByRole('combobox', { name: 'Commands' });
+  fireEvent.changeText(input, 'zzzz');
+  expect(result.getByText('No matching commands')).toBeTruthy();
+  fireEvent(input, 'submitEditing');
+  expect(select).not.toHaveBeenCalled();
+  fireEvent.changeText(input, 'home');
+  fireEvent(input, 'submitEditing');
+  expect(select).toHaveBeenCalledTimes(1);
+  expect(result.getByRole('combobox')).toBeTruthy();
+  result.rerender(
+    <MagnoliaProvider>
+      <CommandPalette open items={items} loading onSelect={select} />
+    </MagnoliaProvider>,
+  );
+  expect(result.getByText('Searching…')).toBeTruthy();
+  expect(result.queryByRole('button', { name: 'Home' })).toBeNull();
+  expect(result.getByRole('combobox').props.accessibilityState.busy).toBe(true);
+});
+
+test('v2 native canonical icons expose all source names, exact density sizes and optional image labels', () => {
+  expect(iconNames).toHaveLength(75);
+  const result = render(
+    <MagnoliaProvider density="comfortable">
+      <Icon name="folder" label="Project folder" />
+      <Icon name="check" size="xs" />
+      <Icon name="plus" size="sm" />
+    </MagnoliaProvider>,
+  );
+  expect(
+    result.getByRole('image', { name: 'Project folder' }).props.style[0],
+  ).toMatchObject({ width: 24, height: 24 });
+  expect(result.getAllByRole('image')).toHaveLength(1);
+  result.rerender(
+    <MagnoliaProvider density="compact">
+      <Icon name="folder" size="xs" label="Small folder" />
+      <Icon name="folder" size="sm" label="Medium folder" />
+      <Icon name="folder" label="Large folder" />
+    </MagnoliaProvider>,
+  );
+  for (const [name, size] of [
+    ['Small folder', 14],
+    ['Medium folder', 16],
+    ['Large folder', 20],
+  ] as const)
+    expect(result.getByRole('image', { name }).props.style[0]).toMatchObject({
+      width: size,
+      height: size,
+    });
+});
+
+test('v2 native form sections preserve heading context and error summary links every target', () => {
+  const choose = jest.fn();
+  const errors = [
+    { id: 'location', label: 'Location', message: 'add where this happened' },
+    { id: 'count', label: 'Items checked', message: 'must be at least 1' },
+  ];
+  const result = render(
+    <MagnoliaProvider>
+      <FormSection
+        title="Where and when"
+        description="Fields marked * are required."
+      >
+        <FormRow>
+          <TextField label="Location" value="" />
+          <NumberField label="Items checked" value="0" />
+        </FormRow>
+      </FormSection>
+      <ErrorSummary errors={errors} onField={choose} />
+    </MagnoliaProvider>,
+  );
+  expect(result.getByRole('header', { name: 'Where and when' })).toBeTruthy();
+  expect(result.getByText('Fields marked * are required.')).toBeTruthy();
+  expect(
+    result.getByRole('alert', { name: 'Fix 2 fields to continue' }),
+  ).toBeTruthy();
+  const link = result.getByRole('link', {
+    name: 'Location — add where this happened',
+  });
+  fireEvent(link, 'focus', {});
+  expect(link.props.style.outlineWidth).toBe(2);
+  fireEvent.press(link);
+  expect(choose).toHaveBeenCalledWith(errors[0]);
+  fireEvent.press(
+    result.getByRole('link', { name: 'Items checked — must be at least 1' }),
+  );
+  expect(choose).toHaveBeenLastCalledWith(errors[1]);
+  result.rerender(
+    <MagnoliaProvider>
+      <ErrorSummary errors={[]} onField={choose} />
+    </MagnoliaProvider>,
+  );
+  expect(result.queryByRole('alert')).toBeNull();
+});
+
+test('v2 native complete NavRail preserves brand and selectable destinations', () => {
+  const choose = jest.fn();
+  const result = render(
+    <MagnoliaProvider>
+      <NavRail brandLabel="Acme workspace">
+        <NavRailItem label="Home" selected onPress={choose} />
+        <NavRailItem label="Unavailable" disabled onPress={choose} />
+      </NavRail>
+    </MagnoliaProvider>,
+  );
+  expect(result.getByRole('image', { name: 'Acme workspace' })).toBeTruthy();
+  const home = result.getByRole('button', { name: 'Home' });
+  expect(home.props.accessibilityState.selected).toBe(true);
+  fireEvent.press(home);
+  fireEvent.press(result.getByRole('button', { name: 'Unavailable' }));
+  expect(choose).toHaveBeenCalledTimes(1);
+});
+
+test('v2 native Kbd exposes modifier swaps and hides key text without changing boolean compatibility', () => {
+  const result = render(
+    <MagnoliaProvider density="compact">
+      <Kbd keyName="K" modifier />
+      <Kbd modifier="shift" showKey={false} />
+      <Kbd modifier="enter" showKey={false} />
+      <Icon name="folder" size={20} label="Fixed folder" />
+    </MagnoliaProvider>,
+  );
+  expect(result.getByLabelText('Command K')).toBeTruthy();
+  expect(result.getByLabelText('Shift').props.style.minWidth).toBe(18);
+  expect(result.getByLabelText('Enter').props.style.minHeight).toBe(18);
+  expect(result.getAllByText('K')).toHaveLength(1);
+  expect(
+    result.getByRole('image', { name: 'Fixed folder' }).props.style[0],
+  ).toMatchObject({ width: 20, height: 20 });
+});
+
+test('v2 native inputs expose their actual editable target to linked error summaries', () => {
+  const text = React.createRef<TextInput>(),
+    search = React.createRef<TextInput>(),
+    number = React.createRef<TextInput>(),
+    date = React.createRef<TextInput>(),
+    time = React.createRef<TextInput>(),
+    notes = React.createRef<TextInput>();
+  render(
+    <MagnoliaProvider>
+      <TextField ref={text} label="Ref text" value="" />
+      <SearchField ref={search} label="Ref search" value="" />
+      <NumberField ref={number} label="Ref number" value="0" />
+      <DateField ref={date} label="Ref date" onValueChange={() => {}} />
+      <TimeField ref={time} label="Ref time" onValueChange={() => {}} />
+      <TextArea ref={notes} label="Ref notes" value="" />
+    </MagnoliaProvider>,
+  );
+  for (const [ref, label] of [
+    [text, 'Ref text'],
+    [search, 'Ref search'],
+    [number, 'Ref number'],
+    [date, 'Ref date'],
+    [time, 'Ref time'],
+    [notes, 'Ref notes'],
+  ] as const) {
+    expect(ref.current).toBeTruthy();
+    expect(ref.current.props.accessibilityLabel).toBe(label);
+  }
+});
+
+test('v2 native Sheet exposes object actions with button semantics and closes on selection', () => {
+  const action = jest.fn();
+  const { getByRole, queryByRole } = render(
+    <MagnoliaProvider>
+      <Sheet
+        title="Northwind"
+        subtitle="Project · 214 entries"
+        trigger={(props) => <Button {...props}>Open sheet</Button>}
+      >
+        <SheetAction label="Share link" onPress={action} />
+        <SheetSeparator />
+        <SheetAction label="Unavailable" disabled onPress={action} />
+      </Sheet>
+    </MagnoliaProvider>,
+  );
+  fireEvent.press(getByRole('button', { name: 'Open sheet' }));
+  expect(getByRole('header', { name: 'Northwind' })).toBeTruthy();
+  fireEvent.press(getByRole('button', { name: 'Unavailable' }));
+  expect(action).not.toHaveBeenCalled();
+  fireEvent.press(getByRole('button', { name: 'Share link' }));
+  expect(action).toHaveBeenCalledTimes(1);
+  expect(queryByRole('header', { name: 'Northwind' })).toBeNull();
+  fireEvent.press(getByRole('button', { name: 'Open sheet' }));
+  fireEvent.press(getByRole('button', { name: 'Close Northwind' }));
+  expect(queryByRole('header', { name: 'Northwind' })).toBeNull();
+});
+
+test('v2 native Drawer preserves nullable details and supports promote and footer actions', () => {
+  const promote = jest.fn();
+  const { getByRole, getByLabelText, queryByRole } = render(
+    <MagnoliaProvider>
+      <Drawer
+        title="Northwind"
+        subtitle="Project · Active"
+        trigger={(props) => <Button {...props}>Open drawer</Button>}
+        metrics={[{ label: 'Average', value: 14.2 }]}
+        details={[
+          { label: 'Owner', value: 'Maya Chen' },
+          { label: 'Count', value: 0 },
+          { label: 'Missing', value: null },
+        ]}
+        onOpenFull={promote}
+        actions={(close) => <Button onPress={close}>Edit</Button>}
+      />
+    </MagnoliaProvider>,
+  );
+  fireEvent.press(getByRole('button', { name: 'Open drawer' }));
+  expect(getByLabelText('Owner: Maya Chen')).toBeTruthy();
+  expect(getByLabelText('Count: 0')).toBeTruthy();
+  expect(getByLabelText('Missing: No data')).toBeTruthy();
+  fireEvent.press(getByRole('button', { name: 'Open Northwind in full page' }));
+  expect(promote).toHaveBeenCalledTimes(1);
+  expect(queryByRole('header', { name: 'Northwind' })).toBeNull();
+  fireEvent.press(getByRole('button', { name: 'Open drawer' }));
+  fireEvent.press(getByRole('button', { name: 'Edit' }));
+  expect(queryByRole('header', { name: 'Northwind' })).toBeNull();
+});

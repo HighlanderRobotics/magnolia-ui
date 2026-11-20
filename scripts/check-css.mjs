@@ -1,5 +1,10 @@
 import { readFileSync, readdirSync } from 'node:fs';
-const roots = ['packages/svelte/src/lib', 'packages/tokens'];
+const roots = [
+  'packages/svelte/src/lib',
+  'packages/tokens',
+  'packages/svelte/src/lib/v2',
+  'packages/tokens/v2',
+];
 const css = roots
   .flatMap((dir) =>
     readdirSync(dir)

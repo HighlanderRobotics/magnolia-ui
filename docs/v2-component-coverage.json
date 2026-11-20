@@ -1,0 +1,816 @@
+{
+  "fileKey": "cXx2mM66UtpxNVbResHxq3",
+  "scope": "Component masters; does not substitute for state, foundation, demo or physical native validation",
+  "components": [
+    {
+      "nodeId": "43:148",
+      "name": "Button",
+      "page": "Actions & Inputs",
+      "api": "Button",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Button.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "43:212",
+      "name": "IconButton",
+      "page": "Actions & Inputs",
+      "api": "IconButton",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/IconButton.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "336:4807",
+      "name": "Kbd",
+      "page": "Actions & Inputs",
+      "api": "Kbd",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Kbd.svelte",
+      "stateAudit": "automated contract checks and source render review; physical native pending"
+    },
+    {
+      "nodeId": "44:209",
+      "name": "TextField",
+      "page": "Actions & Inputs",
+      "api": "TextField",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/TextField.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "44:242",
+      "name": "TextArea",
+      "page": "Actions & Inputs",
+      "api": "TextArea",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/TextArea.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "44:278",
+      "name": "Select",
+      "page": "Actions & Inputs",
+      "api": "Select",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Select.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "46:402",
+      "name": "SearchField",
+      "page": "Actions & Inputs",
+      "api": "SearchField",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/SearchField.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "44:393",
+      "name": "Stepper",
+      "page": "Actions & Inputs",
+      "api": "Stepper",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Stepper.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "47:464",
+      "name": "Checkbox",
+      "page": "Actions & Inputs",
+      "api": "Checkbox",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Checkbox.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "47:512",
+      "name": "Radio",
+      "page": "Actions & Inputs",
+      "api": "Radio",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Radio.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "47:545",
+      "name": "Switch",
+      "page": "Actions & Inputs",
+      "api": "Switch",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Switch.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "47:578",
+      "name": "Segment",
+      "page": "Actions & Inputs",
+      "api": "SegmentedControl",
+      "coverage": "implemented",
+      "embedded": true,
+      "svelte": "packages/svelte/src/lib/v2/SegmentedControl.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "47:629",
+      "name": "Chip",
+      "page": "Actions & Inputs",
+      "api": "Chip",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Chip.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "47:1163",
+      "name": "DayCell",
+      "page": "Actions & Inputs",
+      "api": "Calendar",
+      "coverage": "implemented",
+      "embedded": true,
+      "svelte": "packages/svelte/src/lib/v2/Calendar.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "357:2430",
+      "name": "DateField",
+      "page": "Actions & Inputs",
+      "api": "DateField",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/DateField.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "77:1069",
+      "name": "Combobox",
+      "page": "Actions & Inputs",
+      "api": "Combobox",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Combobox.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "77:1109",
+      "name": "MultiSelect",
+      "page": "Actions & Inputs",
+      "api": "MultiSelect",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/MultiSelect.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "77:1157",
+      "name": "Slider",
+      "page": "Actions & Inputs",
+      "api": "Slider",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Slider.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "77:1179",
+      "name": "Link",
+      "page": "Actions & Inputs",
+      "api": "Link",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Link.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "77:1216",
+      "name": "FileField",
+      "page": "Actions & Inputs",
+      "api": "FileField",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/FileField.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "103:1501",
+      "name": "Attachment",
+      "page": "Actions & Inputs",
+      "api": "Attachment",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Attachment.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "92:1519",
+      "name": "TimeField",
+      "page": "Actions & Inputs",
+      "api": "TimeField",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/TimeField.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "103:1453",
+      "name": "NumberField",
+      "page": "Actions & Inputs",
+      "api": "NumberField",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/NumberField.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "103:1565",
+      "name": "Steps",
+      "page": "Actions & Inputs",
+      "api": "Steps",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Steps.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "109:1634",
+      "name": "SelectableCard",
+      "page": "Actions & Inputs",
+      "api": "SelectableCard",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/SelectableCard.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "47:586",
+      "name": "SegmentedControl",
+      "page": "Actions & Inputs",
+      "api": "SegmentedControl",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/SegmentedControl.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "47:1265",
+      "name": "Calendar",
+      "page": "Actions & Inputs",
+      "api": "Calendar",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Calendar.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "90:1284",
+      "name": "ErrorSummary",
+      "page": "Actions & Inputs",
+      "api": "ErrorSummary",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/ErrorSummary.svelte",
+      "stateAudit": "automated contract checks and source render review; physical native pending"
+    },
+    {
+      "nodeId": "90:1308",
+      "name": "FormSection",
+      "page": "Actions & Inputs",
+      "api": "FormSection",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/FormSection.svelte",
+      "stateAudit": "automated contract checks and source render review; physical native pending"
+    },
+    {
+      "nodeId": "49:32",
+      "name": "Badge",
+      "page": "Display",
+      "api": "Badge",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Badge.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "49:57",
+      "name": "StatusIndicator",
+      "page": "Display",
+      "api": "StatusIndicator",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/StatusIndicator.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "49:79",
+      "name": "Avatar",
+      "page": "Display",
+      "api": "Avatar",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Avatar.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "49:125",
+      "name": "Trend",
+      "page": "Display",
+      "api": "Trend",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Trend.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "49:142",
+      "name": "Stat",
+      "page": "Display",
+      "api": "Stat",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Stat.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "49:214",
+      "name": "ProgressBar",
+      "page": "Display",
+      "api": "ProgressBar",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/ProgressBar.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "50:210",
+      "name": "Banner",
+      "page": "Display",
+      "api": "Banner",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Banner.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "50:441",
+      "name": "ListItem",
+      "page": "Display",
+      "api": "ListItem",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/ListItem.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "50:460",
+      "name": "Skeleton",
+      "page": "Display",
+      "api": "Skeleton",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Skeleton.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "50:473",
+      "name": "Spinner",
+      "page": "Display",
+      "api": "Spinner",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Spinner.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "78:1520",
+      "name": "ProgressRing",
+      "page": "Display",
+      "api": "ProgressRing",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/ProgressRing.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "131:1172",
+      "name": "AmbientWash",
+      "page": "Display",
+      "api": "AmbientWash",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/AmbientWash.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "50:220",
+      "name": "CardHeader",
+      "page": "Display",
+      "api": "CardHeader",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/CardHeader.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "50:231",
+      "name": "Card",
+      "page": "Display",
+      "api": "Card",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Card.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "50:233",
+      "name": "Divider",
+      "page": "Display",
+      "api": "Divider",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Divider.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "50:453",
+      "name": "EmptyState",
+      "page": "Display",
+      "api": "EmptyState",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/EmptyState.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "94:1116",
+      "name": "AvatarGroup",
+      "page": "Display",
+      "api": "AvatarGroup",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/AvatarGroup.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "52:70",
+      "name": "TableHeaderCell",
+      "page": "Data & Charts",
+      "api": "TableHeaderCell",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/TableHeaderCell.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "52:80",
+      "name": "TableCell",
+      "page": "Data & Charts",
+      "api": "TableCell",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/TableCell.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "52:157",
+      "name": "TableRow",
+      "page": "Data & Charts",
+      "api": "TableRow",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/TableRow.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "53:213",
+      "name": "Sparkline",
+      "page": "Data & Charts",
+      "api": "Sparkline",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Sparkline.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "53:238",
+      "name": "LegendItem",
+      "page": "Data & Charts",
+      "api": "LegendItem",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/LegendItem.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "52:175",
+      "name": "Pagination",
+      "page": "Data & Charts",
+      "api": "Pagination",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Pagination.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "52:200",
+      "name": "BulkActionBar",
+      "page": "Data & Charts",
+      "api": "BulkActionBar",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/BulkActionBar.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "53:253",
+      "name": "ChartTooltip",
+      "page": "Data & Charts",
+      "api": "ChartTooltip",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/ChartTooltip.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "53:281",
+      "name": "LineChart",
+      "page": "Data & Charts",
+      "api": "LineChart",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/LineChart.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "53:308",
+      "name": "BarChart",
+      "page": "Data & Charts",
+      "api": "BarChart",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/BarChart.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "78:724",
+      "name": "Heatmap",
+      "page": "Data & Charts",
+      "api": "Heatmap",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Heatmap.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "78:762",
+      "name": "Distribution",
+      "page": "Data & Charts",
+      "api": "Distribution",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Distribution.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "78:784",
+      "name": "PaginationPages",
+      "page": "Data & Charts",
+      "api": "PaginationPages",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/PaginationPages.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "103:4410",
+      "name": "Scatter",
+      "page": "Data & Charts",
+      "api": "Scatter",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Scatter.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "54:51",
+      "name": "NavItem",
+      "page": "Navigation & Overlays",
+      "api": "NavItem",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/NavItem.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "54:87",
+      "name": "Tab",
+      "page": "Navigation & Overlays",
+      "api": "Tabs",
+      "coverage": "implemented",
+      "embedded": true,
+      "svelte": "packages/svelte/src/lib/Tabs.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "54:128",
+      "name": "TabBarItem",
+      "page": "Navigation & Overlays",
+      "api": "TabBarItem",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/TabBarItem.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "54:178",
+      "name": "TopBar",
+      "page": "Navigation & Overlays",
+      "api": "TopBar",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/TopBar.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "76:4097",
+      "name": "Accordion",
+      "page": "Navigation & Overlays",
+      "api": "Accordion",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Accordion.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "55:287",
+      "name": "MenuItem",
+      "page": "Navigation & Overlays",
+      "api": "MenuItem",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/MenuItem.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "55:444",
+      "name": "Toast",
+      "page": "Navigation & Overlays",
+      "api": "Toast",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Toast.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "55:475",
+      "name": "CommandItem",
+      "page": "Navigation & Overlays",
+      "api": "CommandItem",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/CommandItem.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "93:990",
+      "name": "NavRailItem",
+      "page": "Navigation & Overlays",
+      "api": "NavRailItem",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/NavRailItem.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "54:54",
+      "name": "NavSection",
+      "page": "Navigation & Overlays",
+      "api": "NavSection",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/NavSection.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "54:95",
+      "name": "TabList",
+      "page": "Navigation & Overlays",
+      "api": "Tabs",
+      "coverage": "implemented",
+      "embedded": true,
+      "svelte": "packages/svelte/src/lib/Tabs.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "54:150",
+      "name": "TabBar",
+      "page": "Navigation & Overlays",
+      "api": "TabBar",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/TabBar.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "54:187",
+      "name": "Breadcrumb",
+      "page": "Navigation & Overlays",
+      "api": "Breadcrumb",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Breadcrumb.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "55:352",
+      "name": "Menu",
+      "page": "Navigation & Overlays",
+      "api": "Menu",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Menu.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "55:360",
+      "name": "Tooltip",
+      "page": "Navigation & Overlays",
+      "api": "Tooltip",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Tooltip.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "55:371",
+      "name": "Popover",
+      "page": "Navigation & Overlays",
+      "api": "Popover",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Popover.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "55:385",
+      "name": "Dialog",
+      "page": "Navigation & Overlays",
+      "api": "Dialog",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Dialog.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "55:415",
+      "name": "Sheet",
+      "page": "Navigation & Overlays",
+      "api": "Sheet",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Sheet.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "55:601",
+      "name": "CommandPalette",
+      "page": "Navigation & Overlays",
+      "api": "CommandPalette",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/CommandPalette.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "93:968",
+      "name": "Drawer",
+      "page": "Navigation & Overlays",
+      "api": "Drawer",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/Drawer.svelte",
+      "stateAudit": "pending"
+    },
+    {
+      "nodeId": "93:1020",
+      "name": "NavRail",
+      "page": "Navigation & Overlays",
+      "api": "NavRail",
+      "coverage": "implemented",
+      "embedded": false,
+      "svelte": "packages/svelte/src/lib/v2/NavRail.svelte",
+      "stateAudit": "automated contract checks and source render review; physical native pending"
+    }
+  ]
+}

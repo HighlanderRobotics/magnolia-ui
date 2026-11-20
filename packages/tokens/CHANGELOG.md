@@ -1,5 +1,15 @@
 # @highlanderrobotics/magnolia-tokens
 
+## 2.0.0
+
+### Major Changes
+
+- Release Magnolia UI v2 with shared dark and light themes, Comfortable and Compact densities, and opt-in v2 components, icons, and token exports. Existing root entry points remain available for compatibility.
+
+### Minor Changes
+
+- 98c1698: Add Tooltip, Popover, pill Tabs, persistent Toast, native-details Accordion, Combobox, MultiSelect, sortable Table and Pagination for Svelte. Add Radio, modal Select, Dialog and async action Menu for React Native. Reuse the Figma field/menu/Pill foundations, including the tab strip's measured 7px gap. Document keyboard, form, focus and platform contracts with runnable examples and accessibility tests. Lovat consumer dependencies remain unchanged.
+
 ## 0.2.0
 
 ### Minor Changes

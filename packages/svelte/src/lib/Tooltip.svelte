@@ -8,10 +8,16 @@
     text,
     trigger,
     delay = 400,
+    focusDelay = delay,
+    content,
+    class: className = '',
   }: {
     text: string;
     trigger: Snippet<[HTMLButtonAttributes]>;
     delay?: number;
+    focusDelay?: number;
+    content?: Snippet;
+    class?: string;
   } = $props();
   let wrapper = $state<HTMLSpanElement>(null!);
   let panel = $state<HTMLDivElement>(null!);
@@ -19,9 +25,9 @@
   let hovered = false;
   let focused = false;
   let timer: ReturnType<typeof setTimeout>;
-  function show() {
+  function show(wait = delay) {
     clearTimeout(timer);
-    timer = setTimeout(() => (open = true), Math.max(0, delay));
+    timer = setTimeout(() => (open = true), Math.max(0, wait));
   }
   function hide() {
     clearTimeout(timer);
@@ -41,7 +47,7 @@
     document.addEventListener('keydown', escape, true);
     return () => {
       position.destroy();
-      panel.hidePopover();
+      if (panel.isConnected) panel.hidePopover();
       document.removeEventListener('keydown', escape, true);
     };
   });
@@ -62,7 +68,7 @@
     },
     onfocus: () => {
       focused = true;
-      show();
+      show(focusDelay);
     },
     onblur: () => {
       focused = false;
@@ -74,7 +80,7 @@
     {id}
     popover="manual"
     role="tooltip"
-    class="mg-tooltip"
+    class="mg-tooltip {className}"
     onpointerenter={() => {
       hovered = true;
       clearTimeout(timer);
@@ -84,6 +90,6 @@
       hide();
     }}
   >
-    {text}
+    {#if content}{@render content()}{:else}{text}{/if}
   </div>
 </span>

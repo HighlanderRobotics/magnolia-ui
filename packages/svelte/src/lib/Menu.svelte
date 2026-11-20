@@ -2,6 +2,7 @@
   const uid = $props.id();
   import { setContext } from 'svelte';
   import type { Snippet } from 'svelte';
+  import { positionOverlay } from './overlay-position.js';
   import { MENU, type MenuContext } from './menu-context.js';
   let {
     open = $bindable(false),
@@ -9,12 +10,20 @@
     children,
     ariaLabel = 'Actions',
     id = uid,
+    popover = false,
+    anchorElement,
+    initialFocus = 'first',
+    class: className = '',
   }: {
     open?: boolean;
     anchor?: 'left' | 'right';
     children?: Snippet;
     ariaLabel?: string;
     id?: string;
+    popover?: boolean;
+    anchorElement?: HTMLElement;
+    initialFocus?: 'first' | 'last';
+    class?: string;
   } = $props();
   let panel = $state<HTMLDivElement>(null!);
   let trigger: HTMLElement | null = null;
@@ -28,19 +37,30 @@
   const items = () =>
     Array.from(
       panel.querySelectorAll<HTMLElement>(
-        '[role="menuitem"]:not(:disabled):not([aria-disabled="true"])',
+        '[role^="menuitem"]:not(:disabled):not([aria-disabled="true"])',
       ),
     );
   $effect(() => {
     if (!open || !panel) return;
+    const node = panel;
     trigger =
-      document.activeElement instanceof HTMLElement &&
+      anchorElement?.querySelector<HTMLElement>(
+        'button:not(:disabled),a[href],[tabindex="0"]',
+      ) ??
+      (document.activeElement instanceof HTMLElement &&
       document.activeElement !== document.body
         ? document.activeElement
-        : null;
+        : null);
+    if (popover) panel.showPopover();
+    const position =
+      popover && anchorElement
+        ? positionOverlay(panel, anchorElement)
+        : undefined;
     search = '';
     searchTime = 0;
-    items()[0]?.focus();
+    const all = items();
+    (initialFocus === 'last' ? all.at(-1) : all[0])?.focus();
+    if (!all.length) panel.focus();
     function outside(event: PointerEvent) {
       if (
         !panel.contains(event.target as Node) &&
@@ -58,6 +78,8 @@
     document.addEventListener('pointerdown', outside);
     document.addEventListener('focusin', focusout);
     return () => {
+      position?.destroy();
+      if (popover && node.isConnected) node.hidePopover();
       document.removeEventListener('pointerdown', outside);
       document.removeEventListener('focusin', focusout);
     };
@@ -106,7 +128,8 @@
   <div
     bind:this={panel}
     {id}
-    class="mg-menu {anchor}"
+    class="mg-menu {anchor} {className}"
+    popover={popover ? 'manual' : undefined}
     role="menu"
     aria-label={ariaLabel}
     tabindex="-1"

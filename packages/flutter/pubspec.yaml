@@ -1,6 +1,6 @@
 name: magnolia_ui
 description: Magnolia Material 3 theme adapter and generated Highlander Robotics tokens.
-version: 0.1.0
+version: 2.0.0
 publish_to: none
 repository: https://github.com/HighlanderRobotics/magnolia-ui
 environment:

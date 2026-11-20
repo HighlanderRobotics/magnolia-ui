@@ -11,6 +11,9 @@
     describedby,
     children,
     onclose,
+    initialFocus,
+    class: className = '',
+    style,
   }: {
     open?: boolean;
     canClose?: boolean;
@@ -20,6 +23,9 @@
     describedby?: string;
     children?: Snippet;
     onclose?: () => void;
+    initialFocus?: string;
+    class?: string;
+    style?: string;
   } = $props();
   let dialog = $state<HTMLDialogElement>(null!);
   let pointerStartedOutside = false;
@@ -34,6 +40,8 @@
     const node = dialog;
     const unlock = lockScroll();
     node.showModal();
+    if (initialFocus)
+      (node.querySelector<HTMLElement>(initialFocus) ?? node).focus();
     return () => {
       node.close();
       unlock();
@@ -80,7 +88,8 @@
 {#if open}
   <dialog
     bind:this={dialog}
-    class="mg-dialog"
+    class="mg-dialog {className}"
+    {style}
     aria-label={ariaLabel}
     aria-labelledby={labelledby ?? (title ? uid : undefined)}
     aria-describedby={describedby}

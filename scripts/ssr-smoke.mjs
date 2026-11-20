@@ -32,6 +32,14 @@ try {
     new Set(expandedIds).size,
     'Extended SSR IDs must be unique',
   );
+  const { default: V2 } = await server.ssrLoadModule(
+    '/examples/web/src/V2.svelte',
+  );
+  const v2 = render(V2).body;
+  assert.match(v2, /data-magnolia-version="2"/);
+  assert.match(v2, /aria-busy="true"/);
+  const v2Ids = [...v2.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]);
+  assert.equal(v2Ids.length, new Set(v2Ids).size, 'V2 SSR IDs must be unique');
   console.log(
     'Svelte server rendering passed without window, document or font loading.',
   );

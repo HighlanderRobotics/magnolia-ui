@@ -13,6 +13,8 @@ execFileSync(
     '--entrypoints',
     '.',
     './tokens.json',
+    './v2',
+    './v2/tokens.json',
   ],
   { stdio: 'inherit' },
 );
