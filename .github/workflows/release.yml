@@ -46,6 +46,8 @@ jobs:
           package-manager-cache: false
       - name: Check npm trusted publishing
         run: node scripts/check-npm-trust.mjs
+        env:
+          CHECK_NPM_TRUST_ONLY: ${{ inputs.check_trust }}
       - run: npm install --global npm@11.6.2
         if: ${{ !inputs.check_trust }}
       - run: npm ci

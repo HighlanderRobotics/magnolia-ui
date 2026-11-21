@@ -34,15 +34,22 @@ for (const directory of packages) {
       new URL(`../packages/${directory}/package.json`, import.meta.url),
     ),
   );
-  const packagePath = name.replace('/', '%2f');
-  const response = await fetch(
-    `https://registry.npmjs.org/-/npm/v1/oidc/token/exchange/package/${packagePath}`,
-    {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${idToken}` },
-      signal: AbortSignal.timeout(15_000),
-    },
-  );
+  const exchange = (packagePath) =>
+    fetch(
+      `https://registry.npmjs.org/-/npm/v1/oidc/token/exchange/package/${packagePath}`,
+      {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${idToken}` },
+        signal: AbortSignal.timeout(15_000),
+      },
+    );
+  let response = await exchange(name.replace('/', '%2f'));
+  if (process.env.CHECK_NPM_TRUST_ONLY === 'true' && response.status === 404) {
+    console.log(
+      `${name}: npm CLI path returned 404; checking the fully encoded path`,
+    );
+    response = await exchange(encodeURIComponent(name));
+  }
   const result = await response.json().catch(() => ({}));
   if (response.ok && typeof result.token === 'string' && result.token) {
     console.log(`${name}: npm accepted the OIDC exchange`);
