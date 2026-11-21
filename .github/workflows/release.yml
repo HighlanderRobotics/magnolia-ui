@@ -1,6 +1,11 @@
 name: Publish approved npm versions
 on:
   workflow_dispatch:
+    inputs:
+      check_trust:
+        description: Check npm trusted publishing without releasing any package
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
@@ -8,7 +13,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   verify:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && !inputs.check_trust
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7.0.1
@@ -23,6 +28,7 @@ jobs:
       - run: npm run test:browser
   publish:
     needs: verify
+    if: always() && !cancelled() && github.ref == 'refs/heads/main' && (inputs.check_trust || needs.verify.result == 'success')
     runs-on: ubuntu-latest
     environment: npm
     permissions:
@@ -38,12 +44,19 @@ jobs:
           # The public registry is npm's default. Avoid generating an npmrc
           # with a token entry so npm can negotiate trusted publishing itself.
           package-manager-cache: false
+      - name: Check npm trusted publishing
+        run: node scripts/check-npm-trust.mjs
       - run: npm install --global npm@11.6.2
+        if: ${{ !inputs.check_trust }}
       - run: npm ci
+        if: ${{ !inputs.check_trust }}
       # Install with the lockfile's npm version before upgrading the CLI
       # for the registry's trusted publishing exchange.
       - run: npm install --global npm@11.20.0
+        if: ${{ !inputs.check_trust }}
       - run: npm run release
+        if: ${{ !inputs.check_trust }}
         env:
           NPM_CONFIG_PROVENANCE: 'true'
       - run: git push origin --tags
+        if: ${{ !inputs.check_trust }}
