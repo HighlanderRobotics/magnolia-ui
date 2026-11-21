@@ -38,8 +38,11 @@ jobs:
           # The public registry is npm's default. Avoid generating an npmrc
           # with a token entry so npm can negotiate trusted publishing itself.
           package-manager-cache: false
-      - run: npm install --global npm@11.20.0
+      - run: npm install --global npm@11.6.2
       - run: npm ci
+      # Install with the lockfile's npm version before upgrading the CLI
+      # for the registry's trusted publishing exchange.
+      - run: npm install --global npm@11.20.0
       - run: npm run release
         env:
           NPM_CONFIG_PROVENANCE: 'true'
