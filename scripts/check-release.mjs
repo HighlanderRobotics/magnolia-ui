@@ -55,7 +55,10 @@ for (const { directory, manifest } of packages) {
     ),
     'Missing version changelog',
   );
-  if (directory === 'packages/svelte' || directory === 'packages/react-native') {
+  if (
+    directory === 'packages/svelte' ||
+    directory === 'packages/react-native'
+  ) {
     assert.ok(
       files.has('THIRD-PARTY-NOTICES.txt'),
       `${manifest.name} is missing its packed Lucide/Feather notices`,
